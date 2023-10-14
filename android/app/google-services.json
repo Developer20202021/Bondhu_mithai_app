@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "134886666622",
+    "project_id": "bondhu-mithai-joypurhat",
+    "storage_bucket": "bondhu-mithai-joypurhat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134886666622:android:fc09f13d3d6be9be3ec32f",
+        "android_client_info": {
+          "package_name": "com.example.bondhu_mithai_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCucZZHYlHVjIdWQjjCIGz5Y9ctZgd3_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
