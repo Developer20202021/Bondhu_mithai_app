@@ -148,8 +148,9 @@ FocusNode myFocusNode = new FocusNode();
 
 
         appBar: AppBar(
+        automaticallyImplyLeading: false,
         iconTheme: IconThemeData(color: Color.fromRGBO(92, 107, 192, 1)),
-        leading: IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.chevron_left)),
+     
         title: const Text("",  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
@@ -258,11 +259,9 @@ FocusNode myFocusNode = new FocusNode();
                     children: [
                      
 
-                      Center(
-                        child: Text("Enjoy Your Meal", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                      ),
+                    
 
-                      SizedBox(height: 20,),
+                
 
 
                    

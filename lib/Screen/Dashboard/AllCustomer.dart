@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/HomeScreen/UserProfile/UserProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ List  AllData = [];
 
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('customer');
+    FirebaseFirestore.instance.collection('CustomerInfo');
 
 Future<void> getData() async {
     // Get docs from collection reference
@@ -84,7 +85,7 @@ List  AllSearchData = [];
 Future<void> getSearchData(String phoneNumber) async {
     // Get docs from collection reference
      CollectionReference _SearchCollectionRef =
-    FirebaseFirestore.instance.collection('customer');
+    FirebaseFirestore.instance.collection('CustomerInfo');
 
      Query _SearchCollectionRefQuery = _SearchCollectionRef.where("CustomerPhoneNumber", isEqualTo: phoneNumber);
 
@@ -295,7 +296,7 @@ Future<void> getSearchData(String phoneNumber) async {
 
 
 
-            getSearchData(customerPhoneNumberController.text);
+            getSearchData(customerPhoneNumberController.text.trim());
 
 
             print("___________________________________________________________________________________________${customerPhoneNumberController.text}_____________________");
@@ -444,14 +445,14 @@ Future<void> getSearchData(String phoneNumber) async {
                 children:  [
                   // A SlidableAction can have an icon and/or a label.
                   SlidableAction(
-                    onPressed: (context) => AllCustomerPageToCustomerProfile(context,AllData[index]["CustomerNID"] ),
+                    onPressed: (context) => AllCustomerPageToCustomerProfile(context,AllData[index]["CustomerID"],AllData[index]["CustomerPhoneNumber"]),
                     backgroundColor: Color(0xFFFE4A49),
                     foregroundColor: Colors.white,
                     icon: Icons.delete,
                     label: 'Delete',
                   ),
                   SlidableAction(
-                    onPressed: (context) => AllCustomerPageToCustomerProfile(context,AllData[index]["CustomerNID"]),
+                    onPressed: (context) => AllCustomerPageToCustomerProfile(context,AllData[index]["CustomerID"],AllData[index]["CustomerPhoneNumber"]),
                     backgroundColor: Color(0xFF21B7CA),
                     foregroundColor: Colors.white,
                     icon: Icons.info,
@@ -467,7 +468,7 @@ Future<void> getSearchData(String phoneNumber) async {
                   SlidableAction(
                     // An action can be bigger than the others.
                     flex: 2,
-                    onPressed: (context) => AllData[index]["CustomerType"]=="Paid"?(Context) => EveryPaymentHistory(context,AllData[index]["CustomerNID"] ,AllData[index]["CustomerPhoneNumber"] ): CustomerAddPayment(context,AllData[index]["CustomerNID"] ,AllData[index]["CustomerPhoneNumber"], AllData[index]["BikePaymentDue"]),
+                    onPressed: (context) => AllData[index]["CustomerType"]=="Paid"?(Context) => EveryPaymentHistory(context,AllData[index]["CustomerID"] ,AllData[index]["CustomerPhoneNumber"] ): CustomerAddPayment(context,AllData[index]["CustomerID"] ,AllData[index]["CustomerPhoneNumber"], AllData[index]["TotalFoodPrice"]),
                     backgroundColor: Color(0xFF7BC043),
                     foregroundColor: Colors.white,
                     icon: Icons.payment,
@@ -496,7 +497,7 @@ Future<void> getSearchData(String phoneNumber) async {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('NID:${AllData[index]["CustomerNID"]}'),
+           
             Text('Phone No:${AllData[index]["CustomerPhoneNumber"]}'),
           ],
         ),
@@ -514,19 +515,17 @@ Future<void> getSearchData(String phoneNumber) async {
   }
 }
 
-void AllCustomerPageToCustomerProfile(BuildContext context, String CustomerNID){
+void AllCustomerPageToCustomerProfile(BuildContext context, String CustomerID, String CustomerPhoneNumber){
 
 
-
-  
-  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomerProfile(CustomerNID: CustomerNID)));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfile(CustomerID: CustomerID, CustomerPhoneNumber: CustomerPhoneNumber,)));
 }
 
 
 
 
 
-void EveryPaymentHistory(BuildContext context, String CustomerNID, String CustomerPhoneNumber){
+void EveryPaymentHistory(BuildContext context, String CustomerID, String CustomerPhoneNumber){
 
 
 
@@ -540,7 +539,7 @@ void EveryPaymentHistory(BuildContext context, String CustomerNID, String Custom
 
 
 
- void CustomerAddPayment(BuildContext context, String CustomerNID, String CustomerPhoneNumber, BikePaymentDue){
+ void CustomerAddPayment(BuildContext context, String CustomerID, String CustomerPhoneNumber, TotalFoodPrice){
 
 
 

@@ -2,6 +2,8 @@ import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.da
 import 'package:bondhu_mithai_app/Screen/FrontScreen/FrontSlide.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/FoodUploadScreen/FoodUploadScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? ChooseProduct(): FrontSlider(),
+      home: showHome ? TableOrder(): FrontSlider(),
     );
   }
 }

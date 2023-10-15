@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/Cart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -10,7 +11,14 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChooseProduct extends StatefulWidget {
-  const ChooseProduct({super.key});
+
+  final CustomerID;
+  final CustomerName;
+  final CustomerPhoneNumber;
+
+
+
+  const ChooseProduct({super.key, required this.CustomerID, required this.CustomerName, required this.CustomerPhoneNumber});
 
   @override
   State<ChooseProduct> createState() => _ChooseProductState();
@@ -56,7 +64,7 @@ class _ChooseProductState extends State<ChooseProduct> {
     _mybox.put("UserAddToCartFood", WriteData);
     print(_mybox.get("UserAddToCartFood"));
 
-    
+     Navigator.of(context).push(MaterialPageRoute(builder: (context) => CartScreen(CustomerID: widget.CustomerID, CustomerName: widget.CustomerName, CustomerPhoneNumber: widget.CustomerPhoneNumber,)));
 
 
 
@@ -142,19 +150,7 @@ Future<void> getData() async {
     });
     getData();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    _mybox.delete("UserAddToCartFood");
 
     super.initState();
   }
@@ -235,31 +231,6 @@ Future<void> getData() async {
 
     return Scaffold(
 
-
-      
-
-
-
-
-
-        floatingActionButton: FloatingActionButton(onPressed: (){
-
-
-          writeData(SelectedFoodItem);
-
-
-        },
-        backgroundColor: ColorName().appColor,
-
-        child:  Text(
-                         "Next",
-                                            
-                          style:
-                                                    TextStyle(color: Colors.white),
-                                              ),                       
-        
-        
-        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           actions: [
@@ -268,7 +239,13 @@ Future<void> getData() async {
 
     badges.Badge(
       badgeContent: Text('${userSelectedFoodCount.toString()}'),
-      child: Icon(Icons.shopping_cart, size: 31,),
+      child: IconButton(onPressed: (){
+
+        writeData(SelectedFoodItem);
+
+
+
+      }, icon: Icon(Icons.shopping_cart, size: 31,)),
       position: badges.BadgePosition.topStart(),
     )
 
@@ -403,14 +380,7 @@ Future<void> getData() async {
                                   child: selectedData.contains(index)?Icon(Icons.check_circle_outline, color: Colors.green[700],):TextButton(
                                     onPressed: () async{
 
-                                // writeData(AllData[index]["FoodID"], {'FoodName': '${AllData[index]["FoodName"]}', 'FoodAmount': foodAmount, "Foodprice":"${AllData[index]["FoodSalePrice"]}", "FoodID":"${AllData[index]["FoodID"]}", "ThisFoodOrderPrice":"${double.parse("${AllData[index]["FoodSalePrice"]}")*foodAmount}"});
-
-                                // final foodsBox = collection.openBox<Map>('foods');
-
-                                //  await foodsBox.put('${AllData[index]["FoodID"]}', {'FoodName': '${AllData[index]["FoodName"]}', 'FoodAmount': foodAmount, "Foodprice":"${AllData[index]["FoodSalePrice"]}", "FoodID":"${AllData[index]["FoodID"]}", "ThisFoodOrderPrice":"${double.parse("${AllData[index]["FoodSalePrice"]}")*foodAmount}"});
-
-                                //   final foodsBoxMap = await foodsBox.getAllValues();
-                                //   print(foodsBoxMap);
+                                
 
 
 
@@ -426,7 +396,7 @@ Future<void> getData() async {
 
 
 
-                                        SelectedFoodItem.insert(SelectedFoodItem.length,{'FoodName': '${AllData[index]["FoodName"]}', 'FoodAmount': foodAmount, "Foodprice":"${AllData[index]["FoodSalePrice"]}", "FoodID":"${AllData[index]["FoodID"]}", "ThisFoodOrderPrice":"${double.parse("${AllData[index]["FoodSalePrice"]}")*foodAmount}"});
+                                        SelectedFoodItem.insert(SelectedFoodItem.length,{'FoodName': '${AllData[index]["FoodName"]}', 'FoodAmount': foodAmount, "Foodprice":"${AllData[index]["FoodSalePrice"]}", "FoodID":"${AllData[index]["FoodID"]}", "ThisFoodOrderPrice":"${double.parse("${AllData[index]["FoodSalePrice"]}")*foodAmount}", "foodImageUrl":"${AllData[index]["foodImageUrl"]}", "FoodUnit":"${AllData[index]["FoodUnit"]}"});
 
 
 
