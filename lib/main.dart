@@ -1,5 +1,9 @@
+import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
+import 'package:bondhu_mithai_app/Screen/DeliveryMan/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:bondhu_mithai_app/Screen/FrontScreen/FrontSlide.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllNewOrder.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllPackagingOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/FoodUploadScreen/FoodUploadScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
@@ -45,7 +49,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? TableOrder(): FrontSlider(),
+      home: showHome ? DeliveryManCustomers(indexNumber: ""): FrontSlider(),
     );
   }
 }

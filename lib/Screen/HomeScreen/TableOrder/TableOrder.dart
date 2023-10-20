@@ -285,6 +285,7 @@ class _TableOrderState extends State<TableOrder> {
                   "OrderMonth":"${DateTime.now().month}",
                   "OrderYear":"${DateTime.now().year}",
                   "CustomerID":CustomerID,
+                  "OrderID":CustomerID,
                   "OrderType":"offline",
                   "OrderStatus":"open",
                   "CustomerType":"Due"
@@ -377,6 +378,7 @@ class _TableOrderState extends State<TableOrder> {
                   "OrderMonth":"${DateTime.now().month}",
                   "OrderYear":"${DateTime.now().year}",
                   "CustomerID":CustomerID,
+                  "OrderID":CustomerID,
                   "OrderType":"offline",
                   "OrderStatus":"open",
                   "CustomerType":"Due"

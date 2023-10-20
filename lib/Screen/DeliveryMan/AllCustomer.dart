@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/DeliveryMan/InputCustomerOTP.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,12 +39,23 @@ var DataLoad = "";
 List  AllData = [];
 
 
-  CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('customer');
+  // CollectionReference _collectionRef =
+  //   FirebaseFirestore.instance.collection('customer');
 
 Future<void> getData() async {
     // Get docs from collection reference
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+      CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
+
+
+
+    
+      Query CustomerOrderHistoryQuery = _collectionRef.where("DeliveryManEmail", isEqualTo: "delivery@gmail.com").where("OrderStatus", isEqualTo: "open");
+
+
+
+    QuerySnapshot querySnapshot = await CustomerOrderHistoryQuery.get();
 
     // Get data from docs and convert map to List
      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
@@ -83,13 +95,16 @@ List  AllSearchData = [];
 
 Future<void> getSearchData(String phoneNumber) async {
     // Get docs from collection reference
-     CollectionReference _SearchCollectionRef =
-    FirebaseFirestore.instance.collection('customer');
-
-     Query _SearchCollectionRefQuery = _SearchCollectionRef.where("CustomerPhoneNumber", isEqualTo: phoneNumber);
+      CollectionReference _SearchcollectionRef =
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
 
 
-    QuerySnapshot SearchCollectionQuerySnapshot = await _SearchCollectionRefQuery.get();
+
+    
+      Query CustomerOrderHistoryQuery = _SearchcollectionRef.where("DeliveryManEmail", isEqualTo: "delivery@gmail.com").where("OrderStatus", isEqualTo: "open").where("CustomerPhoneNumber", isEqualTo: phoneNumber);
+
+
+    QuerySnapshot SearchCollectionQuerySnapshot = await CustomerOrderHistoryQuery.get();
 
     // Get data from docs and convert map to List
      AllSearchData = SearchCollectionQuerySnapshot.docs.map((doc) => doc.data()).toList();
@@ -443,20 +458,7 @@ Future<void> getSearchData(String phoneNumber) async {
                 // All actions are defined in the children parameter.
                 children:  [
                   // A SlidableAction can have an icon and/or a label.
-                  SlidableAction(
-                    onPressed: (context) => DeliveryManCustomersPageToCustomerProfile(context,AllData[index]["CustomerNID"] ),
-                    backgroundColor: Color(0xFFFE4A49),
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: 'Delete',
-                  ),
-                  SlidableAction(
-                    onPressed: (context) => DeliveryManCustomersPageToCustomerProfile(context,AllData[index]["CustomerNID"]),
-                    backgroundColor: Color(0xFF21B7CA),
-                    foregroundColor: Colors.white,
-                    icon: Icons.info,
-                    label: 'All Info',
-                  ),
+              
                 ],
               ),
       
@@ -467,7 +469,7 @@ Future<void> getSearchData(String phoneNumber) async {
                   SlidableAction(
                     // An action can be bigger than the others.
                     flex: 2,
-                    onPressed: (context) => AllData[index]["CustomerType"]=="Paid"?(Context) => EveryPaymentHistory(context,AllData[index]["CustomerNID"] ,AllData[index]["CustomerPhoneNumber"] ): CustomerAddPayment(context,AllData[index]["CustomerNID"] ,AllData[index]["CustomerPhoneNumber"], AllData[index]["BikePaymentDue"]),
+                    onPressed: (context) =>GiveOTP(context,AllData[index]["OrderID"] ,AllData[index]["CustomerPhoneNumber"],),
                     backgroundColor: Color(0xFF7BC043),
                     foregroundColor: Colors.white,
                     icon: Icons.payment,
@@ -490,13 +492,15 @@ Future<void> getSearchData(String phoneNumber) async {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('NID:${AllData[index]["Address"]}'),
-            Text('Phone No:${AllData[index]["CustomerPhoneNumber"]}'),
+            Text('Address:${AllData[index]["CustomerAddress"]}'),
+            Text('Phone:${AllData[index]["CustomerPhoneNumber"]}'),
+            Text('Order Price:${AllData[index]["WithDeliveryFeeFoodPrice"]}৳'),
+            Text('Time:${AllData[index]["OrderTime"]}'),
           ],
         ),
         trailing: Text("${AllData[index]["CustomerType"]}"),
                 
-                title: Text("${AllData[index]["CustomerName"]}", style: TextStyle(
+                title: Text("${AllData[index]["CustomerName"].toString().toUpperCase()}", style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),)),
             );
@@ -534,48 +538,15 @@ void EveryPaymentHistory(BuildContext context, String CustomerNID, String Custom
 
 
 
- void CustomerAddPayment(BuildContext context, String CustomerNID, String CustomerPhoneNumber, BikePaymentDue){
+ void GiveOTP(BuildContext context, String OrderID, String CustomerPhoneNumber,){
 
 
 
-
-
-
-
-  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomerPaymentAdd(CustomerNID: CustomerNID, CustomerPhoneNumber: CustomerPhoneNumber, BikePaymentDue: BikePaymentDue,)));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => InputCustomerOTP(OrderID: OrderID, CustomerPhoneNumber: CustomerPhoneNumber)));
 }
 
 
 
-
-
-
-// class MySearchDelegate extends SearchDelegate {
-
-
-//   @override
-//   Widget? buildLeading(BuildContext context)=>IconButton(onPressed:()=>close(context, null), icon: Icon(Icons.arrow_back));
-
-
-
-//   @override
-//   List<Widget>? buildActions(BuildContext context)=>[IconButton(onPressed:(){
-
-
-//     if (query.isEmpty) {
-
-
-//       close(context, null);
-      
-//     } else {
-
-//       query ="";
-      
-//     }
-
-
-
-//   }, icon: Icon(Icons.clear))];
 
 
 
@@ -589,7 +560,3 @@ void EveryPaymentHistory(BuildContext context, String CustomerNID, String Custom
 
 
   
-
-//   @override
-//   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-// }

@@ -1,7 +1,10 @@
 import 'dart:convert';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:bondhu_mithai_app/Screen/DeliveryMan/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -21,21 +24,277 @@ import 'package:http/http.dart' as http;
 
 
 class InputCustomerOTP extends StatefulWidget {
-  const InputCustomerOTP({super.key});
+
+
+  final OrderID;
+  final CustomerPhoneNumber;
+
+
+
+
+
+  const InputCustomerOTP({super.key, required this.OrderID, required this.CustomerPhoneNumber});
 
   @override
   State<InputCustomerOTP> createState() => _InputCustomerOTPState();
 }
 
 class _InputCustomerOTPState extends State<InputCustomerOTP> {
-  TextEditingController myEmailController = TextEditingController();
-  TextEditingController myPassController = TextEditingController();
+  TextEditingController CustomerOTPController = TextEditingController();
+  // TextEditingController myPassController = TextEditingController();
 
 
 
   bool loading = false;
 
   var ServerMsg = "";
+
+
+
+
+
+
+  Future CheckOTP(String CustomerOTP) async{
+
+
+    setState(() {
+      loading = true;
+    });
+
+
+   CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
+
+
+
+    
+      Query CustomerOrderHistoryQuery = _collectionRef.where("OrderID", isEqualTo: widget.OrderID).where("OrderStatus", isEqualTo: "open").where("CustomerOTP", isEqualTo: CustomerOTP);
+
+
+
+    QuerySnapshot querySnapshot = await CustomerOrderHistoryQuery.get();
+
+    // Get data from docs and convert map to List
+      var AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+     if (AllData.length == 0) {
+      setState(() {
+
+        loading = false;
+
+
+
+
+                final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Wrong OTP!!!!',
+                      message:
+                          'Hey You Add Wrong OTP!!!',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.failure,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+        
+       
+
+
+
+
+
+      });
+       
+     } else {
+
+      setState(() {
+     
+     final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(widget.OrderID);
+
+
+                      var updateData ={
+
+
+                        "OrderStatus":"close",
+                        "DeliveryStatus":"DeliveryComplete",
+                        "DeliveryManSetOTP":"Done"
+                      };
+
+
+                  //     FirebaseAuth.instance
+                  //       .authStateChanges()
+                  //       .listen((User? user) async{
+                  //         if (user == null) {
+                  //           print('User is currently signed out!');
+                  //         } else {
+
+
+
+
+
+                  //              var AdminMsg = "Dear Admin, ${myEmailController.text.trim()} Admin ${user.email} Admin এর access off করেছে।";
+
+
+
+                  // final response = await http
+                  //     .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01713773514&message=${AdminMsg}'));
+
+                  // if (response.statusCode == 200) {
+                  //   // If the server did return a 200 OK response,
+                  //   // then parse the JSON.
+                  //   print(jsonDecode(response.body));
+                    
+                  
+                  // } else {
+                  //   // If the server did not return a 200 OK response,
+                  //   // then throw an exception.
+                  //   throw Exception('Failed to load album');
+                  // }
+                
+
+                  //         }
+                  //       });
+
+
+
+
+                   
+
+
+
+
+
+
+
+
+
+
+
+
+                          docUser.update(updateData).then((value) => setState((){
+
+
+
+
+                              final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Successfully Delivery Complete.',
+                      message:
+                          'Hey Thank You. Good Job',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.success,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+              
+
+
+              
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryManCustomers(indexNumber: "")));
+
+
+
+
+
+
+
+
+                          })).onError((error, stackTrace) => setState((){
+
+
+
+
+                              final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Wrong OTP!!!!',
+                      message:
+                          'Hey You Add Wrong OTP!!!',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.failure,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+
+
+
+
+
+
+
+
+                          }));
+      
+      
+      
+      
+      
+      loading = false;
+     });
+       
+     }
+     
+
+    print(AllData);
+
+
+
+
+
+  }
+
+
+
+
+
+
+  var otpTextField;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +369,12 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
                           
                           
                           ),
-                      controller: myEmailController,
+                          onChanged: (value) {
+                            setState(() {
+                              otpTextField = value;
+                            });
+                          },
+                      controller: CustomerOTPController,
                     ),
             
             
@@ -125,114 +389,14 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
             
             
             
-                    Row(
+                 CustomerOTPController.text.isEmpty?Text(""):Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(width: 150, child:TextButton(onPressed: () async{
 
-                          setState(() {
-                            loading = true;
-                          });
+                          CheckOTP(CustomerOTPController.text.trim());
 
-                  //        final docUser = FirebaseFirestore.instance.collection("admin").doc(myEmailController.text.trim());
-
-
-                  //     var updateData ={
-
-
-                  //       "AdminApprove":"false"
-                  //     };
-
-
-                  //     FirebaseAuth.instance
-                  //       .authStateChanges()
-                  //       .listen((User? user) async{
-                  //         if (user == null) {
-                  //           print('User is currently signed out!');
-                  //         } else {
-
-
-
-
-
-                  //              var AdminMsg = "Dear Admin, ${myEmailController.text.trim()} Admin ${user.email} Admin এর access off করেছে।";
-
-
-
-                  // final response = await http
-                  //     .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01713773514&message=${AdminMsg}'));
-
-                  // if (response.statusCode == 200) {
-                  //   // If the server did return a 200 OK response,
-                  //   // then parse the JSON.
-                  //   print(jsonDecode(response.body));
-                    
-                  
-                  // } else {
-                  //   // If the server did not return a 200 OK response,
-                  //   // then throw an exception.
-                  //   throw Exception('Failed to load album');
-                  // }
-                
-
-                  //         }
-                  //       });
-
-
-
-
-                   
-
-
-
-
-
-
-
-
-
-
-
-
-                  //         docUser.update(updateData).then((value) =>      Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => AllAdmin(indexNumber: "3",)),
-                  //     )).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  //   backgroundColor: Colors.red,
-                  //             content: const Text('Something Wrong'),
-                  //             action: SnackBarAction(
-                  //               label: 'Undo',
-                  //               onPressed: () {
-                  //                 // Some code to undo the change.
-                  //               },
-                  //             ),
-                  //           )));
-
-
-
-
-
-                           
-
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                          
 
                         }, child: Text("Done", style: TextStyle(color: Colors.white),), style: ButtonStyle(
                          

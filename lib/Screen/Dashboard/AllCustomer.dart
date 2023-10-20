@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/Dashboard/CustomerProfile.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserProfile/UserProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -452,7 +453,7 @@ Future<void> getSearchData(String phoneNumber) async {
                     label: 'Delete',
                   ),
                   SlidableAction(
-                    onPressed: (context) => AllCustomerPageToCustomerProfile(context,AllData[index]["CustomerID"],AllData[index]["CustomerPhoneNumber"]),
+                    onPressed: (context) => SeeCustomerProfile(context,AllData[index]["CustomerPhoneNumber"]),
                     backgroundColor: Color(0xFF21B7CA),
                     foregroundColor: Colors.white,
                     icon: Icons.info,
@@ -519,6 +520,13 @@ void AllCustomerPageToCustomerProfile(BuildContext context, String CustomerID, S
 
 
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserProfile(CustomerID: CustomerID, CustomerPhoneNumber: CustomerPhoneNumber,)));
+}
+
+
+void SeeCustomerProfile(BuildContext context, String CustomerPhoneNumber){
+
+
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomerProfile(CustomerPhoneNumber: CustomerPhoneNumber)));
 }
 
 

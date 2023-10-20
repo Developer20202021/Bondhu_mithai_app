@@ -1,23 +1,32 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math';
+
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllPackagingOrder.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
+class SelectDeliveryMan extends StatefulWidget {
 
-
-class AllStaff extends StatefulWidget {
+  final CustomerNumber;
+  final CustomerEmail;
+  final OrderID;
 
 
  
 
-  const AllStaff({super.key, });
+  const SelectDeliveryMan({super.key, required this.CustomerEmail, required this.CustomerNumber, required this.OrderID});
 
   @override
-  State<AllStaff> createState() => _AllStaffState();
+  State<SelectDeliveryMan> createState() => _SelectDeliveryManState();
 }
 
-class _AllStaffState extends State<AllStaff> {
+class _SelectDeliveryManState extends State<SelectDeliveryMan> {
 
 
 
@@ -26,9 +35,175 @@ class _AllStaffState extends State<AllStaff> {
 
 
 
-  bool loading = false;
+bool loading = false;
 
 var DataLoad = "";
+
+String CustomerOTP = Random().nextInt(999999).toString().padLeft(6, '0');
+
+
+
+
+
+// update Customer Order History Data 
+
+Future updateCustomerData(String DeliveryManEmail) async{
+
+
+         final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(widget.OrderID);
+
+                  final UpadateData ={
+
+                    "DeliveryManEmail":DeliveryManEmail,
+                    "DeliveryStatus":"packaging",
+                    "CustomerOTP":CustomerOTP
+
+                
+                };
+
+
+
+
+
+           
+
+                  docUser.update(UpadateData).then((value) => setState(() async{
+
+
+                
+
+
+
+
+
+
+
+
+
+
+                    // update delivery man function call
+                      updateDeliveryManData( DeliveryManEmail);
+
+
+                  })).onError((error, stackTrace) => setState((){
+
+                    print(error);
+
+                  }));
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+// update delivery Man Data
+
+Future updateDeliveryManData(String DeliveryManEmail) async{
+
+
+         final docUser = FirebaseFirestore.instance.collection("DeliveryMan").doc(DeliveryManEmail);
+
+                  final UpadateData ={
+
+                   
+                    "DeliveryManDeliveryStatus":"packaging",
+                    "DeliveryStatus":"open"
+
+                
+                };
+
+
+
+
+
+                // user Data Update and show snackbar
+
+                  docUser.update(UpadateData).then((value) => setState(() async{
+
+
+
+
+
+
+
+                        
+                  var CustomerOTPmsg = "বন্ধু মিঠাই, Dear Customer, আপনার OTP ${CustomerOTP}। এটি শুধু Delivery Man কে দিবেন।";
+
+
+
+                  final response = await http
+                      .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01721915550&message=${CustomerOTPmsg}'));
+
+                  if (response.statusCode == 200) {
+                    // If the server did return a 200 OK response,
+                    // then parse the JSON.
+                    print(jsonDecode(response.body));
+                    
+                  
+                  } else {
+                    // If the server did not return a 200 OK response,
+                    // then throw an exception.
+                    throw Exception('Failed to load album');
+                  }
+
+
+
+
+
+
+
+
+
+              // all data update and navigate to new screen
+
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllPackagingorder()));
+
+
+              
+                final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Successfully Added',
+                      message:
+                          'Your Delivery Man is Added Successfully',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.success,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+
+
+                  })).onError((error, stackTrace) => setState((){
+
+                    print(error);
+
+                  }));
+
+
+  }
+
+
+
+
+
+
+
+
 
  
 
@@ -36,50 +211,59 @@ var DataLoad = "";
 
 // // Firebase All Customer Data Load
 
-// List  AllData = [];
+List  AllData = [];
 
 
-//   CollectionReference _collectionRef =
-//     FirebaseFirestore.instance.collection('admin');
 
-// Future<void> getData() async {
-//     // Get docs from collection reference
-//     QuerySnapshot querySnapshot = await _collectionRef.get();
 
-//     // Get data from docs and convert map to List
-//      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-//      if (AllData.length == 0) {
-//       setState(() {
-//         DataLoad = "0";
-//       });
+Future<void> getData() async {
+
+   setState(() {
+      loading = true;
+    });
+
+
+  
+  CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('DeliveryMan');
+
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    // Get data from docs and convert map to List
+     AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+     if (AllData.length == 0) {
+      setState(() {
+        DataLoad = "0";
+      });
        
-//      } else {
+     } else {
 
-//       setState(() {
+      setState(() {
      
-//        AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-//        loading = false;
-//      });
+       AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+       loading = false;
+     });
        
-//      }
+     }
      
 
-//     print(AllData);
-// }
+    print(AllData);
+}
 
 
 
 
 
-// @override
-//   void initState() {
-//     // TODO: implement initState
-//     setState(() {
-//       loading = true;
-//     });
-//     getData();
-//     super.initState();
-//   }
+@override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      loading = true;
+    });
+    getData();
+    super.initState();
+  }
 
 
 
@@ -87,11 +271,11 @@ var DataLoad = "";
   Future refresh() async{
 
 
-  //   setState(() {
+    setState(() {
       
-  // getData();
+  getData();
 
-  //   });
+    });
 
 
   }
@@ -281,7 +465,7 @@ var DataLoad = "";
                           ),
               
                           // The end action pane is the one at the right or the bottom side.
-                          endActionPane: const ActionPane(
+                          endActionPane:  ActionPane(
                 motion: ScrollMotion(),
                 children: [
 
@@ -289,11 +473,11 @@ var DataLoad = "";
                        SlidableAction(
                     // An action can be bigger than the others.
                     flex: 2,
-                    onPressed: BlockYourUser,
+                    onPressed: (context)=>updateCustomerData(AllData[index]["DeliveryManEmail"]),
                     backgroundColor: Color.fromRGBO(92, 107, 192, 1),
                     foregroundColor: Colors.white,
                     icon: Icons.payment,
-                    label: 'Add',
+                    label: 'Select',
                   ),
 
 
@@ -319,32 +503,47 @@ var DataLoad = "";
                 
                    leading: CircleAvatar(
                       backgroundColor: Color.fromRGBO(92, 107, 192, 1),
-                      child: Text("m".toString().toUpperCase(),style: TextStyle(color: Colors.white)),
+                      child: Text("${AllData[index]["DeliveryManName"][0].toString().toUpperCase()}",style: TextStyle(color: Colors.white)),
                     ),
               
                     subtitle: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('mahadikaushik8888@gmail.com'),
-                        Text('Phone: 01721915550'),
+                        Text('${AllData[index]["DeliveryManEmail"]}'),
+                        Text('Phone: ${AllData[index]["DeliveryManPhoneNumber"]}'),
                       ],
                     ),
-                    trailing: Text("Paid", style: TextStyle(color:  Colors.green[600]),),
+                    trailing: Text("${AllData[index]["DeliveryStatus"]}", style: TextStyle(color:  AllData[index]["DeliveryStatus"]=="open"?Colors.green[600]:Colors.red[600]),),
                 
-                title: Text('Mahadi Hasan', style: TextStyle(
+                title: Text('${AllData[index]["DeliveryManName"].toString().toUpperCase()}', style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),)),
                         );
                       },
-                      itemCount: 20,
+                      itemCount: AllData.length,
                     ),
               ),
     );
   }
 }
 
-void doNothing(BuildContext context) {}
+
+
+void doNothing(BuildContext context) {
+
+
+// updateCustomerData(String DeliveryManEmail)
+
+}
+
+
+void SendFoodForDelivery(BuildContext context) {
+
+
+
+
+}
 
 void EveryPaymentHistory(BuildContext context){
   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentHistory()));
