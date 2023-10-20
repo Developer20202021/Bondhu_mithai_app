@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? DeliveryManCustomers(indexNumber: ""): FrontSlider(),
+      home: showHome ? TableOrder(): FrontSlider(),
     );
   }
 }

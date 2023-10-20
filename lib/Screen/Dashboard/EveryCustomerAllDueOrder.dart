@@ -1,4 +1,5 @@
 import 'package:bondhu_mithai_app/Screen/Dashboard/CustomerProfile.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/PaymentAdd.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserProfile/UserProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -299,12 +300,13 @@ Future<void> getData() async {
       
       
                                
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentAdd(SalePrice: AllData[index]["TotalFoodPrice"], CustomerPhoneNumber: AllData[index]["CustomerPhoneNumber"], OrderID: AllData[index]["OrderID"], CustomerID: AllData[index]["CustomerID"])));
       
       
       
       
       
-                              }, child: Text("Print", style: TextStyle(color: Colors.white, fontSize: 12),), style: ButtonStyle(
+                              }, child: Text("Payment Add", style: TextStyle(color: Colors.white, fontSize: 12),), style: ButtonStyle(
                                
                   backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
                 ),)

@@ -288,7 +288,8 @@ class _TableOrderState extends State<TableOrder> {
                   "OrderID":CustomerID,
                   "OrderType":"offline",
                   "OrderStatus":"open",
-                  "CustomerType":"Due"
+                  "CustomerType":"Due",
+                  
            
                 };
 

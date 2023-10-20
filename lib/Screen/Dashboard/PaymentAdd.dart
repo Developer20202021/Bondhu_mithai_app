@@ -68,7 +68,7 @@ class _PaymentAddState extends State<PaymentAdd> {
 
 
 
-      CollectionReference _CustomerOrderHistoryCollectionRef =
+    CollectionReference _CustomerOrderHistoryCollectionRef =
     FirebaseFirestore.instance.collection('CustomerOrderHistory');
 
   // all Due Query Count
@@ -102,9 +102,12 @@ class _PaymentAddState extends State<PaymentAdd> {
     // Query CustomerOrderHistoryQuery = _collectionRef.where("OrderID", isEqualTo: widget.OrderID).where("CustomerPhoneNumber", isEqualTo: widget.CustomerPhoneNumber);
 
 
+   
+
+
     if (DuePayment <= 0.0) {
 
-      if (AllDueData.length == 0) {
+      if (AllDueData.length <= 1) {
 
 
          var updateCustomerInfo = {
@@ -656,14 +659,14 @@ class _PaymentAddState extends State<PaymentAdd> {
 
 
 
+                              CustomerPaymentAddFunction("manager@Gmail.com", "mahadi");
 
 
 
 
 
 
-
-                  }, child: Text("Make Staff", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                  }, child: Text("Money Receive", style: TextStyle(color: Colors.white),), style: ButtonStyle(
                    
           backgroundColor: MaterialStatePropertyAll<Color>(Color.fromRGBO(92, 107, 192, 1)),
         ),),),

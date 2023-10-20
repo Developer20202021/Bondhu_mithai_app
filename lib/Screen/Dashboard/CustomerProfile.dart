@@ -514,7 +514,7 @@ Future<void> getSaleData() async {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                  
-                                  Text("Name:${AllOrderHistoryData[i]["CustomerName"]}"),
+                                  Text("Name:${AllOrderHistoryData[i]["CustomerName"].toString().toUpperCase()}"),
                                   Text("Phone Number:${AllOrderHistoryData[i]["CustomerPhoneNumber"]}"),
                   
                                   Text("Order Date: ${AllOrderHistoryData[i]["OrderDate"]}"),
@@ -531,6 +531,10 @@ Future<void> getSaleData() async {
 
 
                                    Text("Cash In: ${AllOrderHistoryData[i]["CashIn"]} "),
+
+                                    Text("Receiver Email: ${AllOrderHistoryData[i]["MoneyReceiverEmail"]} "),
+
+                                    Text("Receiver Name: ${AllOrderHistoryData[i]["MoneyReceiverName"].toString().toUpperCase()} "),
 
 
                                   Text("${AllOrderHistoryData[i]["CustomerType"]}"),
@@ -558,7 +562,7 @@ Future<void> getSaleData() async {
 
 
                       
-      
+      AllData[0]["CustomerType"] =="Due"?
       
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -582,7 +586,7 @@ Future<void> getSaleData() async {
                   backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
                 ),),),
                         ],
-                      )
+                      ):Text(""),
       
       
                  

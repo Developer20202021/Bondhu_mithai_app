@@ -164,7 +164,10 @@ var DataLoad = "";
                   final UpadateData ={
 
                     "AllOrderFood":AllOrderFood,
-                    "TotalFoodPrice":CustomerFoodPrice.toString()
+                    "TotalFoodPrice":CustomerFoodPrice.toString(),
+                    "WithDeliveryFeeFoodPrice":CustomerFoodPrice.toString(),
+                    "DueAmount":CustomerFoodPrice.toString(),
+                    "DeliveryStatus":"DeliveryComplete"
 
                 
                 };
