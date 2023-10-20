@@ -29,6 +29,11 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
   TextEditingController FoodNameController = TextEditingController();
   TextEditingController FoodDiscountPriceController = TextEditingController();
   TextEditingController FoodUnitController = TextEditingController();
+  TextEditingController FoodDescriptionController = TextEditingController();
+  TextEditingController FoodTagController = TextEditingController();
+
+
+  
 
 
 
@@ -153,6 +158,75 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                     ),
                 controller: FoodSalePriceController,
               ),
+
+
+
+
+              SizedBox(height: 9,),
+
+              TextField(
+                
+               
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Food Description',
+                     labelStyle: TextStyle(
+        color: myFocusNode.hasFocus ? Theme.of(context).primaryColor: Colors.black
+            ),
+                    hintText: 'Food Description',
+            
+                    //  enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                    //     ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                        ),
+                    
+                    
+                    ),
+                maxLines: 4,
+                controller: FoodDescriptionController,
+              ),
+
+
+
+               SizedBox(height: 9,),
+
+              TextField(
+                
+               
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Food Tag',
+                     labelStyle: TextStyle(
+        color: myFocusNode.hasFocus ? Theme.of(context).primaryColor: Colors.black
+            ),
+                    hintText: 'Food Tag',
+            
+                    //  enabledBorder: OutlineInputBorder(
+                    //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                    //     ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                        ),
+                    
+                    
+                    ),
+                maxLines: 4,
+                controller: FoodTagController,
+              ),
+
+
+
+
 
 
 
@@ -308,7 +382,9 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                   "FoodDiscountPrice":FoodDiscountPriceController.text.trim(),
                   "FoodUnit":FoodUnitController.text.trim(),
                   "FoodID":FoodID.toString(),
-                  "DiscountAvailable":checkedValue
+                  "DiscountAvailable":checkedValue,
+                  "FoodDescription":FoodDescriptionController.text.trim(),
+                  "FoodTag":FoodTagController.text.trim()
 
 
                

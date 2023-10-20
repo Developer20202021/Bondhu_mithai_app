@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -77,25 +78,33 @@ class _PerDaySalesHistoryState extends State<PerDaySalesHistory> {
    var DataLoad = ""; 
   // Firebase All Customer Data Load
 
+
+
+
+
+
+
+
+
 List  AllData = [];
-    int moneyAdd = 0;
+double moneyAdd = 0.0;
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('BikeSalePrice');
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
 
-Future<void> getData(String paymentDate) async {
+Future<void> getData(String OrderDate) async {
     // Get docs from collection reference
     // QuerySnapshot querySnapshot = await _collectionRef.get();
 
 
-    Query query = _collectionRef.where("BikeSaleDate", isEqualTo: paymentDate);
+    Query query = _collectionRef.where("OrderDate", isEqualTo: OrderDate);
     QuerySnapshot querySnapshot = await query.get();
 
     // Get data from docs and convert map to List
      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
 
-     moneyAdd = 0;
+     moneyAdd = 0.0;
 
 
 
@@ -113,13 +122,13 @@ Future<void> getData(String paymentDate) async {
 
       for (var i = 0; i < AllData.length; i++) {
 
-       var money = AllData[i]["SalePrice"];
-      int moneyInt = int.parse(money);
+       var money = AllData[i]["TotalFoodPrice"];
+      double moneydouble = double.parse(money);
 
       
 
       setState(() {
-        moneyAdd = moneyAdd + moneyInt;
+        moneyAdd = moneyAdd + moneydouble;
         AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
       });
        
@@ -246,6 +255,7 @@ Future<void> getData(String paymentDate) async {
       body:DataLoad == "0"? Center(child: Text("No Data Available")): RefreshIndicator(
         onRefresh: refresh,
         child: ListView.separated(
+          
               itemCount: AllData.length,
               separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 15,),
               itemBuilder: (BuildContext context, int index) {
@@ -254,30 +264,48 @@ Future<void> getData(String paymentDate) async {
       
       
                 return   Padding(
+                
                   padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                             shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black, width: 1),
-                    borderRadius: BorderRadius.circular(5),
-                  ), 
-                      
-                            title: Text("${AllData[index]["SalePrice"]}৳", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-                            trailing: Text("NID:${AllData[index]["CustomerNID"]}"),
-                            subtitle: Column(
-      
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-      
-                                Text("Phone Numnber:${AllData[index]["CustomerPhoneNumber"]}"),
-      
-                                Text("Date: ${AllData[index]["BikeSaleDate"]}"),
-                              ],
+                  child: PhysicalModel(
+
+                        color: Colors.white,
+                        elevation: 18,
+                        shadowColor: ColorName().appColor,
+                        borderRadius: BorderRadius.circular(20),
+                    child: ListTile(
+                  
+                    
+                    
+                        
+                              title: Text("Price: ${AllData[index]["TotalFoodPrice"]}৳", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                              
+                              subtitle: Column(
+                        
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Name: ${AllData[index]["CustomerName"].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold),),
+                  
+                                  Text("Phone Numnber: ${AllData[index]["CustomerPhoneNumber"]}"),
+                  
+                                  Text("Order Type: ${AllData[index]["OrderType"]}"),
+                  
+                                  Text("Customer Type: ${AllData[index]["CustomerType"]}"),
+                  
+                                 AllData[index]["CustomerType"] =="Due"? Text("Due: ${AllData[index]["DueAmount"]}৳"):Text(""),
+                  
+                                 Text("Money Receiver E: ${AllData[index]["MoneyReceiverEmail"]}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                  
+                                 Text("Money Receiver N: ${AllData[index]["MoneyReceiverName"].toString().toUpperCase()}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                        
+                                  Text("Date: ${AllData[index]["OrderDate"]}"),
+                                ],
+                              ),
+                        
+                        
+                        
                             ),
-                      
-                      
-                      
-                          ),
+                  ),
                 );
               },
             ),

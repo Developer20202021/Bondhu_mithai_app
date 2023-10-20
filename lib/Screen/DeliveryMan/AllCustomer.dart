@@ -134,6 +134,89 @@ Future<void> getSearchData(String phoneNumber) async {
 
 
 
+
+
+
+
+  Future UpdateDeliveryStatus(String OrderID) async{
+
+              setState(() {
+                loading = true;
+              });
+
+
+
+     final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(OrderID);
+
+                  final UpadateData ={
+
+              
+                    "DeliveryStatus":"OnTheRoad"
+
+                
+                };
+
+
+
+
+
+                // user Data Update and show snackbar
+
+                  docUser.update(UpadateData).then((value) => setState((){
+
+
+                    print("Done");
+
+                 
+
+                getData();
+            
+
+                  setState(() {
+                        loading = false;
+                      });
+
+
+
+
+                  })).onError((error, stackTrace) => setState((){
+
+                    print(error);
+
+                     setState(() {
+                        loading = false;
+                      });
+
+                  }));
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @override
   void initState() {
     // TODO: implement initState
@@ -458,6 +541,16 @@ Future<void> getSearchData(String phoneNumber) async {
                 // All actions are defined in the children parameter.
                 children:  [
                   // A SlidableAction can have an icon and/or a label.
+
+                   AllData[index]["DeliveryStatus"] =="packaging"? SlidableAction(
+                    // An action can be bigger than the others.
+                    flex: 2,
+                    onPressed: (context) =>UpdateDeliveryStatus(AllData[index]["OrderID"]),
+                    backgroundColor: Color(0xFF7BC043),
+                    foregroundColor: Colors.white,
+                    icon: Icons.add_business_sharp,
+                    label: 'Accept',
+                  ):Text(""),
               
                 ],
               ),
@@ -472,7 +565,7 @@ Future<void> getSearchData(String phoneNumber) async {
                     onPressed: (context) =>GiveOTP(context,AllData[index]["OrderID"] ,AllData[index]["CustomerPhoneNumber"],),
                     backgroundColor: Color(0xFF7BC043),
                     foregroundColor: Colors.white,
-                    icon: Icons.payment,
+                    icon: Icons.key_sharp,
                     label: 'Give OTP',
                   ),
                   

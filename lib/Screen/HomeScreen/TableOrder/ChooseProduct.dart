@@ -336,7 +336,7 @@ Future<void> getData() async {
                                     maxVal: 100,
                                     initVal: 0,
                                     minVal: 0,
-                                    steps: 0.5,
+                                    steps: 1.0,
                                     onQtyChanged: (val) {
                                       print(val);
               

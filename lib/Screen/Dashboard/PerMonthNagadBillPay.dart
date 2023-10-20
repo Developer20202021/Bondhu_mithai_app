@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -86,24 +87,24 @@ class _PerMonthNagadBillPayState extends State<PerMonthNagadBillPay> {
   // Firebase All Customer Data Load
 
 List  AllData = [];
-    int moneyAdd = 0;
+double moneyAdd = 0.0;
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('BikeSaleInfo');
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
 
 Future<void> getData(String paymentDate) async {
     // Get docs from collection reference
     // QuerySnapshot querySnapshot = await _collectionRef.get();
 
 
-    Query query = _collectionRef.where("BikeSaleMonth", isEqualTo: paymentDate);
+    Query query = _collectionRef.where("OrderMonth", isEqualTo: paymentDate);
     QuerySnapshot querySnapshot = await query.get();
 
     // Get data from docs and convert map to List
      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
 
-     moneyAdd = 0;
+     moneyAdd = 0.0;
 
 
 
@@ -124,8 +125,8 @@ Future<void> getData(String paymentDate) async {
 
       for (var i = 0; i < AllData.length; i++) {
 
-       var money = AllData[i]["BikeBillPay"];
-      int moneyInt = int.parse(money);
+       var money = AllData[i]["CashIn"];
+      double moneyInt = double.parse(money);
 
       
 
@@ -275,34 +276,49 @@ Future<void> getData(String paymentDate) async {
                     //  DateTime paymentDateTime = (AllData[index]["PaymentDateTime"] as Timestamp).toDate();
       
       
-                return   Padding(
+                return    Padding(
+                
                   padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                             shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Theme.of(context).primaryColor, width: 1),
-                    borderRadius: BorderRadius.circular(5),
-                  ), 
-                      
-                            title: Text("Sale Price:${AllData[index]["BikeSalePrice"]}৳", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-                            trailing: Text("NID:${AllData[index]["CustomerNID"]}"),
-                            subtitle: Column(
-      
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-      
-                                Text("Phone Numnber:${AllData[index]["CustomerPhoneNumber"]}"),
-      
-                                Text("Date: ${AllData[index]["BikeSaleDate"]}"),
-                                Text("Bill Pay: ${AllData[index]["BikeBillPay"]}", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),),
-                                Text("Seller Name: ${AllData[index]["adminName"]}"),
-                                Text("Seller Email: ${AllData[index]["adminEmail"]}"),
-                              ],
+                  child: PhysicalModel(
+
+                        color: Colors.white,
+                        elevation: 18,
+                        shadowColor: ColorName().appColor,
+                        borderRadius: BorderRadius.circular(20),
+                    child: ListTile(
+                  
+                    
+                    
+                        
+                              title: Text("Price: ${AllData[index]["TotalFoodPrice"]}৳", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+                              
+                              subtitle: Column(
+                        
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Name: ${AllData[index]["CustomerName"].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold),),
+                  
+                                  Text("Phone Numnber: ${AllData[index]["CustomerPhoneNumber"]}"),
+                  
+                                  Text("Order Type: ${AllData[index]["OrderType"]}"),
+                  
+                                  Text("Customer Type: ${AllData[index]["CustomerType"]}"),
+                  
+                                 AllData[index]["CustomerType"] =="Due"? Text("Due: ${AllData[index]["DueAmount"]}৳"):Text(""),
+                  
+                                 Text("Money Receiver E: ${AllData[index]["MoneyReceiverEmail"]}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                  
+                                 Text("Money Receiver N: ${AllData[index]["MoneyReceiverName"].toString().toUpperCase()}", style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),),
+                        
+                                  Text("Date: ${AllData[index]["OrderDate"]}"),
+                                ],
+                              ),
+                        
+                        
+                        
                             ),
-                      
-                      
-                      
-                          ),
+                  ),
                 );
               },
             ),

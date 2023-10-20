@@ -282,13 +282,14 @@ class _TableOrderState extends State<TableOrder> {
                   "CustomerPersonNumber":CustomerPersonNumberController.text.trim().toLowerCase(),
                   "OrderDate":"${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
                   "OrderTime":"${DateTime.now().toLocal().toIso8601String()}",
-                  "OrderMonth":"${DateTime.now().month}",
+                  "OrderMonth":"${DateTime.now().month}/${DateTime.now().year}",
                   "OrderYear":"${DateTime.now().year}",
                   "CustomerID":CustomerID,
                   "OrderID":CustomerID,
                   "OrderType":"offline",
                   "OrderStatus":"open",
                   "CustomerType":"Due",
+                  "CashIn":"0.0"
                   
            
                 };
@@ -376,13 +377,14 @@ class _TableOrderState extends State<TableOrder> {
                   "CustomerPersonNumber":CustomerPersonNumberController.text.trim().toLowerCase(),
                   "OrderDate":"${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
                   "OrderTime":"${DateTime.now().toLocal().toIso8601String()}",
-                  "OrderMonth":"${DateTime.now().month}",
+                  "OrderMonth":"${DateTime.now().month}/${DateTime.now().year}",
                   "OrderYear":"${DateTime.now().year}",
                   "CustomerID":CustomerID,
                   "OrderID":CustomerID,
                   "OrderType":"offline",
                   "OrderStatus":"open",
-                  "CustomerType":"Due"
+                  "CustomerType":"Due",
+                  "CashIn":"0.0"
            
                 };
 
