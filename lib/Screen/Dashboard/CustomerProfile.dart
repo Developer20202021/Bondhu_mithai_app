@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/Dashboard/EveryCustomerAllDueOrder.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -191,6 +192,8 @@ Future<void> getSaleData() async {
     return  Scaffold(
       backgroundColor: Colors.white,
 
+      
+
 
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 5, right: 5, bottom: 9),
@@ -287,6 +290,8 @@ Future<void> getSaleData() async {
             ],
           ),),
       ),
+
+      
       
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -550,6 +555,34 @@ Future<void> getSaleData() async {
       
       
                       SizedBox(height: 15,),
+
+
+                      
+      
+      
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+      
+                          Container(width: 150, child:TextButton(onPressed: (){
+      
+      
+                                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryCustomerAllDueOrder(indexNumber: "", CustomerPhoneNumber: AllData[0]["CustomerPhoneNumber"])));
+      
+      
+                           
+      
+      
+      
+      
+      
+                          }, child: Text("Due Order", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                           
+                  backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
+                ),),),
+                        ],
+                      )
       
       
                  

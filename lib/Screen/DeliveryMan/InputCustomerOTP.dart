@@ -123,7 +123,8 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
 
                         "OrderStatus":"close",
                         "DeliveryStatus":"DeliveryComplete",
-                        "DeliveryManSetOTP":"Done"
+                        "DeliveryManSetOTP":"Done",
+                        "CustomerType":"Paid"
                       };
 
 

@@ -29,7 +29,7 @@ List  AllData = [];
 
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('customer');
+    FirebaseFirestore.instance.collection('CustomerInfo');
 
 Future<void> getData() async {
     // Get docs from collection reference
