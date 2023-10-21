@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/EditBazarList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -258,9 +259,50 @@ try {
                         borderRadius: BorderRadius.circular(20),
                     child: ListTile(
 
+                      onLongPress: () {
+
+                          showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                          title: Text('Delete This Item?'),
+                          content: Row(
+                            
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            
+                            children: [
+
+
+                               Container(width: 100, child:TextButton(onPressed: () async{
+
+                setState(() {
+                  loading = true;
+                });
+                final docUser = FirebaseFirestore.instance.collection("BazarList").doc(item["FoodID"]).delete().then((value) => print("Delete"));
+
+
+                DataCallFromServer();
+
+
+                         }, child: Text("Delete", style: TextStyle(color: Colors.white, fontSize: 13),), style: ButtonStyle(
+                   
+              backgroundColor: MaterialStatePropertyAll<Color>(const Color.fromARGB(220,218, 44, 56)),
+                          ),),),
+
+
+                          ],),
+                      )
+                  );
+                        
+
+                      },
+
+
+
+
+
                       onTap: () {
 
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditBazarList(ItemID: item["FoodID"], FoodAmount: item["FoodAmount"], FoodName: item["FoodName"], FoodPrice: item["FoodPrice"], FoodUnit: item["FoodUnit"])));
                       },
                   
                     

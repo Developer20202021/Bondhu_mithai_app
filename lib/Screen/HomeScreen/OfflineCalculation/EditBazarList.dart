@@ -4,20 +4,30 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/BazarList
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:uuid/uuid.dart';
 
-class createBazarList extends StatefulWidget {
-  const createBazarList({super.key});
+
+class EditBazarList extends StatefulWidget {
+
+  final ItemID;
+  final FoodName; 
+  final FoodPrice;
+  final FoodAmount;
+  final FoodUnit;
+
+
+
+
+  const EditBazarList({super.key, required this.ItemID, required this.FoodAmount, required this.FoodName, required this.FoodPrice, required this.FoodUnit});
 
   @override
-  State<createBazarList> createState() => _createBazarListState();
+  State<EditBazarList> createState() => _EditBazarListState();
 }
 
-class _createBazarListState extends State<createBazarList> {
+class _EditBazarListState extends State<EditBazarList> {
 
 
   
-  var uuid = Uuid();
+
       
   bool loading = false;
 
@@ -36,80 +46,30 @@ List  AllData = [];
 
 
 
-  Future DataCallFromServer() async {
 
-
-    setState(() {
-      loading = true;
-    });
-      CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('BazarList');
-
-    Query _CollectionRefQuery = _collectionRef.where("BazarStatus", isEqualTo: "open");
-
-
-
-        QuerySnapshot querySnapshot = await _CollectionRefQuery.get();
-
-    // Get data from docs and convert map to List
-     AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-     if (AllData.length == 0) {
-      setState(() {
-        DataLoad = "0";
-        loading = false;
-      });
-       
-     } else {
-
-      setState(() {
-     
-       AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-      loading = false;
-     });
-       
-     }
-
-print(AllData);
-
-FoodNameController.clear();
-FoodAmountController.clear();
-FoodPriceController.clear();
-
-
-
-
-
-  }
 
 
 
   Future DataSendToServer(String ItemID) async{
 
+
+
+
     setState(() {
       loading =true;
     });
 
-      double FoodAmountDouble = double.parse(FoodAmountController.text.trim());
 
-      double FoodPriceDouble = double.parse(FoodPriceController.text.trim());
-
-      double TotalFoodPriceDouble = FoodAmountDouble * FoodPriceDouble;
-
-
-    final docUser = FirebaseFirestore.instance.collection("BazarList");
+    final docUser = FirebaseFirestore.instance.collection("BazarList").doc(ItemID);
 
 
          var BazarListData ={
 
-                "FoodID":ItemID,
+                
                 "FoodName":FoodNameController.text.trim().toLowerCase(),
                 "FoodPrice":FoodPriceController.text.trim(),
                 "FoodAmount":FoodAmountController.text.trim(),
                 "FoodUnit":SelectedValue.toString(),
-                "Date":"${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-                "month":"${DateTime.now().month}/${DateTime.now().year}",
-                "year":"${DateTime.now().year}",
-                "TotalFoodPrice":TotalFoodPriceDouble.toString(),
                 "BazarStatus":"open"
 
            
@@ -122,17 +82,20 @@ FoodPriceController.clear();
 
 
 
+        print(BazarListData);
 
 
 
 
-          docUser.doc(ItemID).set(BazarListData).then((value) =>setState(() async{
 
 
-              DataCallFromServer();
+
+          docUser.update(BazarListData).then((value) =>setState(() async{
+
+
 
              
-
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => BazarList()));
                  
 
 
@@ -181,89 +144,7 @@ FoodPriceController.clear();
 
 
 
-  Future DataBazarStatusClose() async{
-
-    setState(() {
-      loading = true;
-    });
-
-    
-try {
-
-
   
-    for (var i = 0; i < AllData.length; i++) {
-
-
-      
-
-         final docUser = FirebaseFirestore.instance.collection("BazarList").doc(AllData[i]["FoodID"]);
-
-                  final UpadateData ={
-
-                      "BazarStatus":"close"
-
-                
-                };
-
-
-
-
-
-                // user Data Update and show snackbar
-
-                  docUser.update(UpadateData).then((value) => setState((){
-
-
-                    print("Done");
-
-                 
-                  DataCallFromServer();
-                    
-             
-
-                 
-
-
-
-
-                  })).onError((error, stackTrace) => setState((){
-
-                    print(error);
-
-                  }));
-
-
-
-
-      
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-} catch (e) {
-  
-}
-
-
-
-
-
-
-
-
-  }
 
 
 
@@ -271,7 +152,7 @@ try {
   void initState() {
 
     setState(() {
-      DataCallFromServer();
+      SelectedValue = widget.FoodUnit;
     });
     // TODO: implement initState
     super.initState();
@@ -286,23 +167,23 @@ try {
   @override
   Widget build(BuildContext context) {
 
-  var ItemID = uuid.v4();
+
+    FoodAmountController.text = widget.FoodAmount;
+    FoodNameController.text = widget.FoodName;
+    FoodPriceController.text = widget.FoodPrice;
+
+    
+
+
+
+
 
 
 
 
 
     return Scaffold(
-      floatingActionButton:  FloatingActionButton(onPressed: ()async{
 
-                  DataBazarStatusClose();
-
-      },
-
-      child: Text("Clear", style: TextStyle(fontWeight: FontWeight.bold),),
-      
-      
-      ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(color: ColorName().appColor),
@@ -310,23 +191,13 @@ try {
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.chevron_left)),
           title: const Text(
-            "Create Bazar List",
+            "Edit Bazar List",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.transparent,
           bottomOpacity: 0.0,
           elevation: 0.0,
-          actions: [
-
-            IconButton(onPressed: (){
-
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => BazarList()));
-
-            }, icon: Icon(Icons.arrow_forward))
-
-
-
-          ],
+       
         ),
         body: loading?Center(
           child: LoadingAnimationWidget.discreteCircle(
@@ -484,13 +355,15 @@ try {
                       
                          Container(width: 150, child:TextButton(onPressed: () async{
 
+                      
+                      print("_____________________________________________________________________${widget.ItemID}");
 
-                       DataSendToServer(ItemID);
+                       DataSendToServer(widget.ItemID);
 
 
 
 
-                         }, child: Text("Add", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                         }, child: Text("Edit", style: TextStyle(color: Colors.white),), style: ButtonStyle(
                    
               backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
                           ),),),
@@ -505,90 +378,7 @@ try {
 
 
     
-          for(var item in AllData)
 
-                 Padding(
-                
-                  padding: const EdgeInsets.all(8.0),
-                  child: PhysicalModel(
-
-                        color: Colors.white,
-                        elevation: 18,
-                        shadowColor: ColorName().appColor,
-                        borderRadius: BorderRadius.circular(20),
-                    child: ListTile(
-
-                      onLongPress: () {
-
-                          showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                          title: Text('Delete This Item?'),
-                          content: Row(
-                            
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            
-                            children: [
-
-
-                               Container(width: 100, child:TextButton(onPressed: () async{
-
-                setState(() {
-                  loading = true;
-                });
-                final docUser = FirebaseFirestore.instance.collection("BazarList").doc(item["FoodID"]).delete().then((value) => print("Delete"));
-
-
-                DataCallFromServer();
-
-
-                         }, child: Text("Delete", style: TextStyle(color: Colors.white, fontSize: 13),), style: ButtonStyle(
-                   
-              backgroundColor: MaterialStatePropertyAll<Color>(const Color.fromARGB(220,218, 44, 56)),
-                          ),),),
-
-
-                          ],),
-                      )
-                  );
-                        
-
-                      },
-
-                      onTap: () {
-
-                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen()));
-                      },
-                  
-                    
-                        
-                        
-                              title: Text("${item["FoodName"]}", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-                              
-                              subtitle: Column(
-                        
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Amount: ${item["FoodAmount"]} ${item["FoodUnit"]}", style: TextStyle(fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,),
-                  
-                                  Text("Food Price: ${item["FoodPrice"]}৳", style: TextStyle(fontWeight: FontWeight.bold),),
-
-                                  Text("Bazar Date: ${item["Date"]}", style: TextStyle(fontWeight: FontWeight.bold),),
-
-                                  Text("Bazar Status: ${item["BazarStatus"]}", style: TextStyle(fontWeight: FontWeight.bold),),
-
-                              
-
-                  
-                                ],
-                              ),
-                        
-                        
-                        
-                            ),
-                  ),
-                )
 
 
     // "FoodID":ItemID,
