@@ -9,6 +9,7 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllPackagingOrder.d
 import 'package:bondhu_mithai_app/Screen/HomeScreen/EveryFoodScreen/EveryFoodScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/FoodUploadScreen/FoodUploadScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/BazarList.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/createBazarList.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? BazarList(): FrontSlider(),
+      home: showHome ? createBazarList(): FrontSlider(),
     );
   }
 }
