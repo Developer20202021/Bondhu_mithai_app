@@ -9,10 +9,12 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllPackagingOrder.d
 import 'package:bondhu_mithai_app/Screen/HomeScreen/EveryFoodScreen/EveryFoodScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/FoodUploadScreen/FoodUploadScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/BazarList.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/PerDayBazarListCost.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/createBazarList.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
+import 'package:bondhu_mithai_app/Screen/UsersScreen/UserFoods.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -54,7 +56,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? createBazarList(): FrontSlider(),
+      home: showHome ? UserFoods(): FrontSlider(),
     );
   }
 }

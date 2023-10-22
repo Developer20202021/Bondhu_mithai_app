@@ -1,9 +1,23 @@
+import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:dotted_line/dotted_line.dart';
 
 class EveryFoodScreen extends StatefulWidget {
-  const EveryFoodScreen({super.key});
+
+  final FoodID;
+  final FoodName;
+  final DiscountAvailable;
+  final foodImageUrl;
+  final FoodSalePrice;
+  final FoodDiscountPrice;
+  final FoodDescription;
+  final FoodUnit;
+
+
+
+
+  const EveryFoodScreen({super.key, required this.DiscountAvailable, required this.FoodDiscountPrice, required this.FoodID, required this.FoodName, required this.FoodSalePrice, required this.foodImageUrl, required this.FoodDescription, required this.FoodUnit});
 
   @override
   State<EveryFoodScreen> createState() => _EveryFoodScreenState();
@@ -117,7 +131,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                     child: SizedBox.fromSize(
                       size: Size.fromRadius(158), // Image radius
                       child: Image.network(
-                        'https://img.freepik.com/premium-photo/hamburger-with-flying-ingredients-white-background_787273-480.jpg?w=2000',
+                        '${widget.foodImageUrl}',
                         width: 400,
                         height: 350,
                       ),
@@ -131,7 +145,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
 
                 Center(
                   child: Text(
-                    "This Food is Very good. You can purchase this food.",
+                    "${widget.FoodName}",
                     style: TextStyle(
                         color: Color.fromARGB(255, 48, 2, 56),
                         fontWeight: FontWeight.bold,
@@ -150,16 +164,51 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                       children: [
                         Container(
                           child: Icon(
-                            Icons.line_weight,
+                            Icons.sell,
                             size: 40,
-                            color: Colors.purple,
+                            color: ColorName().appColor,
                           ),
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Text(
-                          "320gm",
+                          "Per${widget.FoodUnit} Price ${widget.FoodSalePrice}৳",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 48, 2, 56),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        )
+                      ],
+                    ),
+                
+                  ],
+                ),
+
+                SizedBox(
+                  height: 30,
+                ),
+
+
+
+
+                                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          child: Icon(
+                            Icons.discount,
+                            size: 40,
+                            color: ColorName().appColor,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Discount Price: ${widget.FoodDiscountPrice}৳",
                           style: TextStyle(
                               color: Color.fromARGB(255, 48, 2, 56),
                               fontWeight: FontWeight.bold,
@@ -172,13 +221,13 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                         RatingBarIndicator(
                             rating: 2.5,
                             itemCount: 5,
-                            itemSize: 24.0,
-                            itemBuilder: (context, _) => const Icon(
+                            itemSize: 18.0,
+                            itemBuilder: (context, _) =>  Icon(
                                   Icons.star,
-                                  color: Colors.purple,
+                                  color: ColorName().appColor,
                                 )),
                         SizedBox(
-                          width: 10,
+                          width: 5,
                         ),
                         Text(
                           "Rating",
@@ -192,7 +241,8 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   ],
                 ),
 
-                SizedBox(
+
+                 SizedBox(
                   height: 30,
                 ),
 
@@ -204,11 +254,11 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   lineThickness: 1.0,
                   dashLength: 4.0,
                   dashColor: Colors.black,
-                  dashGradient: [Colors.grey, Colors.purple],
+                  dashGradient: [Colors.grey, ColorName().appColor],
                   dashRadius: 0.0,
                   dashGapLength: 4.0,
                   dashGapColor: Colors.transparent,
-                  dashGapGradient: [Colors.grey, Colors.purple],
+                  dashGapGradient: [Colors.grey, ColorName().appColor],
                   dashGapRadius: 0.0,
                 )),
 
@@ -235,7 +285,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     child: Text(
-                      "Potato, Biscuits, Tomato, Meat, Egg, Mutton",
+                      "${widget.FoodDescription}",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.grey,

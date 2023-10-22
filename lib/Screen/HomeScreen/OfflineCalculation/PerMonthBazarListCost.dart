@@ -18,7 +18,7 @@ class _PerDayBazarListCostState extends State<PerDayBazarListCost> {
 
   // এখানে Date দিয়ে Data fetch করতে হবে। 
 
-  var VisiblePaymentDate = "${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}";
+  var VisiblePaymentDate = "${DateTime.now().month.toString()}/${DateTime.now().year.toString()}";
   
 
 
@@ -33,7 +33,7 @@ class _PerDayBazarListCostState extends State<PerDayBazarListCost> {
           var adminSetMonth = rangeStartDate.month;
           var adminSetYear = rangeStartDate.year;
 
-          var paymentDate = "${adminSetDay}/${adminSetMonth}/${adminSetYear}";
+          var paymentDate = "${adminSetMonth}/${adminSetYear}";
 
           VisiblePaymentDate = paymentDate;
 
@@ -72,7 +72,7 @@ class _PerDayBazarListCostState extends State<PerDayBazarListCost> {
 
 
 
- var PaymentDate = "${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}";
+ var PaymentDate = "${DateTime.now().month.toString()}/${DateTime.now().year.toString()}";
 
 
    var DataLoad = ""; 
@@ -97,7 +97,7 @@ Future<void> getData(String OrderDate) async {
     // QuerySnapshot querySnapshot = await _collectionRef.get();
 
 
-    Query query = _collectionRef.where("Date", isEqualTo: OrderDate);
+    Query query = _collectionRef.where("month", isEqualTo: OrderDate);
     QuerySnapshot querySnapshot = await query.get();
 
     // Get data from docs and convert map to List
@@ -203,7 +203,7 @@ Future<void> getData(String OrderDate) async {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         leading: IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.chevron_left)),
-        title:  Text("Per Day Bazar History", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        title:  Text("Per Month Bazar History", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,

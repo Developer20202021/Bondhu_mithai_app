@@ -341,195 +341,188 @@ setState(() {
   showModalBottomSheet(
     context: context,
     builder: (context) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-
-
-         
-
-          Container(
+      return Container(
         
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                
-                  border: Border.all(
-                            width: 1,
-                            color: Colors.grey
-                          ),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))    
-                 ),
+          decoration: BoxDecoration(
+              color: Colors.white,
             
-          
-            child: Column(
-              children: [
-                Table(
-                      border: TableBorder.all(color:Colors.grey),
+              border: Border.all(
+                        width: 1,
+                        color: Colors.grey
+                      ),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))    
+             ),
+        
+      
+        child: Column(
+          children: [
+            Table(
+                  border: TableBorder.all(color:Colors.grey),
+                  children: [
+
+
+                  // The first row just contains a phrase 'INVOICE FOR PAYMENT'
+                    TableRow(
                       children: [
-
-
-                      // The first row just contains a phrase 'INVOICE FOR PAYMENT'
-                        TableRow(
-                          children: [
-                            Padding(
-                              child: Text(
-                                'Name',
-                               
-                               
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-                               Padding(
-                              child: Text(
-                                'Mahadi Hasan',
-                               
-                               
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-                          ],
+                        Padding(
+                          child: Text(
+                            'Name',
+                           
+                           
+                          ),
+                          padding: EdgeInsets.all(6),
                         ),
+
+                           Padding(
+                          child: Text(
+                            '${widget.CustomerName.toString().toUpperCase()}',
+                           
+                           
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+                      ],
+                    ),
+
+
+                
+
+
+
+                  TableRow(
+                      children: [
+                        Padding(
+                          child: Text(
+                            'Address',
+                           
+                            
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+                          Padding(
+                          child: Text(
+                            '',
+                          
+                         
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+
+
+                      ],
+                    ),
+
+
+
+                    TableRow(
+                      children: [
+                        Padding(
+                          child: Text(
+                            'Phone Number',
+                           
+                         
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+                          Padding(
+                          child: Text(
+                            '${widget.CustomerPhoneNumber}',
+                         
+                      
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+
+
+                      ],
+                    ),
+
+                    
+                    TableRow(
+                      children: [
+                        Padding(
+                          child: Text(
+                            'Total Price',
+                           
+                       
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+                          Padding(
+                          child: Text(
+                            '${CustomerFoodPrice.toString()}৳',
+                         
+                        
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+
+
+                      ],
+                    ),
+
+
+
+                    
+                    TableRow(
+                      children: [
+                        Padding(
+                          child: Text(
+                            'Delivery Fee',
+                           
+                     
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+                          Padding(
+                          child: Text(
+                            '0৳',
+                         
+                          ),
+                          padding: EdgeInsets.all(6),
+                        ),
+
+
+
+
+                      ],
+                    ),
+
+
+
+                         
+                    
 
 
                     
 
 
 
-                      TableRow(
-                          children: [
-                            Padding(
-                              child: Text(
-                                'Address',
-                               
-                                
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-                              Padding(
-                              child: Text(
-                                'Joypurhat',
-                              
-                             
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-
-
-                          ],
-                        ),
-
-
-
-                        TableRow(
-                          children: [
-                            Padding(
-                              child: Text(
-                                'Phone Number',
-                               
-                             
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-                              Padding(
-                              child: Text(
-                                '01721915550',
-                             
-                          
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-
-
-                          ],
-                        ),
-
-                        
-                        TableRow(
-                          children: [
-                            Padding(
-                              child: Text(
-                                'Total Price',
-                               
-                           
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-                              Padding(
-                              child: Text(
-                                '${CustomerFoodPrice.toString()}৳',
-                             
-                            
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-
-
-                          ],
-                        ),
-
-
-
-                        
-                        TableRow(
-                          children: [
-                            Padding(
-                              child: Text(
-                                'Delivery Fee',
-                               
-                         
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-                              Padding(
-                              child: Text(
-                                '40৳',
-                             
-                              ),
-                              padding: EdgeInsets.all(6),
-                            ),
-
-
-
-
-                          ],
-                        ),
-
-
-
-                             
-                        
-
-
-                        
-
-
-
-                      
+                  
 
 
 
 
 
-          ]),
+      ]),
 
 
 
-          
+      
 
 
 
@@ -541,20 +534,8 @@ setState(() {
 
 
 
-              ],
-            ),),
-
-
-
-          
-           
-
-
-           
-          
-        
-        ],
-      );
+          ],
+        ),);
     });
 
 
@@ -575,13 +556,13 @@ setState(() {
 
 
                 Text(
-                  "Name: Mahadi Hasan",
+                  "Name: ${widget.CustomerName.toString().toUpperCase()}",
                   style:
                       TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                 ),
 
                 Text(
-                  "Phone No: 01721915550",
+                  "Phone No: ${widget.CustomerPhoneNumber}",
                   style:
                        TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                 ),
