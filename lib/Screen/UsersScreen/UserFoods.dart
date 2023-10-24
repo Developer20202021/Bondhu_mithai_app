@@ -395,7 +395,7 @@ Future<void> getData() async {
 
 
                                       
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen(DiscountAvailable: AllData[index]["DiscountAvailable"], FoodDiscountPrice: AllData[index]["FoodDiscountPrice"], FoodID: AllData[index]["FoodID"], FoodName: AllData[index]["FoodName"], FoodSalePrice: AllData[index]["FoodSalePrice"], foodImageUrl: AllData[index]["foodImageUrl"], FoodDescription: null, FoodUnit: null,)));
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen(DiscountAvailable: AllData[index]["DiscountAvailable"], FoodDiscountPrice: AllData[index]["FoodDiscountPrice"], FoodID: AllData[index]["FoodID"], FoodName: AllData[index]["FoodName"], FoodSalePrice: AllData[index]["FoodSalePrice"], foodImageUrl: AllData[index]["foodImageUrl"], FoodDescription: null, FoodUnit: null,)));
 
                          
 

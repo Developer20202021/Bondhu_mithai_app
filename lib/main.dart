@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? UserFoods(): FrontSlider(),
+      home: showHome ? AllFood(): FrontSlider(),
     );
   }
 }

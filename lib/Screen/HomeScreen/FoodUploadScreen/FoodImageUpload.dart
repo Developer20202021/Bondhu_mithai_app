@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/AllFood/AllFood.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,7 +45,7 @@ class _FoodImageUploadState extends State<FoodImageUpload> {
 
   final ImagePicker _picker = ImagePicker();
 
-  Future imgFromGallery(Context) async {
+  Future imgFromGallery(BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
@@ -64,7 +65,7 @@ class _FoodImageUploadState extends State<FoodImageUpload> {
     });
   }
 
-  Future imgFromCamera(Context) async {
+  Future imgFromCamera(BuildContext context) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
     setState(() {
@@ -77,7 +78,7 @@ class _FoodImageUploadState extends State<FoodImageUpload> {
     });
   }
 
-  Future uploadFile(Context) async {
+  Future uploadFile(BuildContext context) async {
     if (_photo == null) return;
     
     final fileName = basename(_photo!.path);
@@ -113,7 +114,7 @@ class _FoodImageUploadState extends State<FoodImageUpload> {
 
           print(serverImageUrl);
 
-          updateData(serverImageUrl);
+          updateData(serverImageUrl,context);
 
 
 
@@ -190,7 +191,7 @@ class _FoodImageUploadState extends State<FoodImageUpload> {
 
 
 
-  Future updateData(String foodImageUrl) async{
+  Future updateData(String foodImageUrl,BuildContext context) async{
 
 
 
@@ -214,6 +215,11 @@ class _FoodImageUploadState extends State<FoodImageUpload> {
 
 
                     print("Done");
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllFood()),
+                );
 
 
 

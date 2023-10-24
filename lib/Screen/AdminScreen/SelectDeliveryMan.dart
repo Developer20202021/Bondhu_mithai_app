@@ -70,6 +70,69 @@ Future updateCustomerData(String DeliveryManEmail) async{
                   docUser.update(UpadateData).then((value) => setState(() async{
 
 
+
+                           
+                  var CustomerOTPmsg = "বন্ধু মিঠাই, Dear Customer, আপনার OTP ${CustomerOTP}। এটি শুধু Delivery Man কে দিবেন।";
+
+
+
+                  final response = await http
+                      .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01721915550&message=${CustomerOTPmsg}'));
+
+                  if (response.statusCode == 200) {
+                    // If the server did return a 200 OK response,
+                    // then parse the JSON.
+                    print(jsonDecode(response.body));
+                    
+                  
+                  } else {
+                    // If the server did not return a 200 OK response,
+                    // then throw an exception.
+                    throw Exception('Failed to load album');
+                  }
+
+
+
+
+
+
+
+
+                  // Update Delivery Man Data for New Order
+
+                  updateDeliveryManData(DeliveryManEmail);
+
+
+
+
+
+
+
+
+
+
+
+              
+                final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Successfully Added',
+                      message:
+                          'Your Delivery Man is Added Successfully',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.success,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+
                 
 
 
@@ -81,8 +144,6 @@ Future updateCustomerData(String DeliveryManEmail) async{
 
 
 
-                    // update delivery man function call
-                      updateDeliveryManData( DeliveryManEmail);
 
 
                   })).onError((error, stackTrace) => setState((){
@@ -108,13 +169,35 @@ Future updateCustomerData(String DeliveryManEmail) async{
 Future updateDeliveryManData(String DeliveryManEmail) async{
 
 
+
+  
+      CollectionReference _collectionDeliveryManRef =
+                FirebaseFirestore.instance.collection('DeliveryMan');
+
+      Query DeliveryManQuery = _collectionDeliveryManRef.where("DeliveryManEmail",    isEqualTo: DeliveryManEmail);
+
+
+      QuerySnapshot DeliveryManQuerySnapshot = await DeliveryManQuery.get();
+
+      List  DeliveryManData = DeliveryManQuerySnapshot.docs.map((doc) => doc.data()).toList();
+
+
+      var deliveryCountString = DeliveryManData[0]["DeliveryCount"];
+
+      int deliveryCountDouble = int.parse(deliveryCountString);
+
+
+  
+
+
          final docUser = FirebaseFirestore.instance.collection("DeliveryMan").doc(DeliveryManEmail);
 
                   final UpadateData ={
 
-                   
-                    "DeliveryManDeliveryStatus":"packaging",
-                    "DeliveryStatus":"open"
+
+                    "DeliveryCount":deliveryCountDouble + 1
+
+
 
                 
                 };
@@ -134,12 +217,12 @@ Future updateDeliveryManData(String DeliveryManEmail) async{
 
 
                         
-                  var CustomerOTPmsg = "বন্ধু মিঠাই, Dear Customer, আপনার OTP ${CustomerOTP}। এটি শুধু Delivery Man কে দিবেন।";
+                  var DeliveryManMsg = "Hello Sir, আপনার একটি নতুন Online Order এসেছে। Phone No.${widget.CustomerNumber}";
 
 
 
                   final response = await http
-                      .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01721915550&message=${CustomerOTPmsg}'));
+                      .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01721915550&message=${DeliveryManMsg}'));
 
                   if (response.statusCode == 200) {
                     // If the server did return a 200 OK response,

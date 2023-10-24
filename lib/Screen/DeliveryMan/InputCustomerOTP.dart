@@ -41,6 +41,8 @@ class InputCustomerOTP extends StatefulWidget {
 
 class _InputCustomerOTPState extends State<InputCustomerOTP> {
   TextEditingController CustomerOTPController = TextEditingController();
+  TextEditingController CustomerCashInController = TextEditingController();
+
   // TextEditingController myPassController = TextEditingController();
 
 
@@ -48,6 +50,81 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
   bool loading = false;
 
   var ServerMsg = "";
+
+  var deliveryManTotalMoneyReceive = "0.0";
+
+
+
+
+
+
+
+
+
+
+  List  AllData = [];
+
+
+  // CollectionReference _collectionRef =
+  //   FirebaseFirestore.instance.collection('customer');
+
+Future<void> getData() async {
+    // Get docs from collection reference
+
+      CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('DeliveryMan');
+
+
+
+    
+      Query CustomerOrderHistoryQuery = _collectionRef.where("DeliveryManEmail", isEqualTo: "delivery@gmail.com");
+
+
+
+    QuerySnapshot querySnapshot = await CustomerOrderHistoryQuery.get();
+
+    // Get data from docs and convert map to List
+     AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+     if (AllData.length == 0) {
+      setState(() {
+        deliveryManTotalMoneyReceive = "0.0";
+      });
+       
+     } else {
+
+      setState(() {
+     
+      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+      deliveryManTotalMoneyReceive = AllData[0]["Cash"];
+
+      loading = false;
+     });
+       
+     }
+     
+
+    print(AllData);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -117,6 +194,8 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
      
      final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(widget.OrderID);
 
+     final docDeliveryMan = FirebaseFirestore.instance.collection("DeliveryMan").doc("delivery@gmail.com");
+
 
                       var updateData ={
 
@@ -124,8 +203,25 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
                         "OrderStatus":"close",
                         "DeliveryStatus":"DeliveryComplete",
                         "DeliveryManSetOTP":"Done",
-                        "CustomerType":"Paid"
+                        "CustomerType":"Paid",
+                        "MoneyReceiverEmail":"",
+                        "MoneyReceiverName":"",
+                        "CashIn":CustomerCashInController.text.trim(),
+                        "DueAmount":"0.0"
+
                       };
+
+
+
+             var updateDeliveryManData = {
+
+              "Cash":double.parse("deliveryManTotalMoneyReceive") + double.parse(CustomerCashInController.text.trim().toString())
+
+
+
+             };
+
+
 
 
                   //     FirebaseAuth.instance
@@ -178,7 +274,12 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
 
 
 
-                          docUser.update(updateData).then((value) => setState((){
+             docUser.update(updateData).then((value) => setState((){
+
+
+                          
+
+                        docDeliveryMan.update(updateData).then((value) => setState((){
 
 
 
@@ -205,8 +306,75 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
               
 
 
+                    
+                  loading = false;
+
               
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryManCustomers(indexNumber: "")));
+
+
+
+
+
+
+
+
+                          })).onError((error, stackTrace) => setState((){
+
+
+
+
+                              final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Wrong OTP!!!!',
+                      message:
+                          'Hey You Add Wrong OTP!!!',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.failure,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+
+
+
+
+
+
+
+
+                          }));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+
+              
+
+
+              
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryManCustomers(indexNumber: "")));
 
 
 
@@ -253,7 +421,6 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
       
       
       
-      loading = false;
      });
        
      }
@@ -273,6 +440,15 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
 
 
   var otpTextField;
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
 
 
 
@@ -383,6 +559,40 @@ class _InputCustomerOTPState extends State<InputCustomerOTP> {
             
                     SizedBox(
                       height: 10,
+                    ),
+
+
+
+                     TextField(
+                      keyboardType: TextInputType.number,
+                     
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Enter Customer Cash',
+                           labelStyle: TextStyle(
+              color: myFocusNode.hasFocus ? ColorName().appColor: Colors.black
+                  ),
+                          hintText: 'Enter Customer Cash',
+            
+                          //  enabledBorder: OutlineInputBorder(
+                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                          //     ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 3, color: Theme.of(context).primaryColor),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 3, color: ColorName().appColor),
+                              ),
+                          
+                          
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              otpTextField = value;
+                            });
+                          },
+                      controller: CustomerCashInController,
                     ),
             
             

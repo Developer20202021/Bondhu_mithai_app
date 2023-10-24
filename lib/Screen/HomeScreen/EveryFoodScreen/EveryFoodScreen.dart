@@ -13,11 +13,12 @@ class EveryFoodScreen extends StatefulWidget {
   final FoodDiscountPrice;
   final FoodDescription;
   final FoodUnit;
+  final FoodTag;
 
 
 
 
-  const EveryFoodScreen({super.key, required this.DiscountAvailable, required this.FoodDiscountPrice, required this.FoodID, required this.FoodName, required this.FoodSalePrice, required this.foodImageUrl, required this.FoodDescription, required this.FoodUnit});
+  const EveryFoodScreen({super.key, required this.DiscountAvailable, required this.FoodDiscountPrice, required this.FoodID, required this.FoodName, required this.FoodSalePrice, required this.foodImageUrl, required this.FoodDescription, required this.FoodUnit, required this.FoodTag});
 
   @override
   State<EveryFoodScreen> createState() => _EveryFoodScreenState();
@@ -107,7 +108,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.purple),
+        iconTheme: IconThemeData(color: ColorName().appColor),
         leading: IconButton(
             onPressed: () => Navigator.of(context).pop(),
             icon: Icon(Icons.chevron_left)),
@@ -154,7 +155,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                 ),
 
                 SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
 
                 Row(
@@ -165,7 +166,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                         Container(
                           child: Icon(
                             Icons.sell,
-                            size: 40,
+                            size: 16,
                             color: ColorName().appColor,
                           ),
                         ),
@@ -173,11 +174,11 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                           width: 10,
                         ),
                         Text(
-                          "Per${widget.FoodUnit} Price ${widget.FoodSalePrice}৳",
+                          "Per ${widget.FoodUnit} Price ${widget.FoodSalePrice}৳",
                           style: TextStyle(
                               color: Color.fromARGB(255, 48, 2, 56),
                               fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                              fontSize: 16),
                         )
                       ],
                     ),
@@ -186,13 +187,13 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                 ),
 
                 SizedBox(
-                  height: 30,
+                  height: 15,
                 ),
 
 
 
 
-                                Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
@@ -200,7 +201,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                         Container(
                           child: Icon(
                             Icons.discount,
-                            size: 40,
+                            size: 16,
                             color: ColorName().appColor,
                           ),
                         ),
@@ -212,11 +213,20 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                           style: TextStyle(
                               color: Color.fromARGB(255, 48, 2, 56),
                               fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                              fontSize: 16),
                         )
                       ],
                     ),
-                    Row(
+                    
+                  ],
+                ),
+
+              SizedBox(
+                  height: 15,
+                ),
+
+
+                Row(
                       children: [
                         RatingBarIndicator(
                             rating: 2.5,
@@ -238,12 +248,10 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                         )
                       ],
                     ),
-                  ],
-                ),
 
 
                  SizedBox(
-                  height: 30,
+                  height: 15,
                 ),
 
                 Container(
@@ -270,7 +278,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     child: Text(
-                      "Ingredients",
+                      "Description",
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Color.fromARGB(255, 48, 2, 56),
@@ -300,53 +308,10 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   height: 50,
                 ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      width: 100,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Meat",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(Colors.purple),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Breakfast",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(Colors.purple),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Hot Meals",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(Colors.purple),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+
+                Text("FoodTag: ${widget.FoodTag.toString()}"),
+
+                
 
                 SizedBox(
                   height: 20,
@@ -360,11 +325,11 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   lineThickness: 1.0,
                   dashLength: 4.0,
                   dashColor: Colors.black,
-                  dashGradient: [Colors.grey, Colors.purple],
+                  dashGradient: [Colors.grey, ColorName().appColor],
                   dashRadius: 0.0,
                   dashGapLength: 4.0,
                   dashGapColor: Colors.transparent,
-                  dashGapGradient: [Colors.grey, Colors.purple],
+                  dashGapGradient: [Colors.grey, ColorName().appColor],
                   dashGapRadius: 0.0,
                 )),
 
@@ -450,90 +415,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
               ],
             )),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          color: Color.fromARGB(255, 203, 103, 221),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "50",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      width: 180,
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(width: 2, color: Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                      ),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  minusOne();
-                                },
-                                icon: Icon(Icons.exposure_minus_1)),
-                            Text(
-                              "${UserAddToCartNumber}",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  // var NewValue = UserAddToCartNumber + 1;
-                                  plusOne();
-                                },
-                                icon: Icon(Icons.plus_one)),
-                          ]),
-                    ),
-                  ],
-                ),
-                Container(
-                    width: 90,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(width: 2, color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.shopping_cart, 
-                        
-                        color: Colors.purple,
-                        
-                        ),
-                        Text(
-                          "${UserAddToCartNumber}",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
-                    ))
-              ],
-            ),
-          ),
-        ),
-      ),
+     
     );
   }
 }

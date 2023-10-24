@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bondhu_mithai_app/Screen/HomeScreen/AllFood/AllFood.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/FoodUploadScreen/FoodImageUpload.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,21 +10,35 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:http/http.dart' as http;
-import 'package:uuid/uuid.dart';
 
 
 
 
-class FoodUploadScreen extends StatefulWidget {
-  const FoodUploadScreen({super.key});
+
+class EditFoodScreen extends StatefulWidget {
+
+  final FoodID;
+  final FoodName;
+  final FoodSalePrice;
+  final FoodDiscountPrice;
+  final FoodDescription;
+  final FoodUnit;
+  final DiscountAvailable;
+  final List FoodTag;
+
+
+
+
+
+  const EditFoodScreen({super.key, required this.FoodID, required this.DiscountAvailable, required this.FoodDescription, required this.FoodDiscountPrice, required this.FoodName, required this.FoodSalePrice, required this.FoodTag, required this.FoodUnit});
 
   @override
-  State<FoodUploadScreen> createState() => _FoodUploadScreenState();
+  State<EditFoodScreen> createState() => _EditFoodScreenState();
 }
 
-class _FoodUploadScreenState extends State<FoodUploadScreen> {
+class _EditFoodScreenState extends State<EditFoodScreen> {
 
-    var uuid = Uuid();
+
  
   TextEditingController FoodSalePriceController = TextEditingController();
   TextEditingController FoodNameController = TextEditingController();
@@ -46,6 +61,23 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 
   bool checkedValue = false;
 
+  var FoodTagString = "";
+
+  
+
+
+
+ Future addComma() async{
+
+
+   setState(() {
+      FoodTagString = widget.FoodTag.join(",");
+
+   });
+
+
+  }
+
 
 
 
@@ -56,24 +88,54 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
+    setState(() {
+      checkedValue = widget.DiscountAvailable;
+      addComma();
+    });
    
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-      var FoodID = uuid.v4();
+
 
     FocusNode myFocusNode = new FocusNode();
+
+    FoodNameController.text = widget.FoodName;
+    FoodDescriptionController.text = widget.FoodDescription;
+    FoodDiscountPriceController.text = widget.FoodDiscountPrice;
+    FoodSalePriceController.text = widget.FoodSalePrice;
+    FoodUnitController.text = widget.FoodUnit;
+    FoodTagController.text = FoodTagString.toString();
+
+
+
  
 
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(onPressed: (){
+
+
+        
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodImageUpload(FoodID: widget.FoodID)),
+                );
+
+
+
+
+
+
+      }, child: Icon(Icons.upload_outlined)),
       
       appBar: AppBar(
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         leading: IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.chevron_left)),
-        title: const Text("Upload Food",  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        title: const Text("Edit Food",  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
@@ -366,7 +428,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(width: 150, child:buttonVisible? TextButton(onPressed: () async{
+                  Container(width: 150, child:TextButton(onPressed: () async{
 
                     setState(() {
                       loading = true;
@@ -390,7 +452,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 
 
 
-                    final docUser = FirebaseFirestore.instance.collection("foodinfo");
+            final docUser = FirebaseFirestore.instance.collection("foodinfo").doc(widget.FoodID);
 
 
                 var FoodData ={
@@ -399,15 +461,17 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                   "FoodSalePrice":FoodSalePriceController.text.trim(),
                   "FoodDiscountPrice":FoodDiscountPriceController.text.trim(),
                   "FoodUnit":FoodUnitController.text.trim(),
-                  "FoodID":FoodID.toString(),
+                  "FoodID":widget.FoodID,
                   "DiscountAvailable":checkedValue,
                   "FoodDescription":FoodDescriptionController.text.trim(),
-                  "FoodTag":splitList,
-                  "FoodPublicVisible":"yes"
+                  "FoodTag":splitList
 
 
                
                 };
+
+
+
 
 
 
@@ -430,7 +494,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 
 
 
-                    docUser.doc(FoodID).set(FoodData).then((value) =>setState((){
+                    docUser.update(FoodData).then((value) =>setState((){
 
 
 
@@ -441,7 +505,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FoodImageUpload(FoodID: FoodID,)),
+                  MaterialPageRoute(builder: (context) => AllFood()),
                 );
 
 
@@ -468,10 +532,10 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 
 
 
-                  }, child: Text("Upload", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                  }, child: Text("Edit", style: TextStyle(color: Colors.white),), style: ButtonStyle(
                    
           backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
-        ),):Text(""),),
+        ),),),
 
 
 
@@ -496,29 +560,3 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
 }
 
 
-
-class CurvePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint();
-    paint.color = Color(0xf08f00ff);
-    paint.style = PaintingStyle.fill;
-
-    var path = Path();
-
-    path.moveTo(0, size.height * 0.9167);
-    path.quadraticBezierTo(size.width * 0.25, size.height * 0.875,
-        size.width * 0.5, size.height * 0.9167);
-    path.quadraticBezierTo(size.width * 0.75, size.height * 0.9584,
-        size.width * 1.0, size.height * 0.9167);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}

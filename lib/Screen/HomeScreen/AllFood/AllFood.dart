@@ -1,4 +1,5 @@
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/EveryFoodScreen/EditFood.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/EveryFoodScreen/EveryFoodScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -158,16 +159,266 @@ Future<void> getData() async {
                         borderRadius: BorderRadius.circular(20),
                     child: ListTile(
 
+
+
+                          onLongPress: () {
+
+                          showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                          title: Text('Edit & Close This Item'),
+                          content: Container(
+                            height: 220,
+                            child: Column(
+                              
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              
+                              children: [
+                          
+                          
+                          
+                                
+                                Text("আপনি যদি Food এর কোনো ভুল Information Edit করতে চান তবে Edit Button এ Press করুন। এবং যদি আপনার Food কে Public এ Visible করতে না চান তবে Close করুন।",style: TextStyle(fontSize:15,color: ColorName().appColor),),
+                          
+                                SizedBox(height: 20,),
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                  Row(
+                          
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                          
+                          
+                          
+                                           Container(width: 100, child:TextButton(onPressed: () async{
+                          
+                          
+                                  
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditFoodScreen(FoodID: AllData[index]["FoodID"], DiscountAvailable: AllData[index]["DiscountAvailable"], FoodDescription: AllData[index]["FoodDescription"], FoodDiscountPrice: AllData[index]["FoodDiscountPrice"], FoodName: AllData[index]["FoodName"], FoodSalePrice: AllData[index]["FoodSalePrice"], FoodTag: AllData[index]["FoodTag"], FoodUnit: AllData[index]["FoodUnit"])));
+                          
+                          
+                                                   }, child: Text("Edit", style: TextStyle(color: Colors.white, fontSize: 13),), style: ButtonStyle(
+                                             
+                                        backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
+                            ),),),
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                            
+                         AllData[index]["FoodPublicVisible"]=="yes"? Container(width: 100, child:TextButton(onPressed: () async{
+                          
+                                  setState(() {
+                                    loading = true;
+                                  });
+                          
+                          
+                          
+                                   final docUser = FirebaseFirestore.instance.collection("foodinfo").doc(AllData[index]["FoodID"]);
+                          
+                          
+                                    var FoodData ={
+                          
+                                  "FoodPublicVisible":"no"
+                          
+                                  
+                                    };
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                           
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                              docUser.update(FoodData).then((value) =>setState((){
+                          
+                          
+                          
+                                                loading = false;
+                          
+                                                getData();
+
+                                               
+
+
+                                                 
+                          
+                          
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => AllFood()),
+                                          // );
+                          
+                          
+                          
+                          
+                          
+                                              })).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        backgroundColor: Colors.red,
+                                                  content: const Text('Something Wrong'),
+                                                  action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                                                  ),
+                                                )));
+                          
+                          
+                                  
+                                                   
+                          
+                          
+                                                   }, child: Text("Close", style: TextStyle(color: Colors.white, fontSize: 13),), style: ButtonStyle(
+                                             
+                                        backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
+                            ),),):Container(width: 100, child:TextButton(onPressed: () async{
+                          
+                                  setState(() {
+                                    loading = true;
+                                  });
+                          
+                          
+                          
+                                   final docUser = FirebaseFirestore.instance.collection("foodinfo").doc(AllData[index]["FoodID"]);
+                          
+                          
+                                    var FoodData ={
+                          
+                                  "FoodPublicVisible":"yes"
+                          
+                                  
+                                    };
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                           
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                                              docUser.update(FoodData).then((value) =>setState((){
+                          
+                          
+                          
+                                                loading = false;
+                                                 getData();
+
+                                     
+                          
+                          
+                          
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context) => AllFood()),
+                                          // );
+                          
+                          
+                          
+                          
+                          
+                                              })).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        backgroundColor: Colors.red,
+                                                  content: const Text('Something Wrong'),
+                                                  action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                                                  ),
+                                                )));
+                          
+                          
+                                  
+                                                   
+                          
+                          
+                                                   }, child: Text("Open", style: TextStyle(color: Colors.white, fontSize: 13),), style: ButtonStyle(
+                                             
+                                        backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
+                            ),),),
+                          
+                          
+                          
+                          
+                                  ],
+                                )
+                          
+                          
+                                                  
+                          
+                          
+                            ],),
+                          ),
+                      )
+                  );
+                        
+
+                      },
+
+
+
+
+
                       onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen()));
+
+
+
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen(FoodID: AllData[index]["FoodID"], DiscountAvailable: AllData[index]["DiscountAvailable"], FoodDescription: AllData[index]["FoodDescription"], FoodDiscountPrice: AllData[index]["FoodDiscountPrice"], FoodName: AllData[index]["FoodName"], FoodSalePrice: AllData[index]["FoodSalePrice"], FoodTag: AllData[index]["FoodTag"], FoodUnit: AllData[index]["FoodUnit"], foodImageUrl: AllData[index]["foodImageUrl"],)));
                       },
                   
                     
                           leading: Container(
                             width: 100,
-                            height: 100,
+                            height: 160,
                             child: Image.network(
+                            
                               "${AllData[index]["foodImageUrl"]}",
+                    
+                              fit: BoxFit.cover,
                                                   
                             ),
                           ),
@@ -183,7 +434,11 @@ Future<void> getData() async {
                   
                                   Text("Food Unit: ${AllData[index]["FoodUnit"]}", style: TextStyle(fontWeight: FontWeight.bold),),
 
+                                  Text("Public Visible: ${AllData[index]["FoodPublicVisible"]}", style: TextStyle(fontWeight: FontWeight.bold),),
+
                                  AllData[index]["DiscountAvailable"]? Text("Discount Price: ${AllData[index]["FoodDiscountPrice"].toString().toUpperCase()}৳", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),):Text(""),
+
+
 
                   
                                 ],
