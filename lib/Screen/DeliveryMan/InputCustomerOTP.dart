@@ -153,6 +153,9 @@ Future<void> getData() async {
 
     // Get data from docs and convert map to List
       var AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+
+
      if (AllData.length == 0) {
       setState(() {
 
@@ -190,11 +193,66 @@ Future<void> getData() async {
        
      } else {
 
-      setState(() {
+
+
+
+
+
+      setState(() async{
+
+
+
+
+
+
+      // Customer Order History Database
      
      final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(widget.OrderID);
 
-     final docDeliveryMan = FirebaseFirestore.instance.collection("DeliveryMan").doc("delivery@gmail.com");
+
+
+
+
+
+
+   // Delivery Man Data Call 
+
+       CollectionReference _collectionDeliveryManRef =
+                FirebaseFirestore.instance.collection('DeliveryMan');
+
+      Query DeliveryManQuery = _collectionDeliveryManRef.where("DeliveryManEmail",    isEqualTo: "delivery@gmail.com");
+
+
+      QuerySnapshot DeliveryManQuerySnapshot = await DeliveryManQuery.get();
+
+      List  DeliveryManData = DeliveryManQuerySnapshot.docs.map((doc) => doc.data()).toList();
+
+
+      
+      var deliveryCountString = DeliveryManData[0]["DeliveryCount"];
+
+      int deliveryCountInt = int.parse(deliveryCountString);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        final docDeliveryMan = FirebaseFirestore.instance.collection("DeliveryMan").doc("delivery@gmail.com");
+
+
+  
+
+
 
 
                       var updateData ={
@@ -213,9 +271,16 @@ Future<void> getData() async {
 
 
 
+
+          
+
+            // Update Delivery Man Data
+
              var updateDeliveryManData = {
 
-              "Cash":double.parse("deliveryManTotalMoneyReceive") + double.parse(CustomerCashInController.text.trim().toString())
+              "Cash":double.parse("deliveryManTotalMoneyReceive") + double.parse(CustomerCashInController.text.trim().toString()),
+
+              "DeliveryCount":deliveryCountInt - 1
 
 
 

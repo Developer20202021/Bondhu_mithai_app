@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -300,7 +301,11 @@ setState(() {
 
   _mybox.delete("UserAddToCartFood");
 
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryTimeScreen()));
+
+
+  
+
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => TableOrder()));
 
 
 

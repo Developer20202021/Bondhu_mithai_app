@@ -1,10 +1,27 @@
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/UsersScreen/UserFoods.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hive/hive.dart';
 import 'package:lottie/lottie.dart';
+import 'package:uuid/uuid.dart';
+
+
+
 
 
 class DeliveryTimeScreen extends StatefulWidget {
-  const DeliveryTimeScreen({super.key});
+
+
+  final CustomerPhoneNumber;
+  final OrderID;
+  final allFood;
+  
+
+
+
+  const DeliveryTimeScreen({super.key, required this.CustomerPhoneNumber, required this.OrderID, required this.allFood});
 
   @override
   State<DeliveryTimeScreen> createState() => _DeliveryTimeScreenState();
@@ -14,7 +31,269 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen> {
 
     TextEditingController CustomerCommentController = TextEditingController();
 
-  var deliveryStatus = "delivered";
+
+  var uuid = Uuid();
+
+
+
+
+
+
+// hive database
+
+  final _mybox = Hive.box("mybox");
+
+
+  List AllFoodID = [];
+
+
+
+
+
+ Future ListForLoop() async{
+
+
+
+  _mybox.delete("FoodIDForReview");
+
+
+
+
+  for (var i = 0; i < widget.allFood.length; i++) {
+
+    
+
+    AllFoodID.insert(AllFoodID.length, widget.allFood[i]["FoodID"]);
+
+    
+  }
+
+
+  _mybox.put("FoodIDForReview", AllFoodID);
+
+
+
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  List  AllData = [];
+
+
+
+
+Future<void> getData() async {
+
+
+
+  
+   try {
+
+
+
+
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
+      
+      Query CustomerOrderHistoryQuery = _collectionRef.where("OrderID", isEqualTo: widget.OrderID).where("CustomerPhoneNumber", isEqualTo: widget.CustomerPhoneNumber).where("OrderType", isEqualTo: "online");
+
+
+
+    QuerySnapshot querySnapshot = await CustomerOrderHistoryQuery.get();
+
+
+    
+
+    // Get data from docs and convert map to List
+       AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+
+      print(AllData);
+  
+
+
+     
+
+
+
+
+     if (AllData.length == 0) {
+
+
+
+
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserFoods()));
+
+    
+
+     } else {
+
+  
+      
+
+      setState(() {
+       
+        AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+        
+      });
+       
+
+       
+     }
+
+
+
+
+
+     
+   } catch (e) {
+     
+   }
+
+
+
+    print(AllData);
+}
+
+
+
+
+
+
+
+
+// Food Review Data send to Firebase 
+
+
+Future ReviewForFood(String ReviewID, String rating) async{
+
+
+
+
+          for (var i = 0; i < AllFoodID.length; i++) {
+
+
+
+            final CustomerOrderHistoryCollection = FirebaseFirestore.instance.collection("FoodReview");
+
+
+          var FoodReviewMsg = {
+
+            "ReviewID":ReviewID,
+            "FoodID":AllFoodID[i],
+            "ReviewMsg":CustomerCommentController.text.trim().toLowerCase(),
+            "rating":rating,
+            "CustomerName":AllData[0]["CustomerName"],
+            "Date":DateTime.now().toLocal().toIso8601String()
+
+
+
+          };
+
+           CustomerOrderHistoryCollection.doc(ReviewID).set(FoodReviewMsg).then((value) =>setState((){
+
+
+
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => TableStructure()),
+                // );
+
+
+
+
+
+                    })).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.red,
+                        content: const Text('Something Wrong'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () {
+                            // Some code to undo the change.
+                          },
+                        ),
+                      )));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+          }
+
+
+
+
+
+
+
+
+
+          
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@override
+  void initState() {
+
+
+    // ListForLoop();
+     
+    // TODO: implement initState
+    getData();
+     
+    super.initState();
+  }
+
+
+
+
+
+
 
 
 
@@ -34,7 +313,7 @@ FocusNode myFocusNode = new FocusNode();
 
 
   
-
+ var ReviewID = uuid.v4();
 
 
 
@@ -171,11 +450,11 @@ FocusNode myFocusNode = new FocusNode();
             
 
 
-                 deliveryStatus=="cooking"? Column(
+                 AllData[0]["DeliveryStatus"]=="New"? Column(
                     children: [
 
                       Center(
-                        child: Text("আপনার খাবার প্রস্তুত হচ্ছে।", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                        child: Text("আপনার Order Delivery Man কে দেওয়া হচ্ছে।", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                       ),
 
                       SizedBox(height: 20,),
@@ -196,7 +475,7 @@ FocusNode myFocusNode = new FocusNode();
 
 
 
-                deliveryStatus=="Packaging"?  Column(
+                AllData[0]["DeliveryStatus"]=="packaging"?  Column(
                     children: [
                      
 
@@ -226,7 +505,9 @@ FocusNode myFocusNode = new FocusNode();
 
 
 
-           deliveryStatus=="delivery"?  Column(
+           AllData[0]["DeliveryStatus"]=="OnTheRoad"?  Column(
+
+
                     children: [
                      
 
@@ -255,7 +536,7 @@ FocusNode myFocusNode = new FocusNode();
 
 
               
-              deliveryStatus=="delivered"?  Column(
+              AllData[0]["DeliveryStatus"]=="DeliveryComplete"? Column(
                     children: [
                      
 
@@ -306,6 +587,24 @@ FocusNode myFocusNode = new FocusNode();
                           ),
                       controller: CustomerCommentController,
                     ),
+
+
+
+              RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  )
             
 
 

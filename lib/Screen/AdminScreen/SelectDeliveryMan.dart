@@ -184,7 +184,7 @@ Future updateDeliveryManData(String DeliveryManEmail) async{
 
       var deliveryCountString = DeliveryManData[0]["DeliveryCount"];
 
-      int deliveryCountDouble = int.parse(deliveryCountString);
+      int deliveryCountInt = int.parse(deliveryCountString);
 
 
   
@@ -195,7 +195,7 @@ Future updateDeliveryManData(String DeliveryManEmail) async{
                   final UpadateData ={
 
 
-                    "DeliveryCount":deliveryCountDouble + 1
+                    "DeliveryCount":deliveryCountInt + 1
 
 
 
@@ -307,7 +307,7 @@ Future<void> getData() async {
 
 
   
-  CollectionReference _collectionRef =
+  CollectionReference _collectionRef = 
     FirebaseFirestore.instance.collection('DeliveryMan');
 
     // Get docs from collection reference

@@ -14,6 +14,7 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/createBaz
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
+import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/UserFoods.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -56,10 +57,20 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? AllFood(): FrontSlider(),
+      home: showHome ? DeliveryTimeScreen(CustomerPhoneNumber: "949494", OrderID: "050c5641-1c5b-4a19-8d91-e9127167e28a", allFood: [{"FoodID":"050c5641-1c5b-4a19-8d91-e9127167e28a"}]): FrontSlider(),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
 // ChooseProduct()
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

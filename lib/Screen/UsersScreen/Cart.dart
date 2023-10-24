@@ -138,6 +138,10 @@ var DataLoad = "";
 
 
 
+  
+
+
+
 
 
 
@@ -322,13 +326,17 @@ setState(() {
       floatingActionButton: Container(width: 150, child:TextButton(onPressed: () async{
 
 
+  
+  List myList = List.from(LastUpdatedFood);
+
+
 
   updateData(LastUpdatedFood, OrderID);
 
 
   _mybox.delete("UserAddToCartFood");
 
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryTimeScreen()));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryTimeScreen(CustomerPhoneNumber: widget.CustomerPhoneNumber, OrderID: OrderID, allFood: myList,)));
 
 
 
