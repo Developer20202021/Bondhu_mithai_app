@@ -1,10 +1,16 @@
+import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/EveryFoodScreen/EveryFoodScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:hive/hive.dart';
+import 'package:lottie/lottie.dart';
+import 'package:uuid/uuid.dart';
 
 
 
@@ -17,11 +23,23 @@ class UserFoods extends StatefulWidget {
 
 class _UserFoodsState extends State<UserFoods> {
 
+
+   TextEditingController CustomerCommentController = TextEditingController();
+
+
+
+var uuid = Uuid();
+
 bool loading = true;
+
+double foodRating = 3.0;
 
 var DataLoad = "";
 int moneyAdd =0;
 var totalUserFoods = "";
+
+bool popUpVisible = false;
+bool badgeVisible = false;
 
 
 var RestaurantOpen = "true";
@@ -29,6 +47,86 @@ var RestaurantOpen = "true";
    // Firebase All Customer Data Load
 
 List  AllData = [];
+
+
+
+
+
+// hive database
+
+  final _mybox = Hive.box("mybox");
+
+
+var CustomerOldFoodReview = "0";
+
+List oldFoodReviewID = [];
+
+
+
+Future ListForLoop() async{
+
+
+
+ var oldFoodID = _mybox.get("FoodIDForReview");
+
+
+
+ if (oldFoodID.length == 0) {
+
+  setState(() {
+    popUpVisible = false;
+    badgeVisible = false;
+  });
+
+
+   
+ }
+
+ else{
+
+
+   
+
+
+
+    setState(() {
+    popUpVisible = true;
+    badgeVisible = true;
+    oldFoodReviewID = List.from(_mybox.get("FoodIDForReview"));
+  });
+
+
+
+
+
+
+
+ }
+
+
+
+
+
+
+
+
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   CollectionReference _collectionRef =
@@ -91,6 +189,109 @@ Future<void> getData() async {
 
 
 
+// Food Review Data send to Firebase 
+
+
+Future ReviewForFood(String ReviewID, String CustomerName) async{
+
+
+    setState(() {
+      loading = true;
+    });
+
+
+
+
+          for (var i = 0; i < oldFoodReviewID.length; i++) {
+
+
+
+            final CustomerOrderHistoryCollection = FirebaseFirestore.instance.collection("FoodReview");
+
+
+          var FoodReviewMsg = {
+
+            "ReviewID":ReviewID,
+            "FoodID":oldFoodReviewID[i],
+            "ReviewMsg":CustomerCommentController.text.trim().toLowerCase(),
+            "rating":foodRating.toString(),
+            "CustomerName":CustomerName,
+            "Date":DateTime.now().toLocal().toIso8601String()
+
+
+
+          };
+
+           CustomerOrderHistoryCollection.doc(ReviewID).set(FoodReviewMsg).then((value) =>setState((){
+
+
+
+             _mybox.delete("FoodIDForReview");
+
+
+
+            setState(() {
+              loading = false;
+            });
+
+           
+
+
+
+              refresh();
+
+
+
+
+
+                    })).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.red,
+                        content: const Text('Something Wrong'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () {
+                            // Some code to undo the change.
+                          },
+                        ),
+                      )));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+          }
+
+
+
+
+
+
+
+
+
+          
+
+
+}
+
+
+
+
+
 
 
 
@@ -136,6 +337,19 @@ Future<void> getData() async {
 
   @override
   Widget build(BuildContext context) {
+
+
+    var ReviewID = uuid.v4();
+
+
+
+    FocusNode myFocusNode = new FocusNode();
+
+
+
+
+
+
     return Scaffold(
       backgroundColor: Colors.white,
 
@@ -255,6 +469,165 @@ Future<void> getData() async {
 
 
       appBar:  AppBar(
+
+              actions: [
+
+    
+    badgeVisible?
+
+    badges.Badge(
+      badgeContent: Text('${CustomerOldFoodReview.toString()}'),
+      child: IconButton(onPressed: () async{
+
+        
+                          showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                          title: Text('Give Me a Review'),
+                          content: Container(
+                            height: 220,
+                            child: Column(
+                              
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              
+                              children: [
+                          
+                          
+                          
+                                
+                                Text("দয়া করে আমাকে Review দেন। ",style: TextStyle(fontSize:15,color: ColorName().appColor),),
+                          
+                                SizedBox(height: 20,),
+
+
+
+
+                                
+                        Center(
+                            child: Lottie.asset(
+                            'lib/images/animation_lnisii5q.json',
+                              fit: BoxFit.cover,
+                              width: 300,
+                              height: 300
+                            ),
+                          ),
+              
+              
+              
+              
+                           TextField(
+                        
+                       
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Enter Your Comment',
+                             labelStyle: TextStyle(
+                color: myFocusNode.hasFocus ? Color.fromRGBO(92, 107, 192, 1): Colors.black
+                    ),
+                            hintText: 'Enter Your Comment',
+                          
+                            //  enabledBorder: OutlineInputBorder(
+                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                            //     ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 3, color: ColorName().appColor),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                ),
+                            
+                            
+                            ),
+                        controller: CustomerCommentController,
+                      ),
+              
+              
+              
+                RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+              
+                        setState(() {
+                          foodRating = rating;
+                        });
+                        print(rating);
+                      },
+                    ),
+              
+              
+              
+              
+                    SizedBox(height: 10,),
+              
+              
+                    
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(width: 100, child:TextButton(onPressed: () async{
+                                
+                           
+                      
+                                // ReviewForFood(ReviewID);
+                                
+                                
+                                
+                    }, child: Text("Save", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                         
+                            backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
+                          ),),),
+                  ),
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+                          
+
+                          
+                          
+                                                  
+                          
+                          
+                            ],),
+                          ),
+                      )
+                  );
+
+
+
+      }, icon: Icon(Icons.reviews, size: 31,)),
+      position: badges.BadgePosition.topStart(),
+    ): badges.Badge(
+      badgeContent: Text('0'),
+      child: IconButton(onPressed: (){
+
+        // writeData(SelectedFoodItem);
+
+
+
+      }, icon: Icon(Icons.reviews, size: 31,)),
+      position: badges.BadgePosition.topStart(),
+    )
+
+
+          ],
+
+
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         leading: IconButton(onPressed: () => Navigator.of(context).pop(), icon: Icon(Icons.chevron_left)),
         title: const Text("Foods", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
@@ -277,7 +650,7 @@ Future<void> getData() async {
                   decoration: BoxDecoration(
                     border: Border.all(color: Theme.of(context).primaryColor)
                   ),
-                  height: 330,
+                  height: 500,
 
                   child: Column(
 
@@ -294,7 +667,7 @@ Future<void> getData() async {
                             padding: const EdgeInsets.all(2.0),
                             child: Container(
                                 width: 130.0,
-                                height: 130.0,
+                                height: 100.0,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                                   color: Theme.of(context).primaryColor,
@@ -302,7 +675,7 @@ Future<void> getData() async {
                                 child: Image.network(
                                   "${AllData[index]["foodImageUrl"]}",
                                   height: 130.0,
-                                  width: 130.0,
+                                  width: 100.0,
                                 ),
                               ),
                           ),
@@ -395,7 +768,7 @@ Future<void> getData() async {
 
 
                                       
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen(DiscountAvailable: AllData[index]["DiscountAvailable"], FoodDiscountPrice: AllData[index]["FoodDiscountPrice"], FoodID: AllData[index]["FoodID"], FoodName: AllData[index]["FoodName"], FoodSalePrice: AllData[index]["FoodSalePrice"], foodImageUrl: AllData[index]["foodImageUrl"], FoodDescription: null, FoodUnit: null,)));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => EveryFoodScreen(DiscountAvailable: AllData[index]["DiscountAvailable"], FoodDiscountPrice: AllData[index]["FoodDiscountPrice"], FoodID: AllData[index]["FoodID"], FoodName: AllData[index]["FoodName"], FoodSalePrice: AllData[index]["FoodSalePrice"], foodImageUrl: AllData[index]["foodImageUrl"], FoodDescription: AllData[index]["FoodDescription"], FoodUnit: AllData[index]["FoodUnit"], FoodTag: AllData[index]["FoodTag"],)));
 
                          
 

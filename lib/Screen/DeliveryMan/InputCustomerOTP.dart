@@ -139,9 +139,17 @@ Future<void> getData() async {
     });
 
 
+
+    
+
+
+
+
+
+
+
    CollectionReference _collectionRef =
     FirebaseFirestore.instance.collection('CustomerOrderHistory');
-
 
 
     
@@ -265,7 +273,8 @@ Future<void> getData() async {
                         "MoneyReceiverEmail":"",
                         "MoneyReceiverName":"",
                         "CashIn":CustomerCashInController.text.trim(),
-                        "DueAmount":"0.0"
+                        "DueAmount":"0.0",
+                        "EarningPoint":double.parse(CustomerCashInController.text.trim().toString()) >= 500 ? "1":"0"
 
                       };
 

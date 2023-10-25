@@ -1,4 +1,5 @@
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -18,6 +19,7 @@ class EveryFoodScreen extends StatefulWidget {
 
 
 
+
   const EveryFoodScreen({super.key, required this.DiscountAvailable, required this.FoodDiscountPrice, required this.FoodID, required this.FoodName, required this.FoodSalePrice, required this.foodImageUrl, required this.FoodDescription, required this.FoodUnit, required this.FoodTag});
 
   @override
@@ -25,6 +27,115 @@ class EveryFoodScreen extends StatefulWidget {
 }
 
 class _EveryFoodScreenState extends State<EveryFoodScreen> {
+
+
+
+  List AllData = [];
+
+  var DataLoad = "0";
+
+  bool loading = true;
+
+
+  var AllReviewsCount = "0";
+  double allRatingAdd = 0.0;
+
+  // double averagerating = 0.0;
+
+
+
+
+Future<void> getData() async {
+    // Get docs from collection reference
+    // QuerySnapshot querySnapshot = await _collectionRef.get();
+
+
+
+
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('FoodReview');
+      
+      Query FoodReviewQuery = _collectionRef.where("FoodID", isEqualTo: widget.FoodID);
+
+
+
+    QuerySnapshot querySnapshot = await FoodReviewQuery.get();
+
+
+    
+
+    // Get data from docs and convert map to List
+      setState(() {
+         AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      });
+
+
+       if (AllData.length == 0) {
+
+      setState(() {
+        DataLoad = "0";
+        loading = false;
+      });
+       
+     } else {
+
+
+           for (var i = 0; i < AllData.length; i++) {
+
+                var rating = AllData[i]["rating"];
+
+                print("____________________________${rating}");
+                double ratingDouble = double.parse(AllData[i]["rating"]);
+
+      
+
+                      setState(() {
+                        AllReviewsCount = AllData.length.toString();
+                        allRatingAdd = allRatingAdd + ratingDouble;
+                       
+                      });
+
+       
+                  }
+
+
+
+          setState(() {
+              DataLoad = "";
+               AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+               loading = false;
+          });
+
+
+
+
+     }
+
+
+    print(AllData);
+}
+
+
+
+
+
+
+
+
+
+@override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
+
+
+
+
+
+
   var UserReview = [
     {
       "userName": "Mahadi Hasan",
@@ -227,9 +338,21 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
 
 
                 Row(
+                  
                       children: [
-                        RatingBarIndicator(
-                            rating: 2.5,
+
+
+                      Text(
+                          "Rating:(${allRatingAdd/double.parse(AllReviewsCount)}) ",
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 48, 2, 56),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+
+
+                       AllReviewsCount =="0"?Text(""):RatingBarIndicator(
+                            rating: allRatingAdd/double.parse(AllData.length.toString()),
                             itemCount: 5,
                             itemSize: 18.0,
                             itemBuilder: (context, _) =>  Icon(
@@ -239,15 +362,39 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                         SizedBox(
                           width: 5,
                         ),
-                        Text(
-                          "Rating",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 48, 2, 56),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        )
+                   
+
+
+
+                      SizedBox(
+                          width: 10,
+                        ),
+                   
+
+
+
+
+
+
                       ],
                     ),
+
+                SizedBox(
+                  height: 15,
+                ),
+
+
+                  Row(
+                    children: [
+                      Text(
+                              "Reviews: ${AllReviewsCount.toString()}",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 48, 2, 56),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                    ],
+                  ),
 
 
                  SizedBox(
@@ -352,7 +499,11 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                   ),
                 ),
 
-                for (var item in UserReview)
+
+
+           if( DataLoad == "")...[
+
+                for (var item in AllData)
                   Column(
                     children: [
                       Row(
@@ -362,7 +513,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                             children: [
                               RatingBarIndicator(
                                   rating: double.parse(
-                                      item["UserRating"].toString()),
+                                      item["rating"].toString()),
                                   itemCount: 5,
                                   itemSize: 10.0,
                                   itemBuilder: (context, _) => const Icon(
@@ -373,7 +524,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                                 width: 10,
                               ),
                               Text(
-                                "${item["userName"]}",
+                                "${item["CustomerName"]}",
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 48, 2, 56),
                                     fontWeight: FontWeight.bold,
@@ -382,7 +533,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                             ],
                           ),
                           Text(
-                            "${item["UserReviewTime"]}",
+                            "${item["Date"].toString().split("T")[0].toString()} ${item["Date"].toString().split("T")[1].toString().split(".")[0]}",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -397,7 +548,7 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                         alignment: Alignment.centerLeft,
                         child: Container(
                           child: Text(
-                            "${item["UserMessage"]}",
+                            "${item["ReviewMsg"]}",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: Colors.grey,
@@ -412,6 +563,18 @@ class _EveryFoodScreenState extends State<EveryFoodScreen> {
                       )
                     ],
                   ),
+                  
+                  ]
+                  
+                  
+                  
+
+                else...[Text("No Review Available")]
+                  
+
+
+              
+
               ],
             )),
       ),

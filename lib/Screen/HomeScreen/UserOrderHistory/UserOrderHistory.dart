@@ -1,9 +1,20 @@
 
+import 'dart:async';
+
+import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:expandable/expandable.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class UserOrderHistory extends StatefulWidget {
+
+
+
+
+
+
   const UserOrderHistory({super.key});
 
   @override
@@ -13,13 +24,209 @@ class UserOrderHistory extends StatefulWidget {
 class _UserOrderHistoryState extends State<UserOrderHistory> {
 
 
+
+
+
+
+
+
+   List AllData = [];
+
+  var DataLoad = "1";
+
+  bool loading = true;
+
+
+
+
+  // double averagerating = 0.0;
+
+
+
+
+Future<void> getData() async {
+    // Get docs from collection reference
+    // QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    setState(() {
+      loading = true;
+    });
+
+
+
+
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('CustomerOrderHistory');
+      
+      Query FoodReviewQuery = _collectionRef.where("CustomerPhoneNumber", isEqualTo: "949494");
+
+
+
+    QuerySnapshot querySnapshot = await FoodReviewQuery.get();
+
+
+    
+
+    // Get data from docs and convert map to List
+      setState(() {
+         AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      });
+
+
+       if (AllData.length == 0) {
+
+      setState(() {
+        DataLoad = "0";
+        loading = false;
+      });
+       
+     } else {
+
+
+   
+
+
+
+          setState(() {
+              DataLoad = "1";
+               AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+               loading = false;
+          });
+
+
+
+
+     }
+
+
+    print(AllData);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Future updateData( String OrderID) async{
+
+    setState(() {
+      loading = true;
+    });
+
+
+
+
+         final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(OrderID);
+
+
+         // update Data comming soon
+
+                  final UpadateData ={
+
+                      "OrderStatus":"close",
+                      "CustomerType":"Paid",
+                      "DeliveryStatus":"Cancel"
+
+                
+                };
+
+
+
+
+
+                // user Data Update and show snackbar
+
+                  docUser.update(UpadateData).then((value) => setState((){
+
+
+                    print("Done");
+
+                 
+
+                   getData();
+
+                  setState(() {
+                        loading = false;
+                      });
+
+
+
+
+                  })).onError((error, stackTrace) => setState((){
+
+                    print(error);
+
+                  }));
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Timer? timer;
+
+
+
+
+
+
+@override
+  void initState() {
+    // TODO: implement initState
+    getData();
+
+    timer = Timer.periodic(Duration(seconds: 60), (Timer t) => getData());
+    
+    super.initState();
+  }
+
+
+
+  @override
+void dispose() {
+  timer?.cancel();
+  super.dispose();
+}
+
+
+
+
+
+
   
   List UserAllOrderHistory = [
 
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -82,7 +289,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
 {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -145,7 +352,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -207,7 +414,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -269,7 +476,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -331,7 +538,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -394,7 +601,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -454,7 +661,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Complete",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -514,7 +721,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Cancel",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -574,7 +781,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Cooking",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -634,7 +841,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
     {
       "orderNumber":"Order#45654",
       "orderType":"Shipped",
-      "LastOrderHistoryTime":"21-01-2023 12:13AM",
+      "LastOrderHistoryTime":"21-01-2023",
       "SubtotalPrice":"10",
       "DeliveryFee":"10",
       "OrderTotalPrice":"10",
@@ -715,7 +922,14 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
           bottomOpacity: 0.0,
           elevation: 0.0,
         ),
-        body: SingleChildScrollView(
+        body: loading?Center(
+        child: LoadingAnimationWidget.discreteCircle(
+          color: const Color(0xFF1A1A3F),
+          secondRingColor: Theme.of(context).primaryColor,
+          thirdRingColor: Colors.white,
+          size: 100,
+        ),
+      ):SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -734,11 +948,14 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                 // SizedBox(
                 //   height: 20,
                 // ),
-        for(var item in UserAllOrderHistory )
+
+
+      if(DataLoad =="1")...[
+        for(var item in AllData )
                 Card(
                   child: Padding(
                     padding: EdgeInsets.only(
-                        top: 16.0, left: 6.0, right: 6.0, bottom: 6.0),
+                        top: 16.0,  bottom: 6.0),
                     child: Theme(
                       data: Theme.of(context)
                           .copyWith(dividerColor: Colors.transparent),
@@ -747,47 +964,56 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                         size: 40,
                         ),
                         title: Text(
-                          '${item["orderNumber"]}',
+                          '${item["OrderID"]}',
                           style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
                               color: Color.fromARGB(255, 48, 2, 56),
                               fontWeight: FontWeight.bold,
                               fontSize: 16),
                         ),
                         subtitle: Row(
                           children: [
-                          item["orderType"] =="Complete"?  Icon(
+                          item["DeliveryStatus"] =="DeliveryComplete"?  Icon(
                               Icons.check,
                               color: Colors.green,
                             ):Text(""),
 
-                            item["orderType"] =="Shipped"?  Icon(
+                            item["DeliveryStatus"] =="OnTheRoad"?  Icon(
                               Icons.local_shipping,
                               color: Colors.purple,
                             ):Text(""),
 
-                            item["orderType"] =="Cooking"?  Icon(
+                            item["DeliveryStatus"] =="packaging"?  Icon(
                               Icons.kitchen,
                               color: Colors.purple,
                             ):Text(""),
 
-                             item["orderType"] =="Cancel"?  Icon(
+                             item["DeliveryStatus"] =="Cancel"?  Icon(
                               Icons.close,
                               color: Colors.red,
                             ):Text(""),
 
+                          
 
 
 
 
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text("${item["orderType"]}"),
+
+                           item["DeliveryStatus"] =="DeliveryComplete"? Text("Complete"):Text(""),
+
+                           item["DeliveryStatus"] =="OnTheRoad"? Text("Road"):Text(""),
+
+                           item["DeliveryStatus"] =="packaging"? Text("Packaging"):Text(""),
+
+                           item["DeliveryStatus"] =="New"? Text("New"):Text(""),
+                           item["DeliveryStatus"] =="Cancel"? Text("Cancel"):Text(""),
+
+
                             SizedBox(
                               width: 5,
                             ),
                             Text(
-                              "${item["LastOrderHistoryTime"]}",
+                              "${item["OrderDate"]}",
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,
@@ -816,7 +1042,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                             height: 30,
                           ),
             //  for (int j = 0; j < item["AllProduct"].; j++)
-             for(var product in item["AllProduct"])
+             for(var product in item["AllOrderFood"])
                           Row(
                             children: [
                               Center(
@@ -825,7 +1051,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                   child: SizedBox.fromSize(
                                     size: Size.fromRadius(58), // Image radius
                                     child: Image.network(
-                                      '${product["ProductImageURL"]}',
+                                      '${product["foodImageUrl"]}',
                                       width: 50,
                                       height: 50,
                                     ),
@@ -840,7 +1066,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${product["ProductName"]}",
+                                    "${product["FoodName"]}",
                                     style: TextStyle(
                                         color: Colors.purple,
                                         fontWeight: FontWeight.bold,
@@ -851,13 +1077,9 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                   ),
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.purple,
-                                      ),
-                                      Text("${product["OrderRating"]}"),
+                                 
                                       Text(
-                                        "${product["OrderAmount"]}",
+                                        "Per ${product["FoodUnit"]} price ${product["Foodprice"]}৳",
                                         style: TextStyle(
                                             color: Colors.grey,
                                             fontWeight: FontWeight.bold,
@@ -871,7 +1093,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                   Row(
                                     children: [
                                       Text(
-                                        "${product["OrderSelection"]}",
+                                        "${product["FoodAmount"]}",
                                         style: TextStyle(
                                             color: Colors.grey,
                                             fontWeight: FontWeight.bold,
@@ -882,12 +1104,31 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                         color: Colors.grey,
                                       ),
                                       Text(
-                                        "${product["OrderPrice"]}",
+                                        "${product["Foodprice"]}৳",
                                         style: TextStyle(
                                             color: Colors.purple,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20),
                                       ),
+
+                                    Text(
+                                        " = ",
+                                        style: TextStyle(
+                                            color: Colors.purple,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+
+                                    Text(
+                                        "${product["ThisFoodOrderPrice"]}৳",
+                                        style: TextStyle(
+                                            color: Colors.purple,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+
+                                    
                                     ],
                                   ),
                                 ],
@@ -1024,7 +1265,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                 width: 10,
                               ),
                               Text(
-                                "${item["SubtotalPrice"]}",
+                                "${item["TotalFoodPrice"]}৳",
                                 style: TextStyle(
                                     color: Colors.purple,
                                     fontWeight: FontWeight.bold,
@@ -1061,7 +1302,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                 width: 10,
                               ),
                               Text(
-                                "${item["DeliveryFee"]}",
+                                "${item["DeliveryFee"]}৳",
                                 style: TextStyle(
                                     color: Colors.purple,
                                     fontWeight: FontWeight.bold,
@@ -1097,7 +1338,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                 width: 10,
                               ),
                               Text(
-                                "${item["OrderTotalPrice"]}",
+                                "${(double.parse(item["TotalFoodPrice"]))+(double.parse(item["DeliveryFee"]))}",
                                 style: TextStyle(
                                     color: Colors.purple,
                                     fontWeight: FontWeight.bold,
@@ -1136,7 +1377,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                   ),
 
                                   Text(
-                                    "Name: ${item["UserName"]} ${item["UserPhoneNumber"]}",
+                                    "Name: ${item["CustomerName"]} ${item["CustomerPhoneNumber"]}",
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontWeight: FontWeight.bold,
@@ -1144,7 +1385,7 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                   ),
 
                                   Text(
-                                    "Email: ${item["UserEmail"]}",
+                                    "Email: ${item["CustomerEmail"]}",
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontWeight: FontWeight.bold,
@@ -1176,29 +1417,78 @@ class _UserOrderHistoryState extends State<UserOrderHistory> {
                                   ),
 
                                   Text(
-                                    "${item["UserAddress"]}",
+                                    "${item["CustomerAddress"]}",
                                     style: TextStyle(
                                         color: Colors.grey,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16),
                                   ),
 
-                                  Text(
-                                    "${item["UserAddress"]}",
-                                    style: TextStyle(
-                                        color: Colors.grey,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
+                              
                                 ],
                               ),
                             ],
-                          )
+                          ),
+
+
+
+
+
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+
+
+                    item["DeliveryStatus"] =="New"?  Container(width: 100, child:TextButton(onPressed: () async{
+
+
+                              updateData(item["OrderID"]);
+                          
+                          
+                                  
+                           
+                          
+                          
+                                                   }, child: Text("Cancel", style: TextStyle(color: Colors.white, fontSize: 13),), style: ButtonStyle(
+                                             
+                                        backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
+                            ),),):Text("")
+
+
+
+
+
+                          ],
+                        )
+
+
+
+
+
+
+
+
+
                         ],
                       ),
                     ),
                   ),
-                )
+                )]
+
+
+
+
+                else ...[
+
+                  Center(child: Text("No Order Yet..."))
+                ]
+
+
+
+
+
               ],
             ),
           ),

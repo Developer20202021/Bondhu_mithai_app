@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:uuid/uuid.dart';
+
 
 
 
@@ -33,6 +35,11 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen> {
 
 
   var uuid = Uuid();
+
+
+  bool loading = false;
+
+  double foodRating = 3.0;
 
 
 
@@ -97,6 +104,10 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen> {
 
 Future<void> getData() async {
 
+  setState(() {
+    loading = true;
+  });
+
 
 
   
@@ -141,13 +152,16 @@ Future<void> getData() async {
 
      } else {
 
+
+
+
   
       
 
       setState(() {
        
         AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-        
+        loading = false;
       });
        
 
@@ -178,7 +192,12 @@ Future<void> getData() async {
 // Food Review Data send to Firebase 
 
 
-Future ReviewForFood(String ReviewID, String rating) async{
+Future ReviewForFood(String ReviewID) async{
+
+
+    setState(() {
+      loading = true;
+    });
 
 
 
@@ -195,7 +214,7 @@ Future ReviewForFood(String ReviewID, String rating) async{
             "ReviewID":ReviewID,
             "FoodID":AllFoodID[i],
             "ReviewMsg":CustomerCommentController.text.trim().toLowerCase(),
-            "rating":rating,
+            "rating":foodRating.toString(),
             "CustomerName":AllData[0]["CustomerName"],
             "Date":DateTime.now().toLocal().toIso8601String()
 
@@ -207,10 +226,22 @@ Future ReviewForFood(String ReviewID, String rating) async{
 
 
 
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => TableStructure()),
-                // );
+             _mybox.delete("FoodIDForReview");
+
+
+
+            setState(() {
+              loading = false;
+            });
+
+           
+
+
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserFoods()),
+                );
 
 
 
@@ -281,7 +312,7 @@ Future ReviewForFood(String ReviewID, String rating) async{
   void initState() {
 
 
-    // ListForLoop();
+    ListForLoop();
      
     // TODO: implement initState
     getData();
@@ -291,6 +322,21 @@ Future ReviewForFood(String ReviewID, String rating) async{
 
 
 
+ Future refresh() async{
+
+
+    setState(() {
+
+  ListForLoop();
+      
+  getData();
+
+    });
+
+
+
+
+  }
 
 
 
@@ -439,201 +485,243 @@ FocusNode myFocusNode = new FocusNode();
       ),
 
 
-      body: SingleChildScrollView(
-
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-        
-            children: [
-
-            
-
-
-                 AllData[0]["DeliveryStatus"]=="New"? Column(
-                    children: [
-
-                      Center(
-                        child: Text("আপনার Order Delivery Man কে দেওয়া হচ্ছে।", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+      body: loading?Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Center(
+                      child: LoadingAnimationWidget.discreteCircle(
+                        color: const Color(0xFF1A1A3F),
+                        secondRingColor: Theme.of(context).primaryColor,
+                        thirdRingColor: Colors.white,
+                        size: 100,
                       ),
-
-                      SizedBox(height: 20,),
-
-
-
-                      Center(
-                          child: Lottie.asset(
-                          'lib/images/animation_lnhlbfie.json',
-                            fit: BoxFit.cover,
-                            width: 300,
-                            height: 300
-                          ),
-                        ),
-                    ],
-                  ):Text(""),
-
-
-
-
-                AllData[0]["DeliveryStatus"]=="packaging"?  Column(
-                    children: [
-                     
-
-                      Center(
-                        child: Text("আপনার খাবার প্যাকেটজাত করা হচ্ছে।", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                      ),
-
-                      SizedBox(height: 20,),
-
-
-
-                      Center(
-                          child: Lottie.asset(
-                          'lib/images/animation_lnis5mhm.json',
-                            fit: BoxFit.cover,
-                            width: 300,
-                            height: 300
-                          ),
-                        ),
-                    ],
-                  ):Text(""),
-
-
-
-
-
-
-
-
-           AllData[0]["DeliveryStatus"]=="OnTheRoad"?  Column(
-
-
-                    children: [
-                     
-
-                      Center(
-                        child: Text("আপনার খাবার বাসায় যাচ্ছে", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                      ),
-
-                      SizedBox(height: 20,),
-
-
-                   
-
-
-
-                      Center(
-                          child: Lottie.asset(
-                          'lib/images/animation_lnhlgn0q.json',
-                            fit: BoxFit.cover,
-                            width: 300,
-                            height: 300
-                          ),
-                        ),
-                    ],
-                  ):Text(""),
-
-
-
+                    ),
+              ):RefreshIndicator(
+                onRefresh: refresh,
+                child: SingleChildScrollView(
               
-              AllData[0]["DeliveryStatus"]=="DeliveryComplete"? Column(
-                    children: [
-                     
-
-                    
-
-                
-
-
-                   
-
-
-
-                      Center(
-                          child: Lottie.asset(
-                          'lib/images/animation_lnisii5q.json',
-                            fit: BoxFit.cover,
-                            width: 300,
-                            height: 300
-                          ),
-                        ),
-
-
-
-
-                         TextField(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
                       
-                     
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Enter Your Comment',
-                           labelStyle: TextStyle(
-              color: myFocusNode.hasFocus ? Color.fromRGBO(92, 107, 192, 1): Colors.black
-                  ),
-                          hintText: 'Enter Your Comment',
-            
-                          //  enabledBorder: OutlineInputBorder(
-                          //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
-                          //     ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 3, color: ColorName().appColor),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 3, color: Color.fromARGB(255, 66, 125, 145)),
-                              ),
-                          
-                          
-                          ),
-                      controller: CustomerCommentController,
-                    ),
-
-
-
-              RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  )
-            
-
-
-
-
-                    ],
-                  ):Text(""),
-
-
-
-
-
-
-
-        
-        
-        
+                          children: [
               
-            ],
-        
-        
-        
-        
-          ),
-        ),
-
-
-
-      ),
+                          
+              
+              
+                   AllData[0]["DeliveryStatus"]=="New"? Column(
+                      children: [
+              
+                        Center(
+                          child: Text("আপনার Order Delivery Man কে দেওয়া হচ্ছে।", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                        ),
+              
+                        SizedBox(height: 20,),
+              
+              
+              
+                        Center(
+                            child: Lottie.asset(
+                            'lib/images/animation_lnhlbfie.json',
+                              fit: BoxFit.cover,
+                              width: 300,
+                              height: 300
+                            ),
+                          ),
+                      ],
+                    ):Text(""),
+              
+              
+              
+              
+                  AllData[0]["DeliveryStatus"]=="packaging"?  Column(
+                      children: [
+                       
+              
+                        Center(
+                          child: Text("আপনার খাবার প্যাকেটজাত করা হচ্ছে।", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                        ),
+              
+                        SizedBox(height: 20,),
+              
+              
+              
+                        Center(
+                            child: Lottie.asset(
+                            'lib/images/animation_lnis5mhm.json',
+                              fit: BoxFit.cover,
+                              width: 300,
+                              height: 300
+                            ),
+                          ),
+                      ],
+                    ):Text(""),
+              
+              
+              
+              
+              
+              
+              
+              
+                         AllData[0]["DeliveryStatus"]=="OnTheRoad"?  Column(
+              
+              
+                      children: [
+                       
+              
+                        Center(
+                          child: Text("আপনার খাবার বাসায় যাচ্ছে", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                        ),
+              
+                        SizedBox(height: 20,),
+              
+              
+                     
+              
+              
+              
+                        Center(
+                            child: Lottie.asset(
+                            'lib/images/animation_lnhlgn0q.json',
+                              fit: BoxFit.cover,
+                              width: 300,
+                              height: 300
+                            ),
+                          ),
+                      ],
+                    ):Text(""),
+              
+              
+              
+                
+                AllData[0]["DeliveryStatus"]=="DeliveryComplete"? Column(
+                      children: [
+                       
+              
+                      
+              
+                  
+              
+              
+                     
+              
+              
+              
+                        Center(
+                            child: Lottie.asset(
+                            'lib/images/animation_lnisii5q.json',
+                              fit: BoxFit.cover,
+                              width: 300,
+                              height: 300
+                            ),
+                          ),
+              
+              
+              
+              
+                           TextField(
+                        
+                       
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Enter Your Comment',
+                             labelStyle: TextStyle(
+                color: myFocusNode.hasFocus ? Color.fromRGBO(92, 107, 192, 1): Colors.black
+                    ),
+                            hintText: 'Enter Your Comment',
+                          
+                            //  enabledBorder: OutlineInputBorder(
+                            //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
+                            //     ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 3, color: ColorName().appColor),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 3, color: Color.fromARGB(255, 66, 125, 145)),
+                                ),
+                            
+                            
+                            ),
+                        controller: CustomerCommentController,
+                      ),
+              
+              
+              
+                RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+              
+                        setState(() {
+                          foodRating = rating;
+                        });
+                        print(rating);
+                      },
+                    ),
+              
+              
+              
+              
+                    SizedBox(height: 10,),
+              
+              
+                    
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(width: 100, child:TextButton(onPressed: () async{
+                                
+                           
+                      
+                                ReviewForFood(ReviewID);
+                                
+                                
+                                
+                    }, child: Text("Save", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                         
+                            backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
+                          ),),),
+                  ),
+                          
+              
+              
+              
+              
+                      ],
+              
+              
+                    ):Text(""),
+              
+              
+              
+              
+              
+              
+              
+                      
+                      
+                      
+                
+                          ],
+                      
+                      
+                      
+                      
+                        ),
+                      ),
+              
+              
+              
+                    ),
+              ),
 
 
 
