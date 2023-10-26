@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/FrontScreen/LogInScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'package:badges/badges.dart' as badges;
@@ -76,6 +79,14 @@ var DataLoad = "";
 
 
 
+  // Customer Lat and Long 
+  
+var lat = "";
+var long = "";
+
+
+
+
 
 // hive database
 
@@ -87,6 +98,10 @@ var DataLoad = "";
 
 
   void readData() async{
+
+
+    
+   
 
  print(_mybox.get("UserAddToCartFood"));
 
@@ -138,6 +153,74 @@ var DataLoad = "";
 
 
 
+
+
+
+
+
+
+  
+
+  // Get Customer Location 
+
+
+
+Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Test if location services are enabled.
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Location services are not enabled don't continue
+    // accessing the position and request users of the 
+    // App to enable the location services.
+    await Geolocator.openLocationSettings();
+    // return await Geolocator.getCurrentPosition();
+
+    // return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+
+
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                );
+
+
+      return Future.error('Location permissions are denied');
+    }
+  }
+  
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately. 
+    return Future.error(
+      'Location permissions are permanently denied, we cannot request permissions.');
+  } 
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return await Geolocator.getCurrentPosition();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 
@@ -167,6 +250,10 @@ var DataLoad = "";
     setState(() {
       loading = true;
     });
+
+
+
+
 
 
 
@@ -245,6 +332,38 @@ var DataLoad = "";
 
 
 
+  void FunctionPopup(){
+
+
+
+    AwesomeDialog(
+            context: context,
+            dialogType: DialogType.info,
+            animType: AnimType.rightSlide,
+            title: 'Dialog Title',
+            desc: 'Dialog description here.............',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {},
+            )..show();
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -254,6 +373,53 @@ var DataLoad = "";
 
 @override
   void initState() {
+
+WidgetsBinding.instance.addPostFrameCallback((_) {
+ AwesomeDialog(
+            context: context,
+            dialogType: DialogType.info,
+            animType: AnimType.rightSlide,
+            title: 'Dialog Title',
+            desc: 'Dialog description here.............',
+            btnCancelOnPress: () {},
+            btnOkOnPress: () {},
+            )..show();
+});
+
+
+
+
+    _determinePosition().then((value) => setState((){
+
+
+  lat = value.latitude.toString();
+  long = value.longitude.toString();
+  var speed = value.speed.toString();
+
+  print("${lat} ${long} speed:${speed}");
+
+
+
+double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
+
+// 25.0973621,89.0100336
+
+print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+
+
+
+
+
+
+
+
+
+
+
+}));
+
+
+
     // TODO: implement initState
     setState(() {
       loading = true;
@@ -282,7 +448,47 @@ var DataLoad = "";
 Future refresh() async{
 
 
+
+  
+    _determinePosition().then((value) => setState((){
+
+
+  lat = value.latitude.toString();
+  long = value.longitude.toString();
+  var speed = value.speed.toString();
+
+  print("${lat} ${long} speed:${speed}");
+
+
+
+double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
+
+// 25.0973621,89.0100336
+
+print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+
+
+
+
+
+
+
+
+
+
+
+}));
+
+
+
+
+
+
+
+
 setState(() {
+
+  
       
    readData();
 

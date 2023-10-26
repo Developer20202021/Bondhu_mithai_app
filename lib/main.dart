@@ -1,7 +1,11 @@
+import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManImageUpload.dart';
+import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManRegistration.dart';
+import 'package:bondhu_mithai_app/Screen/CustomerLocation/CustomerLocation.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/PerDaySalesHistory.dart';
 import 'package:bondhu_mithai_app/Screen/DeliveryMan/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
+import 'package:bondhu_mithai_app/Screen/FrontScreen/CreateAccountScreen.dart';
 import 'package:bondhu_mithai_app/Screen/FrontScreen/FrontSlide.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/AllFood/AllFood.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllNewOrder.dart';
@@ -15,6 +19,7 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dar
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserOrderHistory/UserOrderHistory.dart';
+import 'package:bondhu_mithai_app/Screen/UsersScreen/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/UserFoods.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +53,16 @@ class MyApp extends StatelessWidget {
 
   const MyApp({super.key, required this.showHome});
 
+  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -58,7 +70,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ? UserOrderHistory(): FrontSlider(),
+      home: showHome ? ChooseUserFoods(CustomerName: "Mahadi", CustomerPhoneNumber: "01313"): FrontSlider(),
     );
   }
 }
