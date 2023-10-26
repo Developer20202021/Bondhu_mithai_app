@@ -11,11 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
-
+import 'package:webview_flutter/webview_flutter.dart';
 
 
 
@@ -39,6 +40,9 @@ class _CustomerLocationState extends State<CustomerLocation> {
 
  var lat = "";
  var long = "";
+
+  String? _currentAddress;
+  Position? _currentPosition;
 
 
 
@@ -86,8 +90,33 @@ Future<Position> _determinePosition() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
-  return await Geolocator.getCurrentPosition();
+  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 }
+
+
+
+
+
+Future<void> _getAddressFromLatLng(Position position) async {
+  await placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude)
+      .then((List<Placemark> placemarks) {
+    Placemark place = placemarks[0];
+    setState(() {
+      _currentAddress ='${place.street}, ${place.subLocality},${place.subAdministrativeArea}, ${place.postalCode},';
+
+      
+
+      
+
+      print(_currentAddress);
+    });
+  }).catchError((e) {
+    debugPrint(e);
+  });
+ }
+
+
 
 
 
@@ -103,34 +132,64 @@ Future<Position> _determinePosition() async {
   @override
   void initState() {
 
-_determinePosition().then((value) => setState((){
 
 
-  lat = value.latitude.toString();
-  long = value.longitude.toString();
-  var speed = value.speed.toString();
+    _determinePosition().then((Position position){
 
-  print("${lat} ${long} speed:${speed}");
+      setState(() => _currentPosition = position);
 
+      setState(() {
 
+        lat = position.latitude.toString();
+        long = position.longitude.toString();
 
-double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
+      });
 
-// 25.0973621,89.0100336
-
-print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
-
+       _getAddressFromLatLng(_currentPosition!);
 
 
 
 
-
+    });
 
 
 
 
 
-}));
+
+
+
+
+
+
+// _determinePosition().then((value) => setState((){
+
+
+//   lat = value.latitude.toString();
+//   long = value.longitude.toString();
+//   var speed = value.speed.toString();
+
+//   print("${lat} ${long} speed:${speed}");
+
+
+
+// double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
+
+// // 25.0973621,89.0100336
+
+// print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+
+
+
+
+
+
+
+
+
+
+
+// }));
     // print(_determinePosition());
 
   
@@ -151,7 +210,31 @@ print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
 
 
 
+ var controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            print(progress);
+           
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse("https://www.google.com/maps/place/@${lat},${long},19z/entry=ttu"));
 
+
+
+ 
 
 
 
@@ -173,35 +256,7 @@ print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
         centerTitle: true,
         
       ),
-      body: SingleChildScrollView(
-
-              child:  loading?Padding(
-                padding: const EdgeInsets.only(top: 40),
-                child: Center(
-                      child: LoadingAnimationWidget.discreteCircle(
-                        color: const Color(0xFF1A1A3F),
-                        secondRingColor: Theme.of(context).primaryColor,
-                        thirdRingColor: Colors.white,
-                        size: 100,
-                      ),
-                    ),
-              ):Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-
-
-
-                
-            
-            
-            
-                  ],
-                ),
-              ),
-            ),
+      body: WebViewWidget(controller: controller),
         
       
       

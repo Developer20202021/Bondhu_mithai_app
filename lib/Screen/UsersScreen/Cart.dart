@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
@@ -7,6 +10,7 @@ import 'package:bondhu_mithai_app/Screen/FrontScreen/LogInScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hive/hive.dart';
 import 'package:input_quantity/input_quantity.dart';
@@ -58,6 +62,7 @@ var DataLoad = "";
 
 
 
+
   int userSelectedFoodCount = 0;
 
   var selectedData =[];
@@ -77,6 +82,9 @@ var DataLoad = "";
   double CustomerFoodPrice = 0;
 
 
+  bool locationEnable = false;
+
+
 
 
   // Customer Lat and Long 
@@ -84,7 +92,11 @@ var DataLoad = "";
 var lat = "";
 var long = "";
 
+double distanceKm = 9.0;
 
+
+  String? _currentAddress;
+  Position? _currentPosition;
 
 
 
@@ -198,6 +210,12 @@ Future<Position> _determinePosition() async {
   }
   
   if (permission == LocationPermission.deniedForever) {
+
+
+    Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                );
     // Permissions are denied forever, handle appropriately. 
     return Future.error(
       'Location permissions are permanently denied, we cannot request permissions.');
@@ -205,8 +223,38 @@ Future<Position> _determinePosition() async {
 
   // When we reach here, permissions are granted and we can
   // continue accessing the position of the device.
+
+
   return await Geolocator.getCurrentPosition();
 }
+
+
+
+
+
+
+
+
+Future<void> _getAddressFromLatLng(Position position) async {
+  await placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude)
+      .then((List<Placemark> placemarks) {
+    Placemark place = placemarks[0];
+    setState(() {
+      _currentAddress ='${place.street}, ${place.subLocality},${place.subAdministrativeArea}, ${place.postalCode},';
+
+      
+        setState(() {
+          locationEnable = true;
+        });
+      
+
+      print(_currentAddress);
+    });
+  }).catchError((e) {
+    debugPrint(e);
+  });
+ }
 
 
 
@@ -284,7 +332,11 @@ Future<Position> _determinePosition() async {
                       "TotalFoodPrice":CustomerFoodPrice.toString(),
                       "WithDeliveryFeeFoodPrice":CustomerFoodPrice.toString(),
                       "DueAmount":CustomerFoodPrice.toString(),
-                      "DeliveryStatus":"New"
+                      "DeliveryStatus":"New",
+                      "GoogleAddress":_currentAddress,
+                      "Lat":lat,
+                      "Long":long,
+                      "distanceFormShopKm":distanceKm
 
                 
                 };
@@ -295,22 +347,91 @@ Future<Position> _determinePosition() async {
 
                 // user Data Update and show snackbar
 
-                  docUser.update(UpadateData).then((value) => setState((){
+                  docUser.update(UpadateData).then((value) => setState(() async{
 
 
                     print("Done");
 
+
+
+                    var AdminMsg = "${distanceKm.ceil()}Km দূরে ${CustomerFoodPrice}৳ Order এসেছে। Phone No:${widget.CustomerPhoneNumber}";
+
+
+
+
+                       final response = await http
+                                .get(Uri.parse('https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=01721915550&message=${AdminMsg}'));
+
+                             
+
+                            if (response.statusCode == 200) {
+                              // If the server did return a 200 OK response,
+                              // then parse the JSON.
+                              print(jsonDecode(response.body));
+
+
+
+
+                              
+                    
+                       final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Order Confirm Successfull',
+                      message:
+                          'Order Confirm Successfull',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.success,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+
+
+
+
+
+                              setState(() {
+                             
+                                loading = false;
+                              });
+                            
+                            } else {
+
+                               setState(() {
+                               
+                                loading = false;
+                              });
+                              // If the server did not return a 200 OK response,
+                              // then throw an exception.
+                              throw Exception('Failed to load album');
+                            }
+
+
+
+
+
+
+
+
                  
 
                     
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AllCustomer(indexNumber:"1")),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => AllCustomer(indexNumber:"1")),
+                // );
 
-                  setState(() {
-                        loading = false;
-                      });
+                  // setState(() {
+                  //       loading = false;
+                  //     });
 
 
 
@@ -328,25 +449,6 @@ Future<Position> _determinePosition() async {
 
 
 
-
-
-
-
-  void FunctionPopup(){
-
-
-
-    AwesomeDialog(
-            context: context,
-            dialogType: DialogType.info,
-            animType: AnimType.rightSlide,
-            title: 'Dialog Title',
-            desc: 'Dialog description here.............',
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {},
-            )..show();
-
-  }
 
 
 
@@ -374,49 +476,57 @@ Future<Position> _determinePosition() async {
 @override
   void initState() {
 
+
+
 WidgetsBinding.instance.addPostFrameCallback((_) {
  AwesomeDialog(
             context: context,
-            dialogType: DialogType.info,
+            dialogType: DialogType.warning,
             animType: AnimType.rightSlide,
-            title: 'Dialog Title',
-            desc: 'Dialog description here.............',
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {},
+            title: 'Allow Location',
+            desc: 'Please Sir, আমাদের Order টি Confirm করতে অবশ্যই আপনাকে location allow করতে হবে। যদি আপনি Location Disable করে থাকেন তবে আপনার Page টি Refresh করুন অথবা নিচের Ok Button Press করুন এবং Location on করুন। অথবা আপনাকে Log Out করে দেওয়া হবে।',
+            
+            btnOkOnPress: () {
+
+              refresh();
+
+            },
             )..show();
 });
 
 
 
+ _determinePosition().then((Position position){
 
-    _determinePosition().then((value) => setState((){
+      setState(() => _currentPosition = position);
 
+      setState(() {
 
-  lat = value.latitude.toString();
-  long = value.longitude.toString();
-  var speed = value.speed.toString();
+        lat = position.latitude.toString();
+        long = position.longitude.toString();
 
-  print("${lat} ${long} speed:${speed}");
-
-
-
-double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
-
-// 25.0973621,89.0100336
-
-print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+     double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
 
 
+     distanceKm = distanceInMeters/1000.0;
 
+     
 
+     print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
 
+      });
 
+       _getAddressFromLatLng(_currentPosition!);
 
 
 
 
+    });
 
-}));
+
+
+
+
 
 
 
@@ -449,35 +559,87 @@ Future refresh() async{
 
 
 
-  
-    _determinePosition().then((value) => setState((){
-
-
-  lat = value.latitude.toString();
-  long = value.longitude.toString();
-  var speed = value.speed.toString();
-
-  print("${lat} ${long} speed:${speed}");
-
-
-
-double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
-
-// 25.0973621,89.0100336
-
-print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
 
 
 
 
 
 
+   _determinePosition().then((Position position){
+
+      setState(() => _currentPosition = position);
+
+      setState(() {
+
+        lat = position.latitude.toString();
+        long = position.longitude.toString();
+
+     double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
+
+
+     distanceKm = distanceInMeters/1000.0;
+
+
+
+
+     
+               distanceKm >=8.0? WidgetsBinding.instance.addPostFrameCallback((_) {
+                      AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.error,
+                          animType: AnimType.rightSlide,
+                          title: 'Sorry Sir',
+                          desc: 'আপনার Location আমাদের থেকে ${distanceKm.ceil()}Km দূরে। তাই আপনি আমাদের Service নিতে পারবেন না।',
+                          
+                          btnOkOnPress: () {
+
+                            // refresh();
+
+                          },
+                          )..show();
+                      }): WidgetsBinding.instance.addPostFrameCallback((_) {
+                    
+
+                        Text("");
+                      });
 
 
 
 
 
-}));
+              locationEnable?Text(""): WidgetsBinding.instance.addPostFrameCallback((_) {
+                              AwesomeDialog(
+                                          context: context,
+                                          dialogType: DialogType.warning,
+                                          animType: AnimType.rightSlide,
+                                          title: 'Allow Location',
+                                          desc: 'Please Sir, আমাদের Order টি Confirm করতে অবশ্যই আপনাকে location allow করতে হবে। যদি আপনি Location Disable করে থাকেন তবে আপনার Page টি Refresh করুন অথবা নিচের Ok Button Press করুন এবং Location on করুন। অথবা আপনাকে Log Out করে দেওয়া হবে।',
+                                          
+                                          btnOkOnPress: () {
+
+                                            refresh();
+
+                                          },
+                                          )..show();
+                              });
+
+     
+
+
+
+
+
+
+     print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+
+      });
+
+       _getAddressFromLatLng(_currentPosition!);
+
+
+
+
+    });
 
 
 
@@ -486,13 +648,13 @@ print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
 
 
 
-setState(() {
+// setState(() {
 
   
       
-   readData();
+//    readData();
 
-    });
+//     });
 
 
   }
@@ -529,7 +691,7 @@ setState(() {
 
     return Scaffold(
 
-      floatingActionButton: Container(width: 150, child:TextButton(onPressed: () async{
+      floatingActionButton: distanceKm <=8.0? Container(width: 150, child:  TextButton(onPressed: () async{
 
 
   
@@ -540,7 +702,7 @@ setState(() {
   updateData(LastUpdatedFood, OrderID);
 
 
-  _mybox.delete("UserAddToCartFood");
+  // _mybox.delete("UserAddToCartFood");
 
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryTimeScreen(CustomerPhoneNumber: widget.CustomerPhoneNumber, OrderID: OrderID, allFood: myList,)));
 
@@ -553,7 +715,7 @@ setState(() {
       }, child: Text("Confirm", style: TextStyle(color: Colors.white),), style: ButtonStyle(
                          
                 backgroundColor: MaterialStatePropertyAll<Color>(ColorName().appColor),
-              ),),),
+              ),),):Text(""),
 
         backgroundColor: Colors.white,
         appBar: PreferredSize(
@@ -588,10 +750,7 @@ setState(() {
           decoration: BoxDecoration(
               color: Colors.white,
             
-              border: Border.all(
-                        width: 1,
-                        color: Colors.grey
-                      ),
+              
               borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))    
              ),
         
@@ -645,7 +804,7 @@ setState(() {
 
                           Padding(
                           child: Text(
-                            '',
+                            '${_currentAddress}',
                           
                          
                           ),
@@ -811,7 +970,7 @@ setState(() {
 
 
                 Text(
-                  "Address: Komorgram Joypurhat",
+                  "Address: ${_currentAddress}",
                   style:
                        TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
                 ),

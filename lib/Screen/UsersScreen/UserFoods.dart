@@ -298,6 +298,9 @@ Future ReviewForFood(String ReviewID, String CustomerName) async{
 
 @override
   void initState() {
+
+
+      _mybox.delete("UserAddToCartFood");
     
     super.initState();
     // TODO: implement initState
@@ -730,13 +733,16 @@ Future ReviewForFood(String ReviewID, String CustomerName) async{
 
                 AllData[index]["RestaurantOpen"]=="false"?Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: Text("Closed Now"),
                   ),
-                ):        
+                ): Text(""),  
 
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+
+
+
+             AllData[index]["FoodPublicVisible"]=="yes"?  Padding(
+                  padding: const EdgeInsets.all(3.0),
                   child: Container(width: 100, child:TextButton(onPressed: (){
                               
                     //      Navigator.push(
@@ -752,7 +758,7 @@ Future ReviewForFood(String ReviewID, String CustomerName) async{
                        
                           backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
                         ),),),
-                ),
+                ):Text(""),
 
 
 
