@@ -1,3 +1,5 @@
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AllDeliveryMan.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart';
 import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManImageUpload.dart';
 import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManRegistration.dart';
 import 'package:bondhu_mithai_app/Screen/CustomerLocation/CustomerLocation.dart';
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ?UserFoods(): FrontSlider(),
+      home: showHome ?AllDeliveryMan(): FrontSlider(),
     );
   }
 }

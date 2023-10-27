@@ -306,7 +306,7 @@ Future<void> _getAddressFromLatLng(Position position) async {
 
 
 
-         final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory").doc(OrderID);
+         final docUser = FirebaseFirestore.instance.collection("CustomerOrderHistory");
 
 
          // update Data comming soon
@@ -347,12 +347,15 @@ Future<void> _getAddressFromLatLng(Position position) async {
 
                 // user Data Update and show snackbar
 
-                  docUser.update(UpadateData).then((value) => setState(() async{
+                  docUser.doc(OrderID).set(UpadateData).then((value) => setState(() async{
 
 
                     print("Done");
 
+                                try {
 
+
+                                  
 
                     var AdminMsg = "${distanceKm.ceil()}Km দূরে ${CustomerFoodPrice}৳ Order এসেছে। Phone No:${widget.CustomerPhoneNumber}";
 
@@ -371,9 +374,43 @@ Future<void> _getAddressFromLatLng(Position position) async {
 
 
 
+                              setState(() {
+                             
+                                loading = false;
+                              });
+                            
+                            } else {
 
-                              
-                    
+                               setState(() {
+                               
+                                loading = false;
+                              });
+                              // If the server did not return a 200 OK response,
+                              // then throw an exception.
+                              throw Exception('Failed to load album');
+                            }
+
+
+
+
+
+
+
+                                  
+                                } catch (e) {
+                                  
+                                }
+
+
+
+
+
+
+
+
+
+                            
+     
                        final snackBar = SnackBar(
                     /// need to set following properties for best effect of awesome_snackbar_content
                     elevation: 0,
@@ -392,27 +429,14 @@ Future<void> _getAddressFromLatLng(Position position) async {
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
                     ..showSnackBar(snackBar);
+                    
+
+                                       
+                      List myList = List.from(LastUpdatedFood);
 
 
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryTimeScreen(CustomerPhoneNumber: widget.CustomerPhoneNumber, OrderID: OrderID, allFood: myList,)));
 
-
-
-
-                              setState(() {
-                             
-                                loading = false;
-                              });
-                            
-                            } else {
-
-                               setState(() {
-                               
-                                loading = false;
-                              });
-                              // If the server did not return a 200 OK response,
-                              // then throw an exception.
-                              throw Exception('Failed to load album');
-                            }
 
 
 
@@ -694,21 +718,10 @@ Future refresh() async{
       floatingActionButton: distanceKm <=8.0? Container(width: 150, child:  TextButton(onPressed: () async{
 
 
-  
-  List myList = List.from(LastUpdatedFood);
-
+ 
 
 
   updateData(LastUpdatedFood, OrderID);
-
-
-  // _mybox.delete("UserAddToCartFood");
-
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryTimeScreen(CustomerPhoneNumber: widget.CustomerPhoneNumber, OrderID: OrderID, allFood: myList,)));
-
-
-
-
 
 
 
@@ -891,7 +904,7 @@ Future refresh() async{
 
                           Padding(
                           child: Text(
-                            '0৳',
+                            '${distanceKm<=0.6?20.0:distanceKm*16}৳',
                          
                           ),
                           padding: EdgeInsets.all(6),

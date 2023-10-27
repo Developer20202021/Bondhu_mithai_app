@@ -1,4 +1,6 @@
+import 'package:bondhu_mithai_app/Screen/DeliveryMan/CustomerLocation.dart';
 import 'package:bondhu_mithai_app/Screen/DeliveryMan/InputCustomerOTP.dart';
+import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -568,6 +570,19 @@ Future<void> getSearchData(String phoneNumber) async {
                     icon: Icons.key_sharp,
                     label: 'Give OTP',
                   ),
+
+
+
+
+                   SlidableAction(
+                    // An action can be bigger than the others.
+                    flex: 2,
+                    onPressed: (context) =>GMap(context,AllData[index]["Lat"] ,AllData[index]["Long"],),
+                    backgroundColor: ColorName().appColor,
+                    foregroundColor: Colors.white,
+                    icon: Icons.map,
+                    label: 'GMap',
+                  ),
                   
                 ],
               ),
@@ -636,6 +651,16 @@ void EveryPaymentHistory(BuildContext context, String CustomerNID, String Custom
 
 
   Navigator.of(context).push(MaterialPageRoute(builder: (context) => InputCustomerOTP(OrderID: OrderID, CustomerPhoneNumber: CustomerPhoneNumber)));
+}
+
+
+
+
+ void GMap(BuildContext context, String lat, String long,){
+
+
+
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryManCustomerLocation(lat: lat, long: long)));
 }
 
 

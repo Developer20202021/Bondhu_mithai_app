@@ -1,5 +1,9 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -26,7 +30,7 @@ class _AllDeliveryManState extends State<AllDeliveryMan> {
 
 
 
-  bool loading = false;
+bool loading = false;
 
 var DataLoad = "";
 
@@ -34,52 +38,181 @@ var DataLoad = "";
 
 
 
-// // Firebase All Customer Data Load
+//  Firebase All Customer Data Load
 
-// List  AllData = [];
+List  AllData = [];
 
 
-//   CollectionReference _collectionRef =
-//     FirebaseFirestore.instance.collection('admin');
+  CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection('DeliveryMan');
 
-// Future<void> getData() async {
-//     // Get docs from collection reference
-//     QuerySnapshot querySnapshot = await _collectionRef.get();
+Future<void> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
 
-//     // Get data from docs and convert map to List
-//      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-//      if (AllData.length == 0) {
-//       setState(() {
-//         DataLoad = "0";
-//       });
+    // Get data from docs and convert map to List
+     AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+     if (AllData.length == 0) {
+      setState(() {
+        DataLoad = "0";
+      });
        
-//      } else {
+     } else {
 
-//       setState(() {
+      setState(() {
      
-//        AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
-//        loading = false;
-//      });
+       AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
+       loading = false;
+     });
        
-//      }
+     }
      
 
-//     print(AllData);
-// }
+    print(AllData);
+}
 
 
 
 
 
-// @override
-//   void initState() {
-//     // TODO: implement initState
-//     setState(() {
-//       loading = true;
-//     });
-//     getData();
-//     super.initState();
-//   }
+
+
+
+Future BlockDeliveryMan (String DeliveryManEmail, String AdminApprove) async{
+
+
+
+                            setState(() {
+                                  loading = true;
+                                });
+
+
+  final DeliveryManInfo =
+    FirebaseFirestore.instance.collection('DeliveryMan').doc(DeliveryManEmail);
+
+
+  var  DeliveryManData = {
+
+    "AdminApprove":AdminApprove =="true"?"false":"true",
+
+    };
+
+
+
+
+
+    
+                                     // CustomerInfo Collection Update 
+                          DeliveryManInfo.update(DeliveryManData).then((value) => setState((){
+
+
+                            setState(() {
+                                  loading = false;
+                                });
+
+
+
+                  AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.success,
+                        animType: AnimType.rightSlide,
+                        title: 'Aproval Add Successfull',
+                        desc: 'আপনার Approval দেওয়া সফলভাব্রে সম্পন্ন হয়েছে। ধন্যবাদ',
+                        
+                        btnOkOnPress: () {
+
+                          refresh();
+
+
+                        },
+                        )..show();
+
+
+
+
+              
+
+                          })).onError((error, stackTrace) => setState((){
+
+
+
+
+                              final snackBar = SnackBar(
+                    /// need to set following properties for best effect of awesome_snackbar_content
+                    elevation: 0,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.transparent,
+                    content: AwesomeSnackbarContent(
+                      title: 'Something Wrong!!!!',
+                      message:
+                          'Try again later...',
+        
+                      /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                      contentType: ContentType.failure,
+                    ),
+                  );
+        
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(snackBar);
+
+
+
+
+                          }));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@override
+  void initState() {
+    // TODO: implement initState
+    setState(() {
+      loading = true;
+    });
+    getData();
+    super.initState();
+  }
 
 
 
@@ -87,11 +220,16 @@ var DataLoad = "";
   Future refresh() async{
 
 
-  //   setState(() {
-      
-  // getData();
+  setState(() {
+      loading = true;
+    });
 
-  //   });
+
+    setState(() {
+          
+             getData();
+
+     });
 
 
   }
@@ -225,7 +363,7 @@ var DataLoad = "";
         
         iconTheme: IconThemeData(color: Color.fromRGBO(92, 107, 192, 1)),
         automaticallyImplyLeading: false,
-        title: const Text("Staff", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+        title: const Text("Delivery Mans", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
@@ -281,7 +419,7 @@ var DataLoad = "";
                           ),
               
                           // The end action pane is the one at the right or the bottom side.
-                          endActionPane: const ActionPane(
+                          endActionPane:  ActionPane(
                 motion: ScrollMotion(),
                 children: [
 
@@ -289,11 +427,11 @@ var DataLoad = "";
                        SlidableAction(
                     // An action can be bigger than the others.
                     flex: 2,
-                    onPressed: BlockYourUser,
+                    onPressed: (context) =>DeliveryManPaymentAdd(context,AllData[index]["Cash"],AllData[index]["DeliveryManEmail"]),
                     backgroundColor: Color.fromRGBO(92, 107, 192, 1),
                     foregroundColor: Colors.white,
                     icon: Icons.payment,
-                    label: 'Send SMS',
+                    label: 'CashIn',
                   ),
 
 
@@ -303,11 +441,14 @@ var DataLoad = "";
                   SlidableAction(
                     // An action can be bigger than the others.
                     flex: 2,
-                    onPressed: BlockYourUser,
+                    onPressed: (context){
+
+                      BlockDeliveryMan(AllData[index]["DeliveryManEmail"], AllData[index]["AdminApprove"]);
+                    },
                     backgroundColor: Color(0xFF7BC043),
                     foregroundColor: Colors.white,
                     icon: Icons.payment,
-                    label: 'Block User',
+                    label:AllData[index]["AdminApprove"]=="true"? 'Block User':"Add User",
                   ),
                 
                 ],
@@ -319,25 +460,28 @@ var DataLoad = "";
                 
                    leading: CircleAvatar(
                       backgroundColor: Color.fromRGBO(92, 107, 192, 1),
-                      child: Text("m".toString().toUpperCase(),style: TextStyle(color: Colors.white)),
+                      child: Text("${AllData[index]["DeliveryManName"][0].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                     ),
               
                     subtitle: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('mahadikaushik8888@gmail.com'),
-                        Text('Phone: 01721915550'),
+                        Text('${AllData[index]["DeliveryManEmail"]}'),
+                        Text('Phone: ${AllData[index]["DeliveryManPhoneNumber"]}'),
+                        Text('Cash: ${AllData[index]["Cash"]}৳'),
+
+                       int.parse(AllData[index]["DeliveryCount"])>0? Text('OnDelivery: ${AllData[index]["DeliveryCount"]}', style: TextStyle(color: Colors.green[600]),):Text('OnDelivery: ${AllData[index]["DeliveryCount"]}', style: TextStyle(color: Colors.red[600]),)
                       ],
                     ),
-                    trailing: Text("Paid", style: TextStyle(color:  Colors.green[600]),),
+                    trailing:AllData[index]["AdminApprove"]=="true"? Text("Enabled", style: TextStyle(color:  Colors.green[600]),):Text("Disabled", style: TextStyle(color:  Colors.red[600]),),
                 
-                title: Text('Mahadi Hasan', style: TextStyle(
+                title: Text('${AllData[index]["DeliveryManName"]}', style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),)),
                         );
                       },
-                      itemCount: 20,
+                      itemCount: AllData.length,
                     ),
               ),
     );
@@ -348,6 +492,12 @@ void doNothing(BuildContext context) {}
 
 void EveryPaymentHistory(BuildContext context){
   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentHistory()));
+}
+
+
+
+void DeliveryManPaymentAdd(BuildContext context,String TotalCash, String DeliveryManEmail){
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryManPaymnetAdd(DeliveryManEmail: DeliveryManEmail, TotalCash: TotalCash)));
 }
 
 
