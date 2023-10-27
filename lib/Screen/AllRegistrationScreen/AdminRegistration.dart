@@ -468,6 +468,7 @@ class _AdminRegistrationState extends State<AdminRegistration> {
                         "registrationType":"admin",
                         "AdminPhoneNumber":myPhoneNumberController.text.trim(),
                         "AdminPassword":myPassController.text.trim(),
+                        "AdminAddress":myAddressController.text.trim()
 
                      
                       };

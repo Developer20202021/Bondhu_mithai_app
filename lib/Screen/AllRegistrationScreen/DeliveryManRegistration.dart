@@ -468,7 +468,8 @@ class _DeliveryManRegistrationState extends State<DeliveryManRegistration> {
                         "DeliveryManPhoneNumber":myPhoneNumberController.text.trim(),
                         "DeliveryManPassword":myPassController.text.trim(),
                         "Cash":"0.0",
-                        "DeliveryCount":"0"
+                        "DeliveryCount":"0",
+                        "DeliveryManAddress":myAddressController.text.trim().toLowerCase()
                      
                       };
 

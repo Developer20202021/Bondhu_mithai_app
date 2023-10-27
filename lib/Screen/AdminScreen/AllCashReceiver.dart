@@ -2,9 +2,9 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/CashReceiverProfile.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart';
-import 'package:bondhu_mithai_app/Screen/AdminScreen/ManagerProfile.dart';
-import 'package:bondhu_mithai_app/Screen/AdminScreen/StaffProfile.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -12,18 +12,18 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 
 
-class AllStaff extends StatefulWidget {
+class AllCashReceiver extends StatefulWidget {
 
 
  
 
-  const AllStaff({super.key, });
+  const AllCashReceiver({super.key, });
 
   @override
-  State<AllStaff> createState() => _AllStaffState();
+  State<AllCashReceiver> createState() => _AllCashReceiverState();
 }
 
-class _AllStaffState extends State<AllStaff> {
+class _AllCashReceiverState extends State<AllCashReceiver> {
 
 
 
@@ -46,7 +46,7 @@ List  AllData = [];
 
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('Staff');
+    FirebaseFirestore.instance.collection('CashReceiver');
 
 Future<void> getData() async {
     // Get docs from collection reference
@@ -80,7 +80,7 @@ Future<void> getData() async {
 
 
 
-Future BlockManager (String StaffEmail, String AdminApprove) async{
+Future BlockCashReceiver (String CashReceiverEmail, String AdminApprove) async{
 
 
 
@@ -89,11 +89,11 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                                 });
 
 
-  final StaffInfo =
-    FirebaseFirestore.instance.collection('Staff').doc(StaffEmail);
+  final CashReceiverInfo =
+    FirebaseFirestore.instance.collection('CashReceiver').doc(CashReceiverEmail);
 
 
-  var StaffData = {
+  var  CashReceiverData = {
 
     "AdminApprove":AdminApprove =="true"?"false":"true",
 
@@ -105,7 +105,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
 
     
                                      // CustomerInfo Collection Update 
-                          StaffInfo.update(StaffData).then((value) => setState((){
+                          CashReceiverInfo.update(CashReceiverData).then((value) => setState((){
 
 
                             setState(() {
@@ -365,7 +365,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
         
         iconTheme: IconThemeData(color: Color.fromRGBO(92, 107, 192, 1)),
         automaticallyImplyLeading: false,
-        title: const Text("All Staff", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+        title: const Text("All CashReceiver", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
@@ -401,7 +401,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
              
               
                 // All actions are defined in the children parameter.
-                children: [
+                children:  [
                   // A SlidableAction can have an icon and/or a label.
                   SlidableAction(
                     onPressed: doNothing,
@@ -411,7 +411,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                     label: 'Delete',
                   ),
                   SlidableAction(
-                    onPressed: (context) => StaffProfilePage(context,AllData[index]["StaffEmail"]),
+                    onPressed: (context) =>CashReceiverProfilePage(context,AllData[index]["CashReceiverEmail"]),
                     backgroundColor: Color.fromRGBO(92, 107, 192, 1),
                     foregroundColor: Colors.white,
                     icon: Icons.info,
@@ -445,7 +445,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                     flex: 2,
                     onPressed: (context){
 
-                      BlockManager(AllData[index]["StaffEmail"], AllData[index]["AdminApprove"]);
+                      BlockCashReceiver(AllData[index]["CashReceiverEmail"], AllData[index]["AdminApprove"]);
                     },
                     backgroundColor: Color(0xFF7BC043),
                     foregroundColor: Colors.white,
@@ -462,23 +462,23 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                 
                    leading: CircleAvatar(
                       backgroundColor: Color.fromRGBO(92, 107, 192, 1),
-                      child: Text("${AllData[index]["StaffName"][0].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+                      child: Text("${AllData[index]["CashReceiverName"][0].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                     ),
               
                     subtitle: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${AllData[index]["StaffEmail"]}'),
-                        Text('Phone: ${AllData[index]["StaffPhoneNumber"]}'),
-                       
+                        Text('${AllData[index]["CashReceiverEmail"]}'),
+                        Text('Phone: ${AllData[index]["CashReceiverPhoneNumber"]}'),
+                        
 
-                       
+                      //  int.parse(AllData[index]["DeliveryCount"])>0? Text('OnDelivery: ${AllData[index]["DeliveryCount"]}', style: TextStyle(color: Colors.green[600]),):Text('OnDelivery: ${AllData[index]["DeliveryCount"]}', style: TextStyle(color: Colors.red[600]),)
                       ],
                     ),
                     trailing:AllData[index]["AdminApprove"]=="true"? Text("Enabled", style: TextStyle(color:  Colors.green[600]),):Text("Disabled", style: TextStyle(color:  Colors.red[600]),),
                 
-                title: Text('${AllData[index]["StaffName"]}', style: TextStyle(
+                title: Text('${AllData[index]["CashReceiverName"]}', style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),)),
                         );
@@ -506,8 +506,7 @@ void EveryPaymentHistory(BuildContext context){
 
 
 
-void StaffProfilePage(BuildContext context, String StaffEmail){
+void CashReceiverProfilePage(BuildContext context, String CashReceiverEmail){
 
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => StaffProfile(StaffEmail: StaffEmail)));
-
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => CashReceiverProfile(CashReceiverEmail: CashReceiverEmail)));
 }

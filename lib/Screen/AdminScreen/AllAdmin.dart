@@ -2,9 +2,9 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AdminProfile.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/ManagerProfile.dart';
-import 'package:bondhu_mithai_app/Screen/AdminScreen/StaffProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -12,18 +12,18 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 
 
-class AllStaff extends StatefulWidget {
+class AllAdmin extends StatefulWidget {
 
 
  
 
-  const AllStaff({super.key, });
+  const AllAdmin({super.key, });
 
   @override
-  State<AllStaff> createState() => _AllStaffState();
+  State<AllAdmin> createState() => _AllAdminState();
 }
 
-class _AllStaffState extends State<AllStaff> {
+class _AllAdminState extends State<AllAdmin> {
 
 
 
@@ -46,7 +46,7 @@ List  AllData = [];
 
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('Staff');
+    FirebaseFirestore.instance.collection('Admin');
 
 Future<void> getData() async {
     // Get docs from collection reference
@@ -80,7 +80,7 @@ Future<void> getData() async {
 
 
 
-Future BlockManager (String StaffEmail, String AdminApprove) async{
+Future BlockAdmin (String AdminEmail, String AdminApprove) async{
 
 
 
@@ -89,11 +89,11 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                                 });
 
 
-  final StaffInfo =
-    FirebaseFirestore.instance.collection('Staff').doc(StaffEmail);
+  final DeliveryManInfo =
+    FirebaseFirestore.instance.collection('Admin').doc(AdminEmail);
 
 
-  var StaffData = {
+  var ManagerData = {
 
     "AdminApprove":AdminApprove =="true"?"false":"true",
 
@@ -105,7 +105,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
 
     
                                      // CustomerInfo Collection Update 
-                          StaffInfo.update(StaffData).then((value) => setState((){
+                          DeliveryManInfo.update(ManagerData).then((value) => setState((){
 
 
                             setState(() {
@@ -365,7 +365,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
         
         iconTheme: IconThemeData(color: Color.fromRGBO(92, 107, 192, 1)),
         automaticallyImplyLeading: false,
-        title: const Text("All Staff", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
+        title: const Text("All Admin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
         backgroundColor: Colors.transparent,
         bottomOpacity: 0.0,
         elevation: 0.0,
@@ -411,7 +411,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                     label: 'Delete',
                   ),
                   SlidableAction(
-                    onPressed: (context) => StaffProfilePage(context,AllData[index]["StaffEmail"]),
+                    onPressed: (context) => AdminProfilePage(context,AllData[index]["AdminEmail"]),
                     backgroundColor: Color.fromRGBO(92, 107, 192, 1),
                     foregroundColor: Colors.white,
                     icon: Icons.info,
@@ -445,7 +445,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                     flex: 2,
                     onPressed: (context){
 
-                      BlockManager(AllData[index]["StaffEmail"], AllData[index]["AdminApprove"]);
+                      BlockAdmin(AllData[index]["AdminEmail"], AllData[index]["AdminApprove"]);
                     },
                     backgroundColor: Color(0xFF7BC043),
                     foregroundColor: Colors.white,
@@ -462,15 +462,15 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                 
                    leading: CircleAvatar(
                       backgroundColor: Color.fromRGBO(92, 107, 192, 1),
-                      child: Text("${AllData[index]["StaffName"][0].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+                      child: Text("${AllData[index]["AdminName"][0].toString().toUpperCase()}", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
                     ),
               
                     subtitle: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('${AllData[index]["StaffEmail"]}'),
-                        Text('Phone: ${AllData[index]["StaffPhoneNumber"]}'),
+                        Text('${AllData[index]["AdminEmail"]}'),
+                        Text('Phone: ${AllData[index]["AdminPhoneNumber"]}'),
                        
 
                        
@@ -478,7 +478,7 @@ Future BlockManager (String StaffEmail, String AdminApprove) async{
                     ),
                     trailing:AllData[index]["AdminApprove"]=="true"? Text("Enabled", style: TextStyle(color:  Colors.green[600]),):Text("Disabled", style: TextStyle(color:  Colors.red[600]),),
                 
-                title: Text('${AllData[index]["StaffName"]}', style: TextStyle(
+                title: Text('${AllData[index]["AdminName"]}', style: TextStyle(
                   fontWeight: FontWeight.bold
                 ),)),
                         );
@@ -506,8 +506,8 @@ void EveryPaymentHistory(BuildContext context){
 
 
 
-void StaffProfilePage(BuildContext context, String StaffEmail){
+void AdminProfilePage(BuildContext context, String AdminEmail){
 
-  Navigator.of(context).push(MaterialPageRoute(builder: (context) => StaffProfile(StaffEmail: StaffEmail)));
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminProfile(AdminEmail: AdminEmail)));
 
 }

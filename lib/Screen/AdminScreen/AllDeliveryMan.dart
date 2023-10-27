@@ -3,6 +3,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -399,7 +400,7 @@ Future BlockDeliveryMan (String DeliveryManEmail, String AdminApprove) async{
              
               
                 // All actions are defined in the children parameter.
-                children: const [
+                children:  [
                   // A SlidableAction can have an icon and/or a label.
                   SlidableAction(
                     onPressed: doNothing,
@@ -409,7 +410,7 @@ Future BlockDeliveryMan (String DeliveryManEmail, String AdminApprove) async{
                     label: 'Delete',
                   ),
                   SlidableAction(
-                    onPressed: doNothing,
+                    onPressed: (context) =>DeliveryManProfilePage(context,AllData[index]["DeliveryManEmail"]),
                     backgroundColor: Color.fromRGBO(92, 107, 192, 1),
                     foregroundColor: Colors.white,
                     icon: Icons.info,
@@ -504,6 +505,7 @@ void DeliveryManPaymentAdd(BuildContext context,String TotalCash, String Deliver
 
 
 
-void BlockYourUser(BuildContext context){
-  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlockAdmin()));
+void DeliveryManProfilePage(BuildContext context, String DeliveryManEmail){
+
+  Navigator.of(context).push(MaterialPageRoute(builder: (context) => DeliveryManProfile(DeliveryManEmail: DeliveryManEmail)));
 }

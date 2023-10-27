@@ -476,6 +476,7 @@ class _ManagerRegistrationState extends State<ManagerRegistration> {
                         "registrationType":"Manager",
                         "ManagerPhoneNumber":myPhoneNumberController.text.trim(),
                         "ManagerPassword":myPassController.text.trim(),
+                        "ManagerAddress":myAddressController.text.trim()
 
                      
                       };

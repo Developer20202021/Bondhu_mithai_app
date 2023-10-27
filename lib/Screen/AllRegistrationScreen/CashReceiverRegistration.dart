@@ -468,6 +468,7 @@ class _CashReceiverRegistrationState extends State<CashReceiverRegistration> {
                         "registrationType":"CashReceiver",
                         "CashReceiverPhoneNumber":myPhoneNumberController.text.trim(),
                         "CashReceiverPassword":myPassController.text.trim(),
+                        "CashReceiverAddress":myAddressController.text.trim()
 
                      
                       };

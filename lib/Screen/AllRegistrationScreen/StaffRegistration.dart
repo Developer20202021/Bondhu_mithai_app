@@ -477,6 +477,7 @@ class _StaffRegistrationState extends State<StaffRegistration> {
                         "registrationType":"Staff",
                         "StaffPhoneNumber":myPhoneNumberController.text.trim(),
                         "StaffPassword":myPassController.text.trim(),
+                        "StaffAddress":myAddressController.text.trim()
 
                      
                       };
