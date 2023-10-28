@@ -21,6 +21,7 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dar
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserOrderHistory/UserOrderHistory.dart';
+import 'package:bondhu_mithai_app/Screen/Staff/StaffScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/UserFoods.dart';
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ?TableStructure(CustomerID: "", CustomerName: "", CustomerPhoneNumber: ""): FrontSlider(),
+      home: showHome ?StaffScreenTableStructure(): FrontSlider(),
     );
   }
 }

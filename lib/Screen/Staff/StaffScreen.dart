@@ -528,7 +528,7 @@ class _StaffScreenTableStructureState extends State<StaffScreenTableStructure> {
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(Icons.chevron_left)),
           title: const Text(
-            "Book Your Table",
+            "Customer Table",
             style: TextStyle(
                 color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
           ),
