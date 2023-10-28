@@ -3,9 +3,11 @@ import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart'
 import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManImageUpload.dart';
 import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManRegistration.dart';
 import 'package:bondhu_mithai_app/Screen/CustomerLocation/CustomerLocation.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/AdminDashboard.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/PerDaySalesHistory.dart';
 import 'package:bondhu_mithai_app/Screen/DeliveryMan/AllCustomer.dart';
+import 'package:bondhu_mithai_app/Screen/DeliveryMan/CustomerLocation.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:bondhu_mithai_app/Screen/FrontScreen/CreateAccountScreen.dart';
 import 'package:bondhu_mithai_app/Screen/FrontScreen/FrontSlide.dart';
@@ -73,7 +75,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ?StaffScreenTableStructure(): FrontSlider(),
+      home: showHome ?AdminDashboard(userName: "Mahdi", userEmail: "hasam", indexNumber: "1"): FrontSlider(),
     );
   }
 }

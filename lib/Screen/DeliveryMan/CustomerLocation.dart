@@ -17,6 +17,7 @@ import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/services.dart';
 
 
 
@@ -44,8 +45,8 @@ class _DeliveryManCustomerLocationState extends State<DeliveryManCustomerLocatio
 
  bool loading = false;
 
-//  var lat = "";
-//  var long = "";
+ var latitude = "";
+ var longitude = "";
 
   String? _currentAddress;
   Position? _currentPosition;
@@ -140,50 +141,23 @@ Future<void> _getAddressFromLatLng(Position position) async {
 
 
 
-    // _determinePosition().then((Position position){
+    _determinePosition().then((Position position){
 
-    //   setState(() => _currentPosition = position);
+      setState(() => _currentPosition = position);
 
-    //   setState(() {
+      setState(() {
 
-    //     lat = position.latitude.toString();
-    //     long = position.longitude.toString();
+        latitude = position.latitude.toString();
+        longitude = position.longitude.toString();
 
-    //   });
+      });
 
-    //    _getAddressFromLatLng(_currentPosition!);
-
-
-
-
-    // });
+       _getAddressFromLatLng(_currentPosition!);
 
 
 
 
-
-
-
-
-
-
-
-// _determinePosition().then((value) => setState((){
-
-
-//   lat = value.latitude.toString();
-//   long = value.longitude.toString();
-//   var speed = value.speed.toString();
-
-//   print("${lat} ${long} speed:${speed}");
-
-
-
-// double distanceInMeters = Geolocator.distanceBetween(double.parse(lat), double.parse(long), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
-
-// // 25.0973621,89.0100336
-
-// print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+    });
 
 
 
@@ -195,8 +169,35 @@ Future<void> _getAddressFromLatLng(Position position) async {
 
 
 
-// }));
-    // print(_determinePosition());
+_determinePosition().then((value) => setState((){
+
+
+  latitude = value.latitude.toString();
+  longitude = value.longitude.toString();
+  var speed = value.speed.toString();
+
+  print("${latitude} ${longitude} speed:${speed}");
+
+
+
+double distanceInMeters = Geolocator.distanceBetween(double.parse(latitude), double.parse(longitude), LatitudeAndLong().OurLat, LatitudeAndLong().OurLong);
+
+// 25.0973621,89.0100336
+
+print("Our Shop Distance From You: ${distanceInMeters/1000.0}Km");
+
+
+
+
+
+
+
+
+
+
+
+}));
+    print(_determinePosition());
 
 
     print("_____________${widget.lat}");
@@ -254,8 +255,68 @@ Future<void> _getAddressFromLatLng(Position position) async {
 
     return  Scaffold(
       backgroundColor: Colors.white,
+
+       bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 5, right: 5, bottom: 9),
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+      
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+
+
+
+         TextButton(onPressed: (){
+
+
+            Clipboard.setData(ClipboardData(text: "${latitude},${longitude}")).then((_){
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Your Location copied to clipboard")));
+              });
+
+
+
+          }, child: Row(
+            children: [
+              Text("Your Location"),
+              Icon(Icons.copy_rounded, color: ColorName().appColor,)
+            ],
+          ),),
+
+
+
+                   TextButton(onPressed: (){
+
+                Clipboard.setData(ClipboardData(text: "${widget.lat},${widget.long}")).then((_){
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Customer Location copied to clipboard")));
+                              });
+
+
+
+          }, child: Row(
+            children: [
+              Text("Customer Location"),
+              Icon(Icons.copy_rounded, color: ColorName().appColor,)
+            ],
+          ),),
+
+
+       
+            ],
+          ),),
+      ),
       
       appBar: AppBar(
+
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
        automaticallyImplyLeading: false,
         title: const Text("Location", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),

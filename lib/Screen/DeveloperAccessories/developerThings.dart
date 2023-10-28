@@ -12,8 +12,9 @@ class ColorName {
 
 class LatitudeAndLong{
 
-  double OurLat = 25.0973621;
-  double OurLong = 89.0100336;
+  double OurLat = 25.1013811;
+  double OurLong = 89.0305373;
+  
 
 
 
