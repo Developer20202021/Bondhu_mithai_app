@@ -396,7 +396,7 @@ Future<void> getData() async {
 
 
 
-                                        SelectedFoodItem.insert(SelectedFoodItem.length,{'FoodName': '${AllData[index]["FoodName"]}', 'FoodAmount': foodAmount, "Foodprice":"${AllData[index]["FoodSalePrice"]}", "FoodID":"${AllData[index]["FoodID"]}", "ThisFoodOrderPrice":"${double.parse("${AllData[index]["FoodSalePrice"]}")*foodAmount}", "foodImageUrl":"${AllData[index]["foodImageUrl"]}", "FoodUnit":"${AllData[index]["FoodUnit"]}"});
+                                        SelectedFoodItem.insert(SelectedFoodItem.length,{'FoodName': '${AllData[index]["FoodName"]}', 'FoodAmount': foodAmount, "Foodprice":"${AllData[index]["FoodSalePrice"]}", "FoodID":"${AllData[index]["FoodID"]}", "ThisFoodOrderPrice":"${double.parse("${AllData[index]["FoodSalePrice"]}")*foodAmount}", "foodImageUrl":"${AllData[index]["foodImageUrl"]}", "FoodUnit":"${AllData[index]["FoodUnit"]}", "MealServe":""});
 
 
 

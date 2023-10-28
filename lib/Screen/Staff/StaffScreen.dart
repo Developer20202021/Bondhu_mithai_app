@@ -9,22 +9,17 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class TableStructure extends StatefulWidget {
-  final CustomerID;
-  final CustomerName;
-  final CustomerPhoneNumber;
+class StaffScreenTableStructure extends StatefulWidget {
 
-  const TableStructure(
-      {super.key,
-      required this.CustomerID,
-      required this.CustomerName,
-      required this.CustomerPhoneNumber});
+
+  const StaffScreenTableStructure(
+      {super.key});
 
   @override
-  State<TableStructure> createState() => _TableStructureState();
+  State<StaffScreenTableStructure> createState() => _StaffScreenTableStructureState();
 }
 
-class _TableStructureState extends State<TableStructure> {
+class _StaffScreenTableStructureState extends State<StaffScreenTableStructure> {
   int clickButtonNumber = -1;
 
   List UserSelectedChair = [];
@@ -390,69 +385,75 @@ class _TableStructureState extends State<TableStructure> {
     // getData();
   }
 
-  Future updateData(List Chairs) async {
-    setState(() {
-      loading = true;
-    });
 
-    final docUser = FirebaseFirestore.instance
-        .collection("CustomerOrderHistory")
-        .doc(widget.CustomerID);
 
-    final UpadateData = {"Chairs": Chairs};
 
-    // user Data Update and show snackbar
 
-    docUser
-        .update(UpadateData)
-        .then((value) => setState(() async {
-              print("Done");
 
-              try {
-                var CustomerMsg =
-                    "Dear Customer, আপনি Table No:${UserSelectedChair[0][0]} তে ${UserSelectedChair} Chair এ বসুন. Thank You. Bondhu Mithai";
 
-                final response = await http.get(Uri.parse(
-                    'https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=${widget.CustomerPhoneNumber}&message=${CustomerMsg}'));
+  // Future updateData(List Chairs) async {
+  //   setState(() {
+  //     loading = true;
+  //   });
 
-                if (response.statusCode == 200) {
-                  // If the server did return a 200 OK response,
-                  // then parse the JSON.
-                  print(jsonDecode(response.body));
+  //   final docUser = FirebaseFirestore.instance
+  //       .collection("CustomerOrderHistory")
+  //       .doc(widget.CustomerID);
 
-                  UserSelectedChair.clear();
+  //   final UpadateData = {"Chairs": Chairs};
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChooseProduct(
-                              CustomerID: widget.CustomerID,
-                              CustomerName: widget.CustomerName,
-                              CustomerPhoneNumber: widget.CustomerPhoneNumber,
-                            )),
-                  );
+  //   // user Data Update and show snackbar
 
-                  setState(() {
-                    loading = false;
-                  });
-                } else {
-                  setState(() {
-                    loading = false;
-                  });
-                  // If the server did not return a 200 OK response,
-                  // then throw an exception.
-                  throw Exception('Failed to load album');
-                }
-              } catch (e) {}
+  //   docUser
+  //       .update(UpadateData)
+  //       .then((value) => setState(() async {
+  //             print("Done");
 
-              setState(() {
-                loading = false;
-              });
-            }))
-        .onError((error, stackTrace) => setState(() {
-              print(error);
-            }));
-  }
+  //             try {
+  //               var CustomerMsg =
+  //                   "Dear Customer, আপনি Table No:${UserSelectedChair[0][0]} তে ${UserSelectedChair} Chair এ বসুন. Thank You. Bondhu Mithai";
+
+  //               final response = await http.get(Uri.parse(
+  //                   'https://api.greenweb.com.bd/api.php?token=100651104321696050272e74e099c1bc81798bc3aa4ed57a8d030&to=${widget.CustomerPhoneNumber}&message=${CustomerMsg}'));
+
+  //               if (response.statusCode == 200) {
+  //                 // If the server did return a 200 OK response,
+  //                 // then parse the JSON.
+  //                 print(jsonDecode(response.body));
+
+  //                 UserSelectedChair.clear();
+
+  //                 Navigator.push(
+  //                   context,
+  //                   MaterialPageRoute(
+  //                       builder: (context) => ChooseProduct(
+  //                             CustomerID: widget.CustomerID,
+  //                             CustomerName: widget.CustomerName,
+  //                             CustomerPhoneNumber: widget.CustomerPhoneNumber,
+  //                           )),
+  //                 );
+
+  //                 setState(() {
+  //                   loading = false;
+  //                 });
+  //               } else {
+  //                 setState(() {
+  //                   loading = false;
+  //                 });
+  //                 // If the server did not return a 200 OK response,
+  //                 // then throw an exception.
+  //                 throw Exception('Failed to load album');
+  //               }
+  //             } catch (e) {}
+
+  //             setState(() {
+  //               loading = false;
+  //             });
+  //           }))
+  //       .onError((error, stackTrace) => setState(() {
+  //             print(error);
+  //           }));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -519,16 +520,7 @@ class _TableStructureState extends State<TableStructure> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            updateData(UserSelectedChair);
-          },
-          backgroundColor: ColorName().appColor,
-          child: Text(
-            "Next",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+
         backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(color: ColorName().appColor),
