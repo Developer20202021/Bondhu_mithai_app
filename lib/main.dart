@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ?AllDeliveryMan(): FrontSlider(),
+      home: showHome ?TableStructure(CustomerID: "", CustomerName: "", CustomerPhoneNumber: ""): FrontSlider(),
     );
   }
 }

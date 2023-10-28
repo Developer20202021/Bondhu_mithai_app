@@ -510,6 +510,9 @@ class _TableStructureState extends State<TableStructure> {
                       ],
                     ),
                     ),
+
+
+
               
                     SizedBox(
                       width: 25,
@@ -864,11 +867,13 @@ class _TableStructureState extends State<TableStructure> {
 
 
 
+            
 
 
-              //table row 
 
 
+    // Row 2
+            
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, bottom: 8),
                 child: Row(
@@ -881,18 +886,23 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ClipRRect(
+
+
+
+                        //chair 1
+
+                       UserSelectedChair.contains(myProducts[2]["TableChair"][0])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "1",
+                                    "${myProducts[2]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -900,27 +910,34 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[2]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                              
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
-                            ),
-              
-              
-                              ClipRRect(
+                            )   : ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                     Colors.amber,
+                                  Colors.amber,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "2",
+                                    "${myProducts[2]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -928,28 +945,41 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[2]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                                  
+                               
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+
+
+
+
               
+
+              //chair2
               
-              
-                            ClipRRect(
+                              UserSelectedChair.contains(myProducts[0]["TableChair"][1])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "3",
+                                    "${myProducts[2]["TableChair"][1]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -957,13 +987,58 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[2]["TableChair"][1].toString());
+                                      
+
+                                    });
                                     
-                                  
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                  Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[2]["TableChair"][1]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[2]["TableChair"][1].toString());
+                                      
+
+                                    });
+                                    
+                               
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+              
+              
                           ],
                         ),
                         Container(
@@ -978,7 +1053,48 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                                   ClipRRect(
+
+
+
+
+                          //chair 3
+
+                              UserSelectedChair.contains(myProducts[2]["TableChair"][2])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[2]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[2]["TableChair"][2].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -989,7 +1105,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "4",
+                                    "${myProducts[2]["TableChair"][2]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -997,6 +1113,14 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[2]["TableChair"][2].toString());
+                                      
+
+                                    });
                                     
                                
                                     // print("hello 1");
@@ -1004,8 +1128,55 @@ class _TableStructureState extends State<TableStructure> {
                                 ),
                               ),
                             ),
+
+
+
+
+
+
+
+
+
+
+                          //chair 4
+
               
-                                    ClipRRect(
+                              UserSelectedChair.contains(myProducts[2]["TableChair"][3])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[2]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[2]["TableChair"][3].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1016,7 +1187,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "5",
+                                    "${myProducts[2]["TableChair"][3]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1024,6 +1195,14 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[2]["TableChair"][3].toString());
+                                      
+
+                                    });
                                     
                                 
                                     // print("hello 1");
@@ -1032,37 +1211,14 @@ class _TableStructureState extends State<TableStructure> {
                               ),
                             ),
               
-                                   ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                height: 30,
-                                width: 30,
-                                color:
-                                    Colors.amber,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(2),
-                                child: InkWell(
-                                  child: Text(
-                                    "6",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  onHighlightChanged: (value) {},
-                                  onTap: () {
-                                    
-                                    
-                                    // print("hello 1");
-                                  },
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ],
                     ),
                     ),
+
+
+                    
               
                     SizedBox(
                       width: 25,
@@ -1075,18 +1231,22 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ClipRRect(
+
+
+
+
+                          UserSelectedChair.contains(myProducts[3]["TableChair"][0])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "1",
+                                    "${myProducts[3]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1094,16 +1254,23 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[3]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                              
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
-                            ),
-              
-              
-                              ClipRRect(
+                            )   :ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1114,7 +1281,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "2",
+                                    "${myProducts[3]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1122,28 +1289,44 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[3]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                                  
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+
+
+
+
+
+
+
+
+
               
               
-              
-                            ClipRRect(
+                             UserSelectedChair.contains(myProducts[3]["TableChair"][1])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "3",
+                                    "${myProducts[3]["TableChair"][1]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1151,13 +1334,61 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[3]["TableChair"][1].toString());
+                                      
+
+                                    });
                                     
-                                  
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[3]["TableChair"][1]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[3]["TableChair"][1].toString());
+                                      
+
+                                    });
+                                    
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+              
+              
+                          
+
+
                           ],
                         ),
                         Container(
@@ -1172,18 +1403,21 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                                   ClipRRect(
+
+
+
+                                  UserSelectedChair.contains(myProducts[3]["TableChair"][2])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                  Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "4",
+                                    "${myProducts[3]["TableChair"][2]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1191,15 +1425,23 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[3]["TableChair"][2].toString());
+                                      
+
+                                    });
                                     
-                               
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
-                            ),
-              
-                                    ClipRRect(
+                            )   :ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1210,7 +1452,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "5",
+                                    "${myProducts[3]["TableChair"][2]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1218,6 +1460,14 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[3]["TableChair"][2].toString());
+                                      
+
+                                    });
                                     
                                 
                                     // print("hello 1");
@@ -1225,19 +1475,22 @@ class _TableStructureState extends State<TableStructure> {
                                 ),
                               ),
                             ),
+
+
+
               
-                                   ClipRRect(
+                          UserSelectedChair.contains(myProducts[3]["TableChair"][3])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                    Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "6",
+                                    "${myProducts[3]["TableChair"][3]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1245,25 +1498,80 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[3]["TableChair"][3].toString());
+                                      
+
+                                    });
                                     
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[3]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[3]["TableChair"][3].toString());
+                                      
+
+                                    });
                                     
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+                               
+
+                               
+
+
+
                           ],
                         ),
                       ],
                     ),
-                    ),
-
-
-
+                    )
               
                   ],
                 ),
               ),
+
+
+
+
+
+
+
+              
+
 
 
 
@@ -1283,9 +1591,10 @@ class _TableStructureState extends State<TableStructure> {
 
 
 
-              //table row 
 
 
+// Row 3
+            
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, bottom: 8),
                 child: Row(
@@ -1298,18 +1607,23 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ClipRRect(
+
+
+
+                        //chair 1
+
+                       UserSelectedChair.contains(myProducts[4]["TableChair"][0])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "1",
+                                    "${myProducts[4]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1317,27 +1631,34 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[4]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                              
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
-                            ),
-              
-              
-                              ClipRRect(
+                            )   : ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                     Colors.amber,
+                                  Colors.amber,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "2",
+                                    "${myProducts[4]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1345,28 +1666,41 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[4]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                                  
+                               
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+
+
+
+
               
+
+              //chair2
               
-              
-                            ClipRRect(
+                              UserSelectedChair.contains(myProducts[4]["TableChair"][1])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "3",
+                                    "${myProducts[4]["TableChair"][1]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1374,13 +1708,58 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[4]["TableChair"][1].toString());
+                                      
+
+                                    });
                                     
-                                  
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                  Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[4]["TableChair"][1]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[4]["TableChair"][1].toString());
+                                      
+
+                                    });
+                                    
+                               
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+              
+              
                           ],
                         ),
                         Container(
@@ -1395,7 +1774,48 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                                   ClipRRect(
+
+
+
+
+                          //chair 3
+
+                              UserSelectedChair.contains(myProducts[4]["TableChair"][2])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[4]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[4]["TableChair"][2].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1406,7 +1826,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "4",
+                                    "${myProducts[4]["TableChair"][2]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1414,6 +1834,14 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[4]["TableChair"][2].toString());
+                                      
+
+                                    });
                                     
                                
                                     // print("hello 1");
@@ -1421,8 +1849,55 @@ class _TableStructureState extends State<TableStructure> {
                                 ),
                               ),
                             ),
+
+
+
+
+
+
+
+
+
+
+                          //chair 4
+
               
-                                    ClipRRect(
+                              UserSelectedChair.contains(myProducts[4]["TableChair"][3])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[4]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[4]["TableChair"][3].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1433,7 +1908,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "5",
+                                    "${myProducts[4]["TableChair"][3]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1441,6 +1916,14 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[4]["TableChair"][3].toString());
+                                      
+
+                                    });
                                     
                                 
                                     // print("hello 1");
@@ -1449,37 +1932,14 @@ class _TableStructureState extends State<TableStructure> {
                               ),
                             ),
               
-                                   ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                height: 30,
-                                width: 30,
-                                color:
-                                    Colors.amber,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(2),
-                                child: InkWell(
-                                  child: Text(
-                                    "6",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  onHighlightChanged: (value) {},
-                                  onTap: () {
-                                    
-                                    
-                                    // print("hello 1");
-                                  },
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ],
                     ),
                     ),
+
+
+                    
               
                     SizedBox(
                       width: 25,
@@ -1492,18 +1952,22 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            ClipRRect(
+
+
+
+
+                          UserSelectedChair.contains(myProducts[5]["TableChair"][0])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "1",
+                                    "${myProducts[5]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1511,16 +1975,23 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[5]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                              
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
-                            ),
-              
-              
-                              ClipRRect(
+                            )   :ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1531,7 +2002,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "2",
+                                    "${myProducts[5]["TableChair"][0]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1539,28 +2010,44 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[5]["TableChair"][0].toString());
+                                      
+
+                                    });
                                     
-                                  
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+
+
+
+
+
+
+
+
+
               
               
-              
-                            ClipRRect(
+                             UserSelectedChair.contains(myProducts[5]["TableChair"][1])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                   Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "3",
+                                    "${myProducts[5]["TableChair"][1]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1568,13 +2055,61 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[5]["TableChair"][1].toString());
+                                      
+
+                                    });
                                     
-                                  
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[5]["TableChair"][1]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[5]["TableChair"][1].toString());
+                                      
+
+                                    });
+                                    
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
                             ),
+              
+              
+                          
+
+
                           ],
                         ),
                         Container(
@@ -1589,18 +2124,21 @@ class _TableStructureState extends State<TableStructure> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                                   ClipRRect(
+
+
+
+                                  UserSelectedChair.contains(myProducts[5]["TableChair"][2])? ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
                                 width: 30,
                                 color:
-                                  Colors.amber,
+                                     Colors.red,
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "4",
+                                    "${myProducts[5]["TableChair"][2]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1608,15 +2146,23 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[5]["TableChair"][2].toString());
+                                      
+
+                                    });
                                     
-                               
+                                
                                     // print("hello 1");
                                   },
                                 ),
                               ),
-                            ),
-              
-                                    ClipRRect(
+                            )   :ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 height: 30,
@@ -1627,7 +2173,7 @@ class _TableStructureState extends State<TableStructure> {
                                 padding: EdgeInsets.all(2),
                                 child: InkWell(
                                   child: Text(
-                                    "5",
+                                    "${myProducts[5]["TableChair"][2]}",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -1635,6 +2181,481 @@ class _TableStructureState extends State<TableStructure> {
                                   ),
                                   onHighlightChanged: (value) {},
                                   onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[5]["TableChair"][2].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            ),
+
+
+
+              
+                          UserSelectedChair.contains(myProducts[5]["TableChair"][3])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[5]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[5]["TableChair"][3].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[5]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[5]["TableChair"][3].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            ),
+                               
+
+                               
+
+
+
+                          ],
+                        ),
+                      ],
+                    ),
+                    )
+              
+                  ],
+                ),
+              ),
+
+
+
+
+
+
+
+              
+
+
+
+
+
+
+
+
+
+              
+
+              SizedBox(height: 27,),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Row 4
+            
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, bottom: 8),
+                child: Row(
+                  children: [
+              
+                Container(
+                      width: width*0.42,
+                      child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+
+
+
+                        //chair 1
+
+                       UserSelectedChair.contains(myProducts[6]["TableChair"][0])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][0]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[6]["TableChair"][0].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                  Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][0]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[6]["TableChair"][0].toString());
+                                      
+
+                                    });
+                                    
+                               
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            ),
+
+
+
+
+              
+
+              //chair2
+              
+                              UserSelectedChair.contains(myProducts[6]["TableChair"][1])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][1]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[6]["TableChair"][1].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                  Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][1]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[6]["TableChair"][1].toString());
+                                      
+
+                                    });
+                                    
+                               
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            ),
+              
+              
+                          ],
+                        ),
+                        Container(
+                          width: 300,
+                          height: 55,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 202, 143, 212),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Text("${myProducts[6]["tableID"]}"),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+
+
+
+
+                          //chair 3
+
+                              UserSelectedChair.contains(myProducts[6]["TableChair"][2])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      // myProducts.insert(myProducts.length, myProducts[0]["TableChair"][3]);
+
+                                      UserSelectedChair.remove(myProducts[6]["TableChair"][2].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   : ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                  Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][2]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                         setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[6]["TableChair"][2].toString());
+                                      
+
+                                    });
+                                    
+                               
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            ),
+
+
+
+
+
+
+
+
+
+
+                          //chair 4
+
+              
+                              UserSelectedChair.contains(myProducts[6]["TableChair"][3])? ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.red,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                      
+
+                                      UserSelectedChair.remove(myProducts[6]["TableChair"][3].toString());
+                                      
+
+                                    });
+                                    
+                                
+                                    // print("hello 1");
+                                  },
+                                ),
+                              ),
+                            )   :ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                color:
+                                     Colors.amber,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                child: InkWell(
+                                  child: Text(
+                                    "${myProducts[6]["TableChair"][3]}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                  onHighlightChanged: (value) {},
+                                  onTap: () {
+
+
+                                    setState(() {
+
+                                     UserSelectedChair.insert(UserSelectedChair.length, myProducts[6]["TableChair"][3].toString());
+                                      
+
+                                    });
                                     
                                 
                                     // print("hello 1");
@@ -1643,32 +2664,6 @@ class _TableStructureState extends State<TableStructure> {
                               ),
                             ),
               
-                                   ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                height: 30,
-                                width: 30,
-                                color:
-                                    Colors.amber,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(2),
-                                child: InkWell(
-                                  child: Text(
-                                    "6",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                  onHighlightChanged: (value) {},
-                                  onTap: () {
-                                    
-                                    
-                                    // print("hello 1");
-                                  },
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ],
@@ -1678,9 +2673,37 @@ class _TableStructureState extends State<TableStructure> {
 
                     
               
+                    SizedBox(
+                      width: 25,
+                    ),
+              
+                     
+              
                   ],
                 ),
               ),
+
+
+
+
+
+
+
+              
+
+
+
+
+
+
+
+
+
+              
+
+              SizedBox(height: 27,),
+
+
 
 
 
