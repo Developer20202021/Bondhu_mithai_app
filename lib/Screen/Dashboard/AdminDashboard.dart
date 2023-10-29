@@ -26,6 +26,7 @@ import 'package:bondhu_mithai_app/Screen/TableView/AdminTableView.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:popover/popover.dart';
 
@@ -1104,7 +1105,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.delivery_dining),
                     SizedBox(width: 5,),
-                    Text("All Delivery Man Hand Order"),
+                    Text("DeliveryMan Rcv Order"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -1600,14 +1601,15 @@ PopupMenuItem(
                             fontSize: 20,
                             color: Colors.white,
                             overflow: TextOverflow.clip
-                          ),),
+                          ),).animate(autoPlay: true) .fade(duration: 1000.ms)
+  .scale(delay: 1000.ms).move(delay: 300.ms, duration: 600.ms),
                     
                     
-                
-                
+                                
+                                
                     SizedBox(
                   height: 17,
-                 ),
+                                 ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Row(
@@ -1620,14 +1622,14 @@ PopupMenuItem(
                                             
                                             
                                           Container(width: 100, child:TextButton(onPressed: (){
-                
-                
+                                
+                                
                                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => DueCustomer()));
-                
-                
-                
-                
-                
+                                
+                                
+                                
+                                
+                                
                                           }, child: Text("View", style: TextStyle(color: Theme.of(context).primaryColor),), style: ButtonStyle(
                                
                                           backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
@@ -1647,19 +1649,19 @@ PopupMenuItem(
                         ],
                       ),
                     ),
-                
-                
+                                
+                                
                   ),
                        
-                 decoration: BoxDecoration(
+                                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                
+                                
                   border: Border.all(
                             width: 2,
                             color: Theme.of(context).primaryColor
                           ),
                   borderRadius: BorderRadius.circular(10)      
-                 ),)),
+                                 ),)),
                 
                 
                  SizedBox(
@@ -1686,7 +1688,8 @@ PopupMenuItem(
                             color:Colors.white,
                             overflow: TextOverflow.clip
                            
-                          ),),
+                          ),).animate(autoPlay: true) .fade(duration: 1000.ms)
+  .scale(delay: 1000.ms).move(delay: 300.ms, duration: 600.ms),
                     
                     
                     

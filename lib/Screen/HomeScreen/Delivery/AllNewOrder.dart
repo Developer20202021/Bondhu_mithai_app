@@ -180,7 +180,7 @@ Future<void> getData() async {
                           size: 40,
                           ),
                           title: Text(
-                            'ID: ${item["CustomerID"]}',
+                            'ID:${item["OrderID"]}',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 48, 2, 56),
                                 fontWeight: FontWeight.bold,
@@ -276,7 +276,7 @@ Future<void> getData() async {
                                           style: TextStyle(
                                               color: ColorName().appColor,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              fontSize: 16),
                                         ),
                                         Icon(
                                           Icons.close,
@@ -287,7 +287,7 @@ Future<void> getData() async {
                                           style: TextStyle(
                                               color: ColorName().appColor,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 20),
+                                              fontSize: 16),
                                         ),
                                       ],
                                     ),
@@ -409,27 +409,27 @@ Future<void> getData() async {
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 16),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 2,
                                 ),
                                 Text(
-                                  "----------------------",
+                                  "------",
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 2,
                                 ),
                                 Text(
                                   "${item["TotalFoodPrice"]}৳",
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
@@ -446,27 +446,27 @@ Future<void> getData() async {
                                   style: TextStyle(
                                       color: Colors.grey,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 16),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 2,
                                 ),
                                 Text(
-                                  "--------------------------",
+                                  "------",
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 2,
                                 ),
                                 Text(
                                   "${item["DeliveryFee"]}৳",
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 16),
                                 ),
                               ],
                             ),
@@ -482,27 +482,27 @@ Future<void> getData() async {
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 24),
+                                      fontSize: 18),
                                 ),
                                 SizedBox(
-                                  width: 30,
+                                  width: 2,
                                 ),
                                 Text(
-                                  "--------------------------",
+                                  "-------",
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width: 2,
                                 ),
                                 Text(
                                   "${item["WithDeliveryFeeFoodPrice"]}৳",
                                   style: TextStyle(
                                       color: ColorName().appColor,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                      fontSize: 18),
                                 ),
                               ],
                             ),

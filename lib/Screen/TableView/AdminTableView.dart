@@ -351,15 +351,15 @@ class _AdminTableStructureViewState extends State<AdminTableStructureView> {
                 ],
               ),
             ),
-            btnOkOnPress: () {
+            // btnOkOnPress: () {
 
 
-              MealServeDataUpdate(ChairsData[0]["OrderID"]);
+            //   MealServeDataUpdate(ChairsData[0]["OrderID"]);
 
-              // setState(() {
-              //   loading = false;
-              // });
-            },
+            //   // setState(() {
+            //   //   loading = false;
+            //   // });
+            // },
           ).show();
 
            

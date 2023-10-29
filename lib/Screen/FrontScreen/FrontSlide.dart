@@ -1,3 +1,4 @@
+import 'package:bondhu_mithai_app/Screen/AllLogInScreen/AdminLogIn.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllOrder.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -79,7 +80,7 @@ class _FrontSliderState extends State<FrontSlider> {
                     prefs.setBool("showHome", true);
 
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: ((context) => AllOrder())));
+                        builder: ((context) => AdminLogInScreen())));
                   },
                   child: Text(
                     "GET STARTED",
