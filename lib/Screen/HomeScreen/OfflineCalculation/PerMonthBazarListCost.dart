@@ -6,14 +6,14 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 
-class PerDayBazarListCost extends StatefulWidget {
-  const PerDayBazarListCost({super.key});
+class PerMonthBazarListCost extends StatefulWidget {
+  const PerMonthBazarListCost({super.key});
 
   @override
-  State<PerDayBazarListCost> createState() => _PerDayBazarListCostState();
+  State<PerMonthBazarListCost> createState() => _PerMonthBazarListCostState();
 }
 
-class _PerDayBazarListCostState extends State<PerDayBazarListCost> {
+class _PerMonthBazarListCostState extends State<PerMonthBazarListCost> {
 
 
   // এখানে Date দিয়ে Data fetch করতে হবে। 

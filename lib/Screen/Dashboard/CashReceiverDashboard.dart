@@ -4,6 +4,7 @@ import 'package:bondhu_mithai_app/Screen/AdminScreen/AllCashReceiver.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllDeliveryMan.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllManagers.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllStaff.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/CashReceiverProfile.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/DueCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/PerDaySalesHistory.dart';
@@ -21,7 +22,6 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/PerMonthB
 import 'package:bondhu_mithai_app/Screen/HomeScreen/OfflineCalculation/createBazarList.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/Settings/Settings.dart';
-import 'package:bondhu_mithai_app/Screen/Sms/smsinfo.dart';
 import 'package:bondhu_mithai_app/Screen/TableView/AdminTableView.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +30,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:popover/popover.dart';
 
 
-class AdminDashboard extends StatefulWidget {
+class CashReceiverDashboard extends StatefulWidget {
 
   final userName;
   final userEmail;
@@ -39,13 +39,13 @@ class AdminDashboard extends StatefulWidget {
 
 
 
-  const AdminDashboard({super.key, required this.userName, required this.userEmail, required this.indexNumber});
+  const CashReceiverDashboard({super.key, required this.userName, required this.userEmail, required this.indexNumber});
 
   @override
-  State<AdminDashboard> createState() => _AdminDashboardState();
+  State<CashReceiverDashboard> createState() => _CashReceiverDashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
+class _CashReceiverDashboardState extends State<CashReceiverDashboard> {
 
 
 
@@ -918,54 +918,54 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
 
-                  PopupMenuItem(
-                onTap: (){
+              //     PopupMenuItem(
+              //   onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllStaff()));
+              //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllStaff()));
 
 
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.person),
-                    SizedBox(width: 5,),
-                    Text("All Staff"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.person),
+              //       SizedBox(width: 5,),
+              //       Text("All Staff"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
 
 
 
 
-               PopupMenuItem(
-                onTap: (){
+              //  PopupMenuItem(
+              //   onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllManager()));
+              //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllManager()));
 
 
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.person),
-                    SizedBox(width: 5,),
-                    Text("All Manager"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.person),
+              //       SizedBox(width: 5,),
+              //       Text("All Manager"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
               
 
 
@@ -1011,28 +1011,28 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
 
-                PopupMenuItem(
-                onTap: (){
+              //   PopupMenuItem(
+              //   onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin()));
+              //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin()));
 
 
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.admin_panel_settings),
-                    SizedBox(width: 5,),
-                    Text("All Admin"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.admin_panel_settings),
+              //       SizedBox(width: 5,),
+              //       Text("All Admin"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
               
 
 
@@ -1346,7 +1346,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminProfile(AdminEmail: widget.userEmail)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CashReceiverProfile(CashReceiverEmail: widget.userEmail)));
 
 
 
@@ -1387,38 +1387,6 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                     Icon(Icons.settings),
                     SizedBox(width: 5,),
                     Text("Settings"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
-                
-                padding: EdgeInsets.all(18.0),
-              ),
-
-
-
-
-
-
-
-
-
-              
-PopupMenuItem(
-                onTap: (){
-
-
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>SMSInfo()));
-
-
-
-
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.sms),
-                    SizedBox(width: 5,),
-                    Text("SMS info"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],

@@ -23,6 +23,7 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dar
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserOrderHistory/UserOrderHistory.dart';
+import 'package:bondhu_mithai_app/Screen/Settings/Settings.dart';
 import 'package:bondhu_mithai_app/Screen/Staff/StaffScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/ChooseProduct.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/DeliveryTimeScreen.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ?AdminDashboard(userName: "Mahdi", userEmail: "hasam", indexNumber: "1"): FrontSlider(),
+      home: showHome ?AdminDashboard(userName: "Mahadi", userEmail: "admin", indexNumber: "1"): FrontSlider(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:bondhu_mithai_app/Screen/AdminScreen/AllCashReceiver.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllDeliveryMan.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllManagers.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllStaff.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/ManagerProfile.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/DueCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/PerDaySalesHistory.dart';
@@ -30,7 +31,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:popover/popover.dart';
 
 
-class AdminDashboard extends StatefulWidget {
+class ManagerDashboard extends StatefulWidget {
 
   final userName;
   final userEmail;
@@ -39,13 +40,13 @@ class AdminDashboard extends StatefulWidget {
 
 
 
-  const AdminDashboard({super.key, required this.userName, required this.userEmail, required this.indexNumber});
+  const ManagerDashboard({super.key, required this.userName, required this.userEmail, required this.indexNumber});
 
   @override
-  State<AdminDashboard> createState() => _AdminDashboardState();
+  State<ManagerDashboard> createState() => _ManagerDashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
+class _ManagerDashboardState extends State<ManagerDashboard> {
 
 
 
@@ -1011,28 +1012,28 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
 
-                PopupMenuItem(
-                onTap: (){
+              //   PopupMenuItem(
+              //   onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin()));
+              //       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin()));
 
 
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.admin_panel_settings),
-                    SizedBox(width: 5,),
-                    Text("All Admin"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.admin_panel_settings),
+              //       SizedBox(width: 5,),
+              //       Text("All Admin"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
               
 
 
@@ -1346,7 +1347,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminProfile(AdminEmail: widget.userEmail)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ManagerProfile(ManagerEmail: widget.userEmail)));
 
 
 
@@ -1402,10 +1403,9 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
 
-
-              
-PopupMenuItem(
-                onTap: (){
+                          
+            PopupMenuItem(
+                  onTap: (){
 
 
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) =>SMSInfo()));
