@@ -1,3 +1,19 @@
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AllAdmin.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AllCashReceiver.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AllDeliveryMan.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AllManagers.dart';
+import 'package:bondhu_mithai_app/Screen/AdminScreen/AllStaff.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/DueCustomer.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/PerDaySalesHistory.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/PerMonthNagadBillPay.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/PerMonthSalesHistory.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/AllFood/AllFood.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllNewOrder.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllOldOrder.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllOrderDeliveryManHand.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/Delivery/AllPackagingOrder.dart';
+import 'package:bondhu_mithai_app/Screen/HomeScreen/FoodUploadScreen/FoodUploadScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -110,34 +126,34 @@ Future<void> getPaidCustomerData() async {
   // Firebase All Customer Data Load
 
 List  AllData = [0];
-    int moneyAdd = 0;
+double moneyAdd = 0.0;
 
   CollectionReference _collectionRef =
-    FirebaseFirestore.instance.collection('DuePaymentAddInfo');
+    FirebaseFirestore.instance.collection('CustomerInfo');
 
 Future<void> getData(String paymentDate) async {
     // Get docs from collection reference
     // QuerySnapshot querySnapshot = await _collectionRef.get();
 
 
-    Query query = _collectionRef.where("PaymentDate", isEqualTo: paymentDate);
+    Query query = _collectionRef.where("CustomerType", isEqualTo:"Due").where("OrderStatus", isEqualTo: "close");
     QuerySnapshot querySnapshot = await query.get();
 
     // Get data from docs and convert map to List
      AllData = querySnapshot.docs.map((doc) => doc.data()).toList();
 
 
-     moneyAdd = 0;
+     moneyAdd = 0.0;
 
      for (var i = 0; i < AllData.length; i++) {
 
-       var money = AllData[i]["Amount"];
-      int moneyInt = int.parse(money);
+       var money = AllData[i]["DueAmount"];
+      double moneydouble = double.parse(money);
 
       
 
       setState(() {
-        moneyAdd = moneyAdd + moneyInt;
+        moneyAdd = moneyAdd + moneydouble;
       });
        
      }
@@ -573,7 +589,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductScreen(indexNumber: "2",)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllFood()));
 
 
 
@@ -583,7 +599,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.electric_bike),
                     SizedBox(width: 5,),
-                    Text("All Bikes"),
+                    Text("All Foods"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -600,7 +616,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomer(indexNumber: "4")));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomer(indexNumber: "")));
 
 
 
@@ -627,7 +643,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => DueCustomer()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => DueCustomer()));
 
 
 
@@ -654,54 +670,54 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
               
-               PopupMenuItem(
-                onTap: (){
+              //  PopupMenuItem(
+              //   onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDayDuePaymentAddHistory()));
+              //       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDayDuePaymentAddHistory()));
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.payment),
-                    SizedBox(width: 5,),
-                    Text("Today Due Add"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.payment),
+              //       SizedBox(width: 5,),
+              //       Text("Today Due Add"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
 
 
 
 
 
 
-              PopupMenuItem(
-                onTap: (){
+              // PopupMenuItem(
+              //   onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerMonthDuePaymentAddHistory()));
+              //       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerMonthDuePaymentAddHistory()));
 
 
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.payments_rounded),
-                    SizedBox(width: 5,),
-                    Text("Monthly Due Add"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.payments_rounded),
+              //       SizedBox(width: 5,),
+              //       Text("Monthly Due Add"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
 
 
 
@@ -714,28 +730,28 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
               
-               PopupMenuItem(
-                onTap: (){
+              //  PopupMenuItem(
+              //   onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDayDueCustomer()));
+              //       // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDayDueCustomer()));
 
 
 
 
-                },
-                child: Row(
-                  children: [
-                    Icon(Icons.person_4),
-                    SizedBox(width: 5,),
-                    Text("Today Due Customers"),
-                    SizedBox(width: 5,),
-                    Icon(Icons.arrow_right_alt),
-                  ],
-                ),
+              //   },
+              //   child: Row(
+              //     children: [
+              //       Icon(Icons.person_4),
+              //       SizedBox(width: 5,),
+              //       Text("Today Due Customers"),
+              //       SizedBox(width: 5,),
+              //       Icon(Icons.arrow_right_alt),
+              //     ],
+              //   ),
                 
-                padding: EdgeInsets.all(18.0),
-              ),
+              //   padding: EdgeInsets.all(18.0),
+              // ),
 
 
 
@@ -751,7 +767,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDaySalesHistory()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDaySalesHistory()));
 
 
 
@@ -776,7 +792,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerMonthSalesHistory()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerMonthSalesHistory()));
 
 
 
@@ -801,7 +817,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>PerMonthNagadBillPay()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>PerMonthNagadBillPay()));
 
 
 
@@ -833,7 +849,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) =>AccessoriesScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>AllDeliveryMan()));
 
 
 
@@ -843,7 +859,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.preview_outlined),
                     SizedBox(width: 5,),
-                    Text("Accessories"),
+                    Text("All Delivery Man"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -869,7 +885,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => UploadProduct()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllStaff()));
 
 
 
@@ -879,7 +895,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.upload),
                     SizedBox(width: 5,),
-                    Text("Upload Bike"),
+                    Text("All Staff"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -895,7 +911,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => UploadAccessories()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllManager()));
 
 
 
@@ -905,7 +921,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.upload_file),
                     SizedBox(width: 5,),
-                    Text("Upload Accessories"),
+                    Text("All Manager"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -922,7 +938,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerMonthAccessoriesSalesHistory()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCashReceiver()));
 
 
 
@@ -932,7 +948,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.history),
                     SizedBox(width: 5,),
-                    Text("Accessories Sales"),
+                    Text("All CashReceiver"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -962,7 +978,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin(indexNumber: "3",)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin()));
 
 
 
@@ -988,7 +1004,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => MakeAdmin()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllNewOrder()));
 
 
 
@@ -998,7 +1014,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.admin_panel_settings),
                     SizedBox(width: 5,),
-                    Text("Make Admin"),
+                    Text("All New Order"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -1014,7 +1030,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ChangePassword()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllPackagingorder()));
 
 
 
@@ -1024,7 +1040,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.password),
                     SizedBox(width: 5,),
-                    Text("Change Password"),
+                    Text("All Packaging Order"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -1041,7 +1057,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SMSInfo()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllOrderDeliveryManHand()));
 
 
 
@@ -1051,7 +1067,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                   children: [
                     Icon(Icons.sms_rounded),
                     SizedBox(width: 5,),
-                    Text("SMS info"),
+                    Text("All Delivery Man Hand Order"),
                     SizedBox(width: 5,),
                     Icon(Icons.arrow_right_alt),
                   ],
@@ -1059,6 +1075,115 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 
                 padding: EdgeInsets.all(18.0),
               ),
+
+
+
+
+
+
+
+
+              PopupMenuItem(
+                onTap: (){
+
+
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllOldOrder()));
+
+
+
+
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.developer_board),
+                    SizedBox(width: 5,),
+                    Text("All Old Order"),
+                    SizedBox(width: 5,),
+                    Icon(Icons.arrow_right_alt),
+                  ],
+                ),
+                
+                padding: EdgeInsets.all(18.0),
+              ),
+
+
+
+
+            
+            
+
+
+
+              PopupMenuItem(
+                onTap: (){
+
+
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FoodUploadScreen()));
+
+
+
+
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.developer_board),
+                    SizedBox(width: 5,),
+                    Text("Food Upload"),
+                    SizedBox(width: 5,),
+                    Icon(Icons.arrow_right_alt),
+                  ],
+                ),
+                
+                padding: EdgeInsets.all(18.0),
+              ),
+
+
+
+
+              
+
+
+
+// comming soon 
+
+
+              PopupMenuItem(
+                onTap: (){
+
+
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllOldOrder()));
+
+
+
+
+                },
+                child: Row(
+                  children: [
+                    Icon(Icons.developer_board),
+                    SizedBox(width: 5,),
+                    Text("All Old Order"),
+                    SizedBox(width: 5,),
+                    Icon(Icons.arrow_right_alt),
+                  ],
+                ),
+                
+                padding: EdgeInsets.all(18.0),
+              ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               
               
 
@@ -1244,7 +1369,7 @@ PopupMenuItem(
                                           Container(width: 100, child:TextButton(onPressed: (){
                 
                 
-                                                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDayDueCustomer()));
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DueCustomer()));
                 
                 
                 
@@ -1302,7 +1427,7 @@ PopupMenuItem(
                       padding: const EdgeInsets.only(top: 50),
                       child: Column(
                         children: [
-                          Text("Today Due Payment Add:${moneyAdd.toString()}৳", style: TextStyle(
+                          Text("Total Due: ${moneyAdd.toString()}৳", style: TextStyle(
                     // ${moneyAdd.toString()}
                             fontSize: 20,
                             color:Colors.white,
@@ -1336,7 +1461,7 @@ PopupMenuItem(
                 
                 
                 
-                                                // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDayDuePaymentAddHistory()));
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DueCustomer()));
                 
                 
                 
@@ -1397,7 +1522,291 @@ PopupMenuItem(
                 
                 
                 
+                              
+                // onlien sales
+                 
+                     Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                  height: 200,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Column(
+                        children: [
+                          Text("Today Online Sale :${OnlineCustomerOrderMoneyAdd.toString()}৳", style: TextStyle(
+                    // ${moneyAdd.toString()}
+                            fontSize: 20,
+                            color:Colors.white,
+                            overflow: TextOverflow.clip
+                           
+                          ),),
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                 
+                             SizedBox(
+                                    height: 17,
+                                   ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Row(
+                                              
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                
+                                
+                                children: [
+                                              
+                                              
+                                            Container(width: 100, child:TextButton(onPressed: (){
                 
+                
+                
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDaySalesHistory()));
+                
+                
+                
+                
+                
+                
+                
+                                            }, child: Text("View", style: TextStyle(color: Color.fromARGB(255, 242,133,0)),), style: ButtonStyle(
+                                 
+                                            backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+                                          ),),),
+
+                                ],),
+                            )
+
+                        ],
+                      ),
+                    ),
+                
+                
+                  ),
+                       
+                 decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 242,133,0),
+                
+                  border: Border.all(
+                            width: 2,
+                            color: Color.fromARGB(255, 242,133,0)
+                          ),
+                  borderRadius: BorderRadius.circular(10)      
+                 ),)),
+                
+                
+                 SizedBox(
+                  height: 10,
+                 ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
+                     Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                  height: 200,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Column(
+                        children: [
+                          Text("Today Total Sale :${CustomerOrderMoneyAdd.toString()}৳", style: TextStyle(
+                    // ${moneyAdd.toString()}
+                            fontSize: 20,
+                            color:Colors.white,
+                            overflow: TextOverflow.clip
+                           
+                          ),),
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // online sales 
+                             SizedBox(
+                                    height: 17,
+                                   ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Row(
+                                              
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                
+                                
+                                children: [
+                                              
+                                              
+                                            Container(width: 100, child:TextButton(onPressed: (){
+                
+                
+                
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDaySalesHistory()));
+                
+                
+                
+                
+                
+                
+                
+                                            }, child: Text("View", style: TextStyle(color: Color.fromARGB(255, 242,133,0)),), style: ButtonStyle(
+                                 
+                                            backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+                                          ),),),
+
+                                ],),
+                            )
+
+                        ],
+                      ),
+                    ),
+                
+                
+                  ),
+                       
+                 decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 242,133,0),
+                
+                  border: Border.all(
+                            width: 2,
+                            color: Color.fromARGB(255, 242,133,0)
+                          ),
+                  borderRadius: BorderRadius.circular(10)      
+                 ),)),
+                
+                
+                 SizedBox(
+                  height: 10,
+                 ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                  height: 200,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Column(
+                        children: [
+                          Text("Today Offline Sale :${CustomerOrderMoneyAdd.toString()}৳", style: TextStyle(
+                    // ${moneyAdd.toString()}
+                            fontSize: 20,
+                            color:Colors.white,
+                            overflow: TextOverflow.clip
+                           
+                          ),),
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    // online sales 
+                             SizedBox(
+                                    height: 17,
+                                   ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Row(
+                                              
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                
+                                
+                                children: [
+                                              
+                                              
+                                            Container(width: 100, child:TextButton(onPressed: (){
+                
+                
+                
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => PerDaySalesHistory()));
+                
+                
+                
+                
+                
+                
+                
+                                            }, child: Text("View", style: TextStyle(color: Color.fromARGB(255, 242,133,0)),), style: ButtonStyle(
+                                 
+                                            backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
+                                          ),),),
+
+                                ],),
+                            )
+
+                        ],
+                      ),
+                    ),
+                
+                
+                  ),
+                       
+                 decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 242,133,0),
+                
+                  border: Border.all(
+                            width: 2,
+                            color: Color.fromARGB(255, 242,133,0)
+                          ),
+                  borderRadius: BorderRadius.circular(10)      
+                 ),)),
+                
+                
+                 SizedBox(
+                  height: 10,
+                 ),
+
+
+
+
+
+
+
+
+
+
+
+
+                 
                 
                 
                 
