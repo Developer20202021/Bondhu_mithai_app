@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive/hive.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 
@@ -31,6 +32,15 @@ class _AdminLogInScreenState extends State<AdminLogInScreen> {
    var createUserErrorCode = "";
 
    bool loading = false;
+
+   // hive database
+
+  final _mybox = Hive.box("mybox");
+
+
+
+
+
 
 
    @override
@@ -79,6 +89,10 @@ class _AdminLogInScreenState extends State<AdminLogInScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+
+
+
+                      
               
               
               
@@ -174,6 +188,21 @@ class _AdminLogInScreenState extends State<AdminLogInScreen> {
                           // SizedBox(
                           //           height: 20,
                           //         ),
+
+
+                           
+                    Center(
+                      child: Lottie.asset(
+                      'lib/images/animation_lk8fkoa8.json',
+                        fit: BoxFit.cover,
+                        width: 200,
+                        height: 200
+                      ),
+                    ),
+            
+            SizedBox(
+                      height: 20,
+                    ),
                           
                           
                           
@@ -275,7 +304,7 @@ class _AdminLogInScreenState extends State<AdminLogInScreen> {
                       CollectionReference _collectionRef =
                         FirebaseFirestore.instance.collection('Admin');
               
-                        Query query = _collectionRef.where("userEmail", isEqualTo: myEmailController.text);
+                        Query query = _collectionRef.where("AdminEmail", isEqualTo: myEmailController.text.trim());
                       QuerySnapshot querySnapshot = await query.get();
               
                   
@@ -302,11 +331,20 @@ class _AdminLogInScreenState extends State<AdminLogInScreen> {
               
               
                     if (AllData[0]["AdminApprove"] == "true") {
+
+                        _mybox.delete("AdminPhotoUrl");
+                        _mybox.delete("AdminName");
+                         _mybox.delete("AdminEmail");
+
+
+                      _mybox.put("AdminPhotoUrl",AllData[0]["AdminImageUrl"]);
+                      _mybox.put("AdminName", AllData[0]["AdminName"]);
+                      _mybox.put("AdminEmail", AllData[0]["AdminEmail"]);
               
                       
               
               
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard(userName: userName, userEmail: userEmail, indexNumber: "1")),);
+                             Navigator.push(context, MaterialPageRoute(builder: (context) => AdminDashboard(indexNumber: "1",)),);
               
                              setState(() {
                             loading=false;

@@ -1,5 +1,6 @@
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllDeliveryMan.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/DeliveryManPaymentAdd.dart';
+import 'package:bondhu_mithai_app/Screen/AllLogInScreen/AdminLogIn.dart';
 import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManImageUpload.dart';
 import 'package:bondhu_mithai_app/Screen/AllRegistrationScreen/DeliveryManRegistration.dart';
 import 'package:bondhu_mithai_app/Screen/CustomerLocation/CustomerLocation.dart';
@@ -23,6 +24,7 @@ import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/ChooseProduct.dar
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableOrder.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/TableOrder/TableStructure.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserOrderHistory/UserOrderHistory.dart';
+import 'package:bondhu_mithai_app/Screen/Settings/ResetPassword.dart';
 import 'package:bondhu_mithai_app/Screen/Settings/Settings.dart';
 import 'package:bondhu_mithai_app/Screen/Staff/StaffScreen.dart';
 import 'package:bondhu_mithai_app/Screen/UsersScreen/ChooseProduct.dart';
@@ -79,7 +81,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: ColorName().appColor),
         useMaterial3: true,
       ),
-      home: showHome ?AdminDashboard(userName: "Mahadi", userEmail: "admin", indexNumber: "1"): FrontSlider(),
+      home: showHome ?ResetPassword(): FrontSlider(),
     );
   }
 }

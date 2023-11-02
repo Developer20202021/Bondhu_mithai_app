@@ -433,8 +433,10 @@ class _AdminRegistrationState extends State<AdminRegistration> {
                        
                         await credential.user?.updateDisplayName(myAdminNameController.text.trim().toLowerCase());
 
+                       
 
-                        await credential.user?.updatePassword(myPhoneNumberController.text.trim());
+
+                        // await credential.user?.updatePhoneNumber(myPhoneNumberController.text.trim() as PhoneAuthCredential);
                         
 
 

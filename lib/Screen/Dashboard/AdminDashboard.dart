@@ -4,6 +4,7 @@ import 'package:bondhu_mithai_app/Screen/AdminScreen/AllCashReceiver.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllDeliveryMan.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllManagers.dart';
 import 'package:bondhu_mithai_app/Screen/AdminScreen/AllStaff.dart';
+import 'package:bondhu_mithai_app/Screen/AllLogInScreen/AdminLogIn.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/AllCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/DueCustomer.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/PerDaySalesHistory.dart';
@@ -28,25 +29,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:hive/hive.dart';
 import 'package:popover/popover.dart';
 
 
 class AdminDashboard extends StatefulWidget {
 
-  final userName;
-  final userEmail;
+
   final indexNumber;
+
   
 
 
 
-  const AdminDashboard({super.key, required this.userName, required this.userEmail, required this.indexNumber});
+  const AdminDashboard({super.key, required this.indexNumber, });
 
   @override
   State<AdminDashboard> createState() => _AdminDashboardState();
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
+
+
+  
+
+// hive database
+
+  final _mybox = Hive.box("mybox");
+
 
 
 
@@ -341,6 +351,9 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
 
+var photoUrl ="";
+var AdminName ="";
+var AdminEmail = "";
 
 
 
@@ -363,6 +376,11 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
 
 
 
+      setState(() {
+        photoUrl = _mybox.get("AdminPhotoUrl");
+        AdminName = _mybox.get("AdminName");
+        AdminEmail = _mybox.get("AdminEmail");
+      });
 
 
   
@@ -473,12 +491,12 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onPressed: () {
 
 
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductScreen(indexNumber: "2",)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminTableStructureView()));
 
 
                 },
                 icon: const Icon(
-                  Icons.electric_bike_outlined,
+                  Icons.table_restaurant,
                   color: Colors.white,
                   size: 25,
                 ),
@@ -492,13 +510,13 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onPressed: () {
 
 
-                  //  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin(indexNumber: "3",)));
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) =>PerMonthNagadBillPay()));
 
 
 
                 },
                 icon: const Icon(
-                  Icons.admin_panel_settings_outlined,
+                  Icons.account_balance,
                   color: Colors.white,
                   size: 25,
                 ),
@@ -510,7 +528,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 enableFeedback: false,
                 onPressed: () {
 
-                  //  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomer(indexNumber: "4")));
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomer(indexNumber: "4")));
 
 
 
@@ -536,6 +554,17 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
       
       
       appBar: AppBar(
+        leading:Center(
+                      child:  Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(
+                            "${photoUrl}",
+                          ),
+                        ),
+                      ),
+                    ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
        automaticallyImplyLeading: false,
         title: const Text("Your Dashboard", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),),
@@ -572,14 +601,14 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                       child:  CircleAvatar(
                         radius: 30,
                         backgroundImage: NetworkImage(
-                          "https://w7.pngwing.com/pngs/81/570/png-transparent-profile-logo-computer-icons-user-user-blue-heroes-logo-thumbnail.png",
+                          "${photoUrl}",
                         ),
                       ),
                     ),
 
 
-                    Text("Name:${widget.userName}"),
-                    Text("Email:${widget.userEmail}"),
+                    Text("NAME: ${AdminName.toUpperCase().toString()}", style: TextStyle(overflow: TextOverflow.ellipsis),),
+                    Text("${AdminEmail.toLowerCase()}"),
 
 
 
@@ -1347,7 +1376,7 @@ Future<void> getPerDayOnlineSalesData(String OrderDate) async {
                 onTap: (){
 
 
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminProfile(AdminEmail: widget.userEmail)));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminProfile(AdminEmail: AdminEmail)));
 
 
 
@@ -1479,19 +1508,19 @@ PopupMenuItem(
                             .listen((User? user) async{
                               if (user == null) {
                                 
-                      //  Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => const LogInScreen()),
-                      // );
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AdminLogInScreen()),
+                      );
                                 print('User is currently signed out!');
                               } else {
                                 print('User is signed in!');
                                 await FirebaseAuth.instance.signOut();
                                           
-                      //  Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => const LogInScreen()),
-                      // );
+                  Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const AdminLogInScreen()),
+                      );
                               }
                             });
                   

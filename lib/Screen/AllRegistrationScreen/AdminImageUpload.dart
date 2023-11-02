@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:bondhu_mithai_app/Screen/AllLogInScreen/AdminLogIn.dart';
 import 'package:bondhu_mithai_app/Screen/DeveloperAccessories/developerThings.dart';
 import 'package:bondhu_mithai_app/Screen/FrontScreen/LogInScreen.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/AllFood/AllFood.dart';
@@ -928,7 +929,7 @@ Future NIDBackImageCamera(BuildContext context) async {
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LogInScreen()),
+                  MaterialPageRoute(builder: (context) => AdminLogInScreen()),
                 );
             },
             )..show();

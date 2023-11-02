@@ -1,5 +1,8 @@
+import 'package:bondhu_mithai_app/Screen/Dashboard/AdminDashboard.dart';
 import 'package:bondhu_mithai_app/Screen/Dashboard/CustomerProfile.dart';
+import 'package:bondhu_mithai_app/Screen/Dashboard/PerMonthNagadBillPay.dart';
 import 'package:bondhu_mithai_app/Screen/HomeScreen/UserProfile/UserProfile.dart';
+import 'package:bondhu_mithai_app/Screen/TableView/AdminTableView.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -169,7 +172,7 @@ Future<void> getSearchData(String phoneNumber) async {
 
     return Scaffold(
 
-      bottomNavigationBar: Padding(
+  bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 5, right: 5, bottom: 9),
         child: Container(
           height: 60,
@@ -186,79 +189,14 @@ Future<void> getSearchData(String phoneNumber) async {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                enableFeedback: false,
-                onPressed: () async{
 
 
-                  // FirebaseAuth.instance
-                  // .authStateChanges()
-                  // .listen((User? user) {
-                  //   if (user == null) {
-                  //     print('User is currently signed out!');
-                  //   } else {
-                  // // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(userName: user.displayName, userEmail: user.email, indexNumber: "1",)));
-                  // //   }
-                  // });
-
-                  
-                   
-
-
-
-                },
-                icon: const Icon(
-                  Icons.home_outlined,
-                  color: Colors.white,
-                  size: 25,
-                ),
-              ),
-
-
-
-              IconButton(
-                enableFeedback: false,
-                onPressed: () {
-
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductScreen(indexNumber: "2")));
-
-
-
-                },
-                icon: const Icon(
-                  Icons.electric_bike_outlined,
-                  color: Colors.white,
-                  size: 25,
-                ),
-              ),
-
-
-
-
-              IconButton(
-                enableFeedback: false,
-                onPressed: () {
-
-
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllAdmin(indexNumber: "3")));
-
-
-
-                },
-                icon: const Icon(
-                  Icons.admin_panel_settings_outlined,
-                  color: Colors.white,
-                  size: 25,
-                ),
-              ),
-
-
-              widget.indexNumber == "4"?
+           widget.indexNumber == "1"?
               IconButton(
                 enableFeedback: false,
                 onPressed: () {},
                 icon: const Icon(
-                  Icons.person_sharp,
+                  Icons.home_sharp,
                   color: Colors.white,
                   size: 55,
                   fill: 1.0,
@@ -266,6 +204,64 @@ Future<void> getSearchData(String phoneNumber) async {
               ): IconButton(
                 enableFeedback: false,
                 onPressed: () {},
+                icon: const Icon(
+                  Icons.home_sharp,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
+
+
+
+
+              IconButton(
+                enableFeedback: false,
+                onPressed: () {
+
+
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminTableStructureView()));
+
+
+                },
+                icon: const Icon(
+                  Icons.table_restaurant,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
+
+
+
+
+              IconButton(
+                enableFeedback: false,
+                onPressed: () {
+
+
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) =>PerMonthNagadBillPay()));
+
+
+
+                },
+                icon: const Icon(
+                  Icons.account_balance,
+                  color: Colors.white,
+                  size: 25,
+                ),
+              ),
+
+
+
+              IconButton(
+                enableFeedback: false,
+                onPressed: () {
+
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => AllCustomer(indexNumber: "4")));
+
+
+
+
+                },
                 icon: const Icon(
                   Icons.person_outline,
                   color: Colors.white,
@@ -275,6 +271,7 @@ Future<void> getSearchData(String phoneNumber) async {
             ],
           ),),
       ),
+
 
 
 

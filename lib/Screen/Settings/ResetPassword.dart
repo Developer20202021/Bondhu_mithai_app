@@ -14,7 +14,8 @@ import 'package:lottie/lottie.dart';
 
 
 
-class ChangePassword extends StatefulWidget {
+
+class ResetPassword extends StatefulWidget {
 
 
 
@@ -23,49 +24,30 @@ class ChangePassword extends StatefulWidget {
 
 
 
-  const ChangePassword({super.key});
+  const ResetPassword({super.key});
 
   @override
-  State<ChangePassword> createState() => _ChangePasswordState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _ChangePasswordState extends State<ChangePassword> {
-  TextEditingController AdminPasswordController = TextEditingController();
+class _ResetPasswordState extends State<ResetPassword> {
+  TextEditingController AdminEmailController = TextEditingController();
  
 
   bool loading = false;
 
   var PasswordChangeSuccess = "";
+  var updateValue = "";
 
 
-  Future updateAdminPassword() async{
-
-
-    FirebaseAuth.instance
-  .authStateChanges()
-  .listen((User? user) async {
-    if (user == null) {
-      print('User is currently signed out!');
-      
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminLogInScreen()));
-    } else {
-
-
-     await user.updatePassword(AdminPasswordController.text.trim()).then((value) => setState(()=>PasswordChangeSuccess="success")).onError((error, stackTrace) => setState(()=>PasswordChangeSuccess="fail"));
-
-     
-     
-      AdminPasswordController.clear();
-
-      setState(() {
-        loading = false;
-      });
+  Future ResetAdminPassword() async{
 
 
 
-    }
-  });
-
+  await FirebaseAuth.instance
+    .sendPasswordResetEmail(email: AdminEmailController.text.trim());
+        // .then((value) => setState(()=>print(value)))
+        // .catchError((e) => print(e));
 
 
 
@@ -233,12 +215,12 @@ class _ChangePasswordState extends State<ChangePassword> {
             
                     TextField(
                       
-                      keyboardType: TextInputType.visiblePassword,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Enter New Password',
+                          labelText: 'Enter Email',
                 
-                          hintText: 'Enter New Password',
+                          hintText: 'Enter Email',
             
                           //  enabledBorder: OutlineInputBorder(
                           //       borderSide: BorderSide(width: 3, color: Colors.greenAccent),
@@ -253,7 +235,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           
                           
                           ),
-                      controller: AdminPasswordController,
+                      controller: AdminEmailController,
                     ),
             
             
@@ -279,7 +261,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                             loading = true;
                           });
 
-                         updateAdminPassword();
+                         ResetAdminPassword();
 
 
                      
@@ -288,7 +270,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
 
 
-                        }, child: Text("Change Password", style: TextStyle(color: Colors.white),), style: ButtonStyle(
+                        }, child: Text("Reset Password", style: TextStyle(color: Colors.white),), style: ButtonStyle(
                          
                 backgroundColor: MaterialStatePropertyAll<Color>(Theme.of(context).primaryColor),
               ),),),
